@@ -1,3 +1,44 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@layer base {
+  html, body {
+    font-family: 'Krub', sans-serif;
+    background-color: #ede6dc;
+  }
+}
+
+@theme {
+  --font-sans: 'Krub', sans-serif;
+  /* Neutrals */
+  --color-brand-white: #ffffff;
+  --color-brand-off-white: #f8faec;
+  --color-brand-cream: #ede6dc;
+  --color-brand-gray-light: #bcbfbe;
+  --color-brand-gray-mid: #898881;
+  --color-brand-charcoal: #232524;
+  --color-brand-near-black: #1a1a1a;
+  --color-brand-espresso: #2d2727;
+  --color-brand-black: #000000;
+
+  /* Darks */
+  --color-brand-navy: #262d38;
+
+  /* Reds */
+  --color-brand-crimson: #d42622;
+  --color-brand-crimson-dark: #6b090b;
+
+  /* Blues */
+  --color-brand-blue: #0573e6;
+  --color-brand-sky: #0395d7;
+
+  /* UI */
+  --color-brand-btn-bg: #E2E3E2;
+  --color-brand-btn-border: #898881;
+
+  /* Accents */
+  --color-brand-gold: #ffc52a;
+  --color-brand-orange: #f35d29;
+  --color-brand-forest: #386d4f;
+}
