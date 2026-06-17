@@ -3,6 +3,7 @@
 	import AppIcon from './AppIcon.svelte';
 	import TopicMap from './TopicMap.svelte';
 	import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
+	import Leaf from '$lib/Leaf.svelte';
 
 	// Toggle open/closed — but restore (don't close) a minimized window.
 	function dockClick(app: AppDef) {
@@ -34,19 +35,20 @@
 			{@const active = !!w && !w.minimized && w.z === desktop.topZ}
 			<button
 				type="button"
-				class="dock-btn bg-brand-near-black cursor-pointer relative flex h-9 w-9 items-center justify-center rounded-lg border text-brand-gray-light transition"
+				class="dock-btn bg-brand-near-black cursor-pointer relative flex h-10 w-10 items-center justify-center rounded-lg border text-brand-gray-light transition"
 				class:active
 				class:is-open={isOpen}
-				style:--accent={"#1a1a1a"}
-				style:--glow={app.glow}
+				style:--accent={"#386d4f"}
 				aria-pressed={isOpen}
 				aria-label="{app.title}{isOpen ? ' (open)' : ''}"
 				title={app.title}
 				onclick={() => dockClick(app)}
 			>
-				<AppIcon type={app.icon} size={18} />
+				<div class={isOpen ? "" : ""}>
+				<Leaf width={28} height ={28}/>
+				</div>
 				{#if isOpen}
-					<span class="open-dot" aria-hidden="true"></span>
+					<span class="open-dot mb-0.5" aria-hidden="true"></span>
 				{/if}
 			</button>
 		{/each}
@@ -55,22 +57,20 @@
 
 <style>
 	.dock-btn {
-		border-color: transparent;
+		border-color: color-mix(in srgb, #7a7a7a 100%, transparent);
 	}
 	.dock-btn:hover {
 		color: #fff;
-		border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-		background: color-mix(in srgb, var(--accent) 18%, transparent);
-		transform: translateY(-1px);
+		border-color: color-mix(in srgb, var(--accent) 100%, transparent);
+		background: color-mix(in srgb, var(--accent) 0%, transparent);
 	}
 	.dock-btn.is-open {
 		color: #fff;
 		border-color: color-mix(in srgb, var(--accent) 45%, transparent);
 	}
 	.dock-btn.active {
-		background: color-mix(in srgb, var(--accent) 30%, transparent);
+		background: color-mix(in srgb, var(--accent) 20%, transparent);
 		border-color: var(--accent);
-		box-shadow: 0 0 14px var(--glow);
 	}
 
 	.open-dot {

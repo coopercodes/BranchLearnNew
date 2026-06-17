@@ -57,7 +57,7 @@
 {#if win.app.id === 'leaf'}
 	<div class="flex h-full flex-col">
 		<!-- Tutor header -->
-		<div class="mb-3 flex items-center gap-2.5 border-b border-brand-green-100 pb-3">
+		<!-- <div class="mb-3 flex items-center gap-2.5 border-b border-brand-green-100 pb-3">
 			<div
 				class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-forest text-sm font-bold text-white"
 			>
@@ -71,7 +71,7 @@
 				<span class="h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
 				<span>Active</span>
 			</div>
-		</div>
+		</div> -->
 
 		<!-- Chat messages -->
 		<div
@@ -82,12 +82,7 @@
 				{#if msg.from === 'leaf'}
 					<div class="flex items-end gap-2">
 						<div
-							class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-forest text-xs font-bold text-white"
-						>
-							L
-						</div>
-						<div
-							class="max-w-[82%] rounded-2xl rounded-bl-sm border border-brand-green-100 bg-brand-green-50 px-3 py-2 text-sm leading-relaxed text-brand-charcoal"
+							class="max-w-full select-auto rounded-md  border border-brand-green-100 bg-brand-green-50 px-3 py-2 text-sm leading-relaxed text-brand-charcoal"
 						>
 							{msg.text}
 						</div>
@@ -101,6 +96,11 @@
 						</div>
 					</div>
 				{/if}
+				<div
+					class=" h-6 w-6 flex items-center   shrink-0 justify-center rounded-full bg-brand-forest text-xs font-bold text-white"
+				>
+					L
+				</div>
 			{/each}
 
 			{#if thinking}

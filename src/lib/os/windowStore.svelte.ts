@@ -22,7 +22,7 @@ export interface AppDef {
 /** The dock — each entry gets a launcher button + can spawn a window. */
 export const APPS: AppDef[] = [
 	{ id: 'leaf', title: 'Leaf', icon: 'leaf', accent: '#386d4f', glow: 'rgba(56, 109, 79, 0.45)', w: 420, h: 500, theme: 'light' },
-	{ id: 'atlas', title: 'Atlas', icon: 'map', accent: '#ffc52a', glow: 'rgba(255, 197, 42, 0.5)', w: 480, h: 360 }
+	// { id: 'atlas', title: 'Atlas', icon: 'map', accent: '#ffc52a', glow: 'rgba(255, 197, 42, 0.5)', w: 480, h: 360 }
 ];
 
 /** Live, per-window state. One of these is created each time a window opens. */

@@ -4,6 +4,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { desktop, setWindowContext, type WindowState } from '$lib/os/windowStore.svelte';
 	import AppIcon from './AppIcon.svelte';
+	import Leaf from '$lib/Leaf.svelte';
 
 	let { win, children }: { win: WindowState; children: Snippet } = $props();
 
@@ -122,7 +123,7 @@
 		onkeydown={nudge}
 	>
 		<span class="accent-chip flex h-5 w-5 items-center justify-center rounded-md text-white">
-			<AppIcon type={win.app.icon} size={13} />
+			<Leaf  />
 		</span>
 		<span
 			class="text-sm font-semibold"
