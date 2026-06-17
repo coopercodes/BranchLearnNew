@@ -79,6 +79,8 @@
 		e.preventDefault();
 	}
 
+	const lightMode = $derived(win.app.theme === 'light');
+
 	const edges = [
 		{ dir: 'n', cls: 'top-0 right-2 left-2 h-1.5 cursor-ns-resize' },
 		{ dir: 's', cls: 'bottom-0 right-2 left-2 h-1.5 cursor-ns-resize' },
@@ -94,8 +96,9 @@
 </script>
 
 <div
-	class="os-window pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border bg-brand-charcoal/95 backdrop-blur-md select-none"
+	class="os-window pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border select-none {lightMode ? 'bg-white' : 'bg-brand-charcoal/95 backdrop-blur-md'}"
 	class:focused
+	class:light-mode={lightMode}
 	role="dialog"
 	tabindex="-1"
 	aria-label={win.app.title}
@@ -121,7 +124,11 @@
 		<span class="accent-chip flex h-5 w-5 items-center justify-center rounded-md text-white">
 			<AppIcon type={win.app.icon} size={13} />
 		</span>
-		<span class="text-sm font-semibold text-brand-off-white">{win.app.title}</span>
+		<span
+			class="text-sm font-semibold"
+			class:text-brand-off-white={!lightMode}
+			class:text-brand-green-700={lightMode}
+		>{win.app.title}</span>
 
 		<div class="ml-auto flex items-center gap-1.5">
 			<button
@@ -142,7 +149,11 @@
 	</div>
 
 	<!-- Content -->
-	<div class="min-h-0 flex-1 overflow-auto p-4 text-brand-off-white">
+	<div
+		class="min-h-0 flex-1 overflow-auto p-4"
+		class:text-brand-off-white={!lightMode}
+		class:text-brand-charcoal={lightMode}
+	>
 		{@render children()}
 	</div>
 
@@ -209,6 +220,30 @@
 	.ctrl:hover {
 		opacity: 1;
 		transform: scale(1.18);
+	}
+
+	/* Light-mode window overrides */
+	.os-window.light-mode {
+		box-shadow:
+			0 8px 32px rgba(56, 109, 79, 0.12),
+			0 0 0 1px rgba(56, 109, 79, 0.15);
+	}
+	.os-window.light-mode.focused {
+		box-shadow:
+			0 12px 40px rgba(56, 109, 79, 0.18),
+			0 0 20px var(--glow),
+			0 0 0 1.5px var(--accent);
+	}
+	.os-window.light-mode .title-bar {
+		background: linear-gradient(
+			180deg,
+			color-mix(in srgb, var(--accent) 10%, #ffffff) 0%,
+			#f5fcf7 100%
+		);
+		border-bottom-color: color-mix(in srgb, var(--accent) 20%, transparent);
+	}
+	.os-window.light-mode .accent-chip {
+		box-shadow: 0 0 8px var(--glow);
 	}
 
 </style>

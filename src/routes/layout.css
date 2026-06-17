@@ -41,4 +41,10 @@
   --color-brand-gold: #ffc52a;
   --color-brand-orange: #f35d29;
   --color-brand-forest: #386d4f;
+
+  /* Green scale — used by Leaf AI tutor (light-mode window) */
+  --color-brand-green-50: #f0faf4;
+  --color-brand-green-100: #d1edda;
+  --color-brand-green-200: #a3d9b5;
+  --color-brand-green-700: #1d5c38;
 }
