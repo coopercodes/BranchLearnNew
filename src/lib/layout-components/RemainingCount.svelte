@@ -74,7 +74,7 @@
   {#key punchKey}
     <div
       class="relative flex justify-center items-center space-x-2 p-1 px-4 rounded-md h-max cursor-pointer select-none overflow-hidden
-             {isFinal ? 'continue-btn sheen-flash' : 'bg-brand-charcoal hover:brightness-110 transition-[filter]'}
+             {isFinal ? 'continue-btn sheen-flash' : 'hover:bg-brand-charcoal hover:brightness-110 transition-[filter]'}
              {punchKey > 0 && !isFinal ? 'punching sheen-flash' : ''}"
       role="button"
       tabindex="0"
@@ -82,7 +82,7 @@
       onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && pop()}
     >
       <span class="sheen-bar" aria-hidden="true"></span>
-      <p class="relative z-10 {isFinal ? 'text-white font-semibold' : 'text-neutral-200'}">
+      <p class="relative z-10 {isFinal ? 'text-white font-semibold' : 'text-white'}">
         {isFinal ? 'Continue' : `${totalQuestions - punchKey} remaining`}
       </p>
     </div>

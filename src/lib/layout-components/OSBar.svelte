@@ -17,15 +17,15 @@
 </script>
 
 <div
-	class="flex h-13 items-center justify-between border-t border-t-brand-near-black bg-brand-near-black/85 px-3 backdrop-blur"
+  class="relative flex h-13 items-center justify-between border-t border-t-brand-near-black bg-brand-near-black/85 px-3 backdrop-blur"
 >
-	<!-- Left: current focus topic → opens the learning map -->
-	<TopicMap />
+  <!-- Left -->
+  <TopicMap />
 
-	<!-- Middle: progress -->
-	<div class="flex">
-		<RemainingCount />
-	</div>
+  <!-- Middle: pinned to true center -->
+  <div class="absolute left-1/2 -translate-x-1/2">
+    <RemainingCount />
+  </div>
 
 	<!-- Right: window launcher dock -->
 	<div class="flex items-center gap-1.5 pr-1">
