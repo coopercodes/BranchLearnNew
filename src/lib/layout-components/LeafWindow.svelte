@@ -7,15 +7,15 @@
 
 
 
-<div class="h-[500px] w-[400px] shadow-2xl/35 border-black border rounded-sm bg-[#F5EDE7] fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+<div class="h-[700px] w-[500px] shadow-2xl/35 border-black border rounded-sm bg-[#F5EDE7] fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
     <div class="flex flex-col h-full">
         <div class="flex bg-[#e9e1db] rounded-t-sm justify-between border-b px-2 p-1">
             <div class="flex items-center space-x-2">
                 <!-- <p class="text-sm font-semibold text-neutral-800">Leaf</p> -->
                 <div class="flex items-center space-x-2">
-                <Leaf color="#386d4f" width={26} height={26}/>
-                    <p class='text-xs font-semibold' >Chat</p>
-                    <p class='text-xs'>History</p>
+                    <Leaf color="#386d4f" width={24} height={24}/>
+                    <p class='text-xs font-semibold ' >Chat</p>
+                    <p class='text-xs '>History</p>
                     <p class='text-xs'>Settings</p>
                 </div>
             </div>
