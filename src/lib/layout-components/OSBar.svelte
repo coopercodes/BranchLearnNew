@@ -1,7 +1,7 @@
 <script lang="ts">
 	import RemainingCount from './RemainingCount.svelte';
-	import AppIcon from './AppIcon.svelte';
 	import TopicMap from './TopicMap.svelte';
+	import LayoutMenu from './LayoutMenu.svelte';
 	import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
 	import Leaf from '$lib/Leaf.svelte';
 	import Book from '$lib/Book.svelte';
@@ -39,27 +39,23 @@
 				class="dock-btn bg-brand-near-black cursor-pointer relative flex h-10 w-10 items-center justify-center rounded-lg border text-brand-gray-light transition"
 				class:active
 				class:is-open={isOpen}
-				style:--accent={"#386d4f"}
+				style:--accent={app.accent}
 				aria-pressed={isOpen}
 				aria-label="{app.title}{isOpen ? ' (open)' : ''}"
 				title={app.title}
 				onclick={() => dockClick(app)}
 			>
-				<div class={isOpen ? "" : ""}>
-				<Leaf width={28} height ={28}/>
-				</div>
+				{#if app.id === 'leaf'}
+					<Leaf width={28} height={28} />
+				{:else if app.id === 'book'}
+					<Book width={28} height={28} />
+				{/if}
 				{#if isOpen}
 					<span class="open-dot mb-0.5" aria-hidden="true"></span>
 				{/if}
 			</button>
 		{/each}
-		<button
-				type="button"
-				class="dock-btn bg-brand-near-black cursor-pointer relative flex h-10 w-10 items-center justify-center rounded-lg border text-brand-gray-light transition"
-				style:--accent={"#8B5A34"}
-			>
-				<Book width={28} height ={28}/>
-		</button>
+		<LayoutMenu />
 	</div>
 </div>
 
