@@ -69,12 +69,15 @@
 
 			<!-- Article always fills the window; the sidebar overlays on top of it -->
 			<div class="w-full h-full flex flex-col items-center justify-center p-4">
-				<p class="text-left font-semibold w-full">Introduction</p>
+				<p class="text-left font-semibold w-full">The Sine Ratio</p>
 				<p class=" my-2">
-					This is an introduction article which currently has no real content. The goal is to have full articles that the user can read here.
+					Every right triangle has two acute angles, and each one defines three basic ratios between its sides: sine, cosine, and tangent. The sine of an angle θ, written sin(θ), is the length of the side opposite θ divided by the length of the hypotenuse.
 				</p>
 				<p class=" my-2">
-					This is a second piece of text that the user can read. Also cool, also chill.
+					Because every right triangle with the same angle θ is similar, this ratio never changes — only the triangle's size does. That's what makes sin(θ) useful on the SAT: memorize a handful of values, like sin(30°) = 1/2, and you can solve any right triangle that shares that angle.
+				</p>
+				<p class=" my-2">
+					Sine and cosine are also linked by the co-function identity sin(θ) = cos(90° − θ) for any acute angle θ. That lets you rewrite a sine expression as a cosine one (or vice versa) without ever knowing the actual angle — a shortcut that shows up often on SAT trigonometry questions.
 				</p>
 			</div>
 
