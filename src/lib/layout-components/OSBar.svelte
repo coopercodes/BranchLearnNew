@@ -4,6 +4,7 @@
 	import TopicMap from './TopicMap.svelte';
 	import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
 	import Leaf from '$lib/Leaf.svelte';
+	import Book from '$lib/Book.svelte';
 
 	// Toggle open/closed — but restore (don't close) a minimized window.
 	function dockClick(app: AppDef) {
@@ -52,6 +53,13 @@
 				{/if}
 			</button>
 		{/each}
+		<button
+				type="button"
+				class="dock-btn bg-brand-near-black cursor-pointer relative flex h-10 w-10 items-center justify-center rounded-lg border text-brand-gray-light transition"
+				style:--accent={"#8B5A34"}
+			>
+				<Book width={28} height ={28}/>
+		</button>
 	</div>
 </div>
 

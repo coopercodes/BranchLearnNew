@@ -1,5 +1,6 @@
 
 <script lang="ts">
+	import BookWindow from "$lib/layout-components/BookWindow.svelte";
 	import LeafWindow from "$lib/layout-components/LeafWindow.svelte";
 	import OSBar from "$lib/layout-components/OSBar.svelte";
 	import WindowLayer from "$lib/layout-components/WindowLayer.svelte";
@@ -63,5 +64,6 @@
 		<WindowLayer />
 	</div>
 	<OSBar />
-	<LeafWindow />
+	<!-- <LeafWindow /> -->
+	<BookWindow />
 </div>
