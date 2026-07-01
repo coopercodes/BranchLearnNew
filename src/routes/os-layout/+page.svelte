@@ -8,23 +8,38 @@
 		desktop.open(APPS.find((a) => a.id === 'book')!);
 	});
 
-	const word = "infinite";
+	const word = "sin(θ)";
 	const definitions = [
-		"something that has no limits, such as the universe or (in some religions) God.",
-		"To be infinite is something we do not yet understand. Infinite is found in the grass, the trees, the words, the book, but never is infinite defined as just one thing. Within infinite we find everything, even the finite can only exist with the infinite."
+		"In a right triangle, sin(θ) is the ratio of the side opposite angle θ to the hypotenuse: sin(θ) = opposite / hypotenuse.",
+		"On the unit circle, sin(θ) is the y-coordinate of the point where the terminal side of angle θ meets the circle — the same ratio, now defined for any angle, not just those inside a right triangle."
 	];
 
-	const question = {
-		number: 1,
-		options: [
-			{ label: "A", text: "To impose without limits" },
-			{ label: "B", text: "To create without boundaries" },
-			{ label: "C", text: "To see into the endless, boundless variability of life" },
-			{ label: "D", text: "To breathe, understand, and see further with others." }
-		]
-	};
+	const questions = [
+		{
+			number: 1,
+			prompt: "In a right triangle, the side opposite angle θ has length 5 and the hypotenuse has length 13. What is sin(θ)?",
+			options: [
+				{ label: "A", text: "5/13" },
+				{ label: "B", text: "12/13" },
+				{ label: "C", text: "5/12" },
+				{ label: "D", text: "13/5" }
+			]
+		},
+		{
+			number: 2,
+			prompt: "If sin(θ) = cos(40°) and θ is acute, what is the value of θ, in degrees?",
+			options: [
+				{ label: "A", text: "40" },
+				{ label: "B", text: "50" },
+				{ label: "C", text: "90" },
+				{ label: "D", text: "140" }
+			]
+		}
+	];
 
-	let selected = $state<string | null>(null);
+	let selected = $state<Record<number, string | null>>(
+		Object.fromEntries(questions.map((q) => [q.number, null]))
+	);
 </script>
 
 <Desktop>
@@ -43,21 +58,25 @@
 
 			<!-- Right: multiple choice -->
 			<div class="flex-1">
-				<p class="text-sm text-gray-500 mb-2">Question {question.number}</p>
-				<p class="text-lg font-semibold mb-6">
-					What does it mean to <em>be</em> infinite?
-				</p>
-				<div class="flex flex-col gap-3">
-					{#each question.options as opt (opt.label)}
-						<button
-							class="cursor-pointer flex items-start gap-3 px-4 py-3 border border-brand-btn-border rounded-lg text-left bg-brand-btn-bg hover:brightness-95 transition-all {selected === opt.label ? 'border-gray-500' : ''}"
-							onclick={() => selected = opt.label}
-						>
-							<span class="w-6 h-6 flex items-center justify-center bg-white rounded-full text-sm font-light shrink-0">{opt.label}</span>
-							<span class="text-sm">{opt.text}</span>
-						</button>
-					{/each}
-				</div>
+				{#each questions as question (question.number)}
+					<div class="mb-8 last:mb-0">
+						<p class="text-sm text-gray-500 mb-2">Question {question.number}</p>
+						<p class="text-lg font-semibold mb-6">
+							{question.prompt}
+						</p>
+						<div class="flex flex-col gap-3">
+							{#each question.options as opt (opt.label)}
+								<button
+									class="cursor-pointer flex items-start gap-3 px-4 py-3 border border-brand-btn-border rounded-lg text-left bg-brand-btn-bg hover:brightness-95 transition-all {selected[question.number] === opt.label ? 'border-gray-500' : ''}"
+									onclick={() => selected[question.number] = opt.label}
+								>
+									<span class="w-6 h-6 flex items-center justify-center bg-white rounded-full text-sm font-light shrink-0">{opt.label}</span>
+									<span class="text-sm">{opt.text}</span>
+								</button>
+							{/each}
+						</div>
+					</div>
+				{/each}
 			</div>
 		</div>
 	</div>
