@@ -1,5 +1,3 @@
-import { createContext } from 'svelte';
-
 /** An icon the dock + titlebar know how to draw. */
 export type IconType = 'leaf' | 'scroll' | 'orb' | 'map';
 
@@ -22,8 +20,16 @@ export interface AppDef {
 /** The dock — each entry gets a launcher button + can spawn a window. */
 export const APPS: AppDef[] = [
 	{ id: 'leaf', title: 'Leaf', icon: 'leaf', accent: '#386d4f', glow: 'rgba(56, 109, 79, 0.45)', w: 420, h: 500, theme: 'light' },
+	{ id: 'book', title: 'Textbook', icon: 'scroll', accent: '#8B5A34', glow: 'rgba(139, 90, 52, 0.45)', w: 500, h: 700, theme: 'light' }
 	// { id: 'atlas', title: 'Atlas', icon: 'map', accent: '#ffc52a', glow: 'rgba(255, 197, 42, 0.5)', w: 480, h: 360 }
 ];
+
+/** Which app can be pinned to the right-hand dock panel. */
+export type DockMode = 'book' | 'leaf';
+
+const DEFAULT_DOCK_WIDTH_RATIO = 0.3;
+const MAX_DOCK_WIDTH_RATIO = 0.5;
+const MIN_DOCK_WIDTH = 320;
 
 /** Live, per-window state. One of these is created each time a window opens. */
 export class WindowState {
@@ -51,12 +57,21 @@ export class WindowState {
  */
 export class WindowManager {
 	windows = $state<WindowState[]>([]);
+	/** App currently pinned to the right-hand dock panel, if any. */
+	dockedId = $state<string | null>(null);
+	/** Dock panel width in px — resizable between MIN_DOCK_WIDTH and maxDockWidth. */
+	dockWidth = $state(0);
 	#z = 10;
 	#spawned = 0;
 
 	/** Highest z currently handed out — a window matching it is "focused". */
 	get topZ() {
 		return this.#z;
+	}
+
+	/** Dock panel may never grow past half the viewport. */
+	get maxDockWidth() {
+		return Math.round(window.innerWidth * MAX_DOCK_WIDTH_RATIO);
 	}
 
 	isOpen(id: string) {
@@ -86,6 +101,7 @@ export class WindowManager {
 
 	close(id: string) {
 		this.windows = this.windows.filter((w) => w.app.id !== id);
+		if (this.dockedId === id) this.dockedId = null;
 	}
 
 	toggle(app: AppDef) {
@@ -101,10 +117,29 @@ export class WindowManager {
 			win.z = ++this.#z;
 		}
 	}
+
+	/** Pin an app to the right-hand dock panel, shrinking the main content to fit. */
+	openDock(mode: DockMode) {
+		if (this.dockedId && this.dockedId !== mode) {
+			this.close(this.dockedId);
+		}
+		const app = APPS.find((a) => a.id === mode)!;
+		const win = this.find(mode);
+		if (!win) {
+			this.open(app);
+		} else {
+			win.minimized = false;
+			this.focus(win);
+		}
+		this.dockedId = mode;
+		this.dockWidth = Math.round(window.innerWidth * DEFAULT_DOCK_WIDTH_RATIO);
+	}
+
+	/** Resize the dock panel, clamped between MIN_DOCK_WIDTH and half the viewport. */
+	setDockWidth(width: number) {
+		this.dockWidth = Math.min(this.maxDockWidth, Math.max(MIN_DOCK_WIDTH, width));
+	}
 }
 
 /** Shared desktop instance. */
 export const desktop = new WindowManager();
-
-/** Each <OSWindow> publishes its own WindowState so content can self-control. */
-export const [getWindowContext, setWindowContext] = createContext<WindowState>();
