@@ -1,5 +1,7 @@
 
 <script lang="ts">
+  import { responses } from '$lib/question/responsesState.svelte';
+
   type Particle = { id: number; tx: number; ty: number; delay: number; size: number };
 
   let particles = $state<Particle[]>([]);
@@ -7,7 +9,6 @@
   let punchKey = $state(0);
 
   function pop() {
-    if (punchKey >= totalQuestions) return;
     const count = 7;
     const startDeg = 210;
     const arcSpan = 120;
@@ -36,8 +37,17 @@
     }, 950);
   }
 
-  let totalQuestions = 4;
-  let isFinal = $derived(punchKey >= totalQuestions);
+  let totalQuestions = $derived(responses.totalQuestions);
+  let remaining = $derived(Math.max(0, totalQuestions - responses.answeredCount));
+  let isFinal = $derived(totalQuestions > 0 && remaining === 0);
+
+  // Celebrate every time a question moves from unanswered to correctly answered.
+  let prevAnsweredCount = responses.answeredCount;
+  $effect(() => {
+    const count = responses.answeredCount;
+    if (count > prevAnsweredCount) pop();
+    prevAnsweredCount = count;
+  });
 </script>
 
 <div class="relative flex justify-center items-center">
@@ -73,17 +83,13 @@
 
   {#key punchKey}
     <div
-      class="relative flex justify-center items-center space-x-2 p-1 px-4 rounded-md h-max cursor-pointer select-none overflow-hidden
-             {isFinal ? 'continue-btn sheen-flash' : 'hover:bg-brand-charcoal hover:brightness-110 transition-[filter]'}
+      class="relative flex justify-center items-center space-x-2 p-1 px-4 rounded-md h-max select-none overflow-hidden
+             {isFinal ? 'continue-btn sheen-flash' : ''}
              {punchKey > 0 && !isFinal ? 'punching sheen-flash' : ''}"
-      role="button"
-      tabindex="0"
-      onclick={pop}
-      onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && pop()}
     >
       <span class="sheen-bar" aria-hidden="true"></span>
       <p class="relative z-10 {isFinal ? 'text-white font-semibold' : 'text-white'}">
-        {isFinal ? 'Continue' : `${totalQuestions - punchKey} remaining`}
+        {isFinal ? 'Continue' : `${remaining} remaining`}
       </p>
     </div>
   {/key}
