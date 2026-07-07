@@ -11,8 +11,16 @@
 	const word = "sin(θ)";
 	const definitions = [
 		"In a right triangle, sin(θ) is the ratio of the side opposite angle θ to the hypotenuse: sin(θ) = opposite / hypotenuse.",
-		"On the unit circle, sin(θ) is the y-coordinate of the point where the terminal side of angle θ meets the circle — the same ratio, now defined for any angle, not just those inside a right triangle."
+		"On the unit circle, sin(θ) is the y-coordinate of the point where the terminal side of angle θ meets the circle — the same ratio, now defined for any angle, not just those inside a right triangle.",
+		"For common angles, sin(θ) works out to clean values: sin(30°) = 1/2, sin(45°) = √2/2, and sin(60°) = √3/2. These come up often enough on the SAT that it's worth memorizing them outright.",
+		"Because it's a ratio against the hypotenuse — the longest side of a right triangle — sin(θ) is always between -1 and 1. If a calculation ever gives you something outside that range, double-check your work.",
+		"sin(θ) is an odd function: sin(-θ) = -sin(θ). Graphically, that means the sine curve is symmetric about the origin, repeating every 360° (or 2π radians)."
 	];
+
+	const tip = {
+		label: "Tip",
+		body: "sin(θ) = cos(90° - θ) for any acute angle θ. This co-function identity lets you swap between sine and cosine for complementary angles without touching a calculator."
+	};
 
 	const questions = [
 		{
@@ -34,6 +42,36 @@
 				{ label: "C", text: "90" },
 				{ label: "D", text: "140" }
 			]
+		},
+		{
+			number: 3,
+			prompt: "A ladder leans against a wall, making a 60° angle with the ground. If the ladder is 10 feet long, how high up the wall does it reach?",
+			options: [
+				{ label: "A", text: "5 feet" },
+				{ label: "B", text: "5√2 feet" },
+				{ label: "C", text: "5√3 feet" },
+				{ label: "D", text: "10 feet" }
+			]
+		},
+		{
+			number: 4,
+			prompt: "For which angle is sin(θ) equal to 1?",
+			options: [
+				{ label: "A", text: "0°" },
+				{ label: "B", text: "45°" },
+				{ label: "C", text: "90°" },
+				{ label: "D", text: "180°" }
+			]
+		},
+		{
+			number: 5,
+			prompt: "If sin(θ) = 0.6, what is cos(90° - θ)?",
+			options: [
+				{ label: "A", text: "0.4" },
+				{ label: "B", text: "0.6" },
+				{ label: "C", text: "0.8" },
+				{ label: "D", text: "1.6" }
+			]
 		}
 	];
 
@@ -43,40 +81,51 @@
 </script>
 
 <Desktop>
-	<div class="h-full flex items-center justify-center px-16 mb-24">
-		<div class="flex gap-16 w-full max-w-4xl items-start">
-			<!-- Left: word + definitions -->
-			<div class="flex-1">
-				<h1 class="text-5xl font-bold mb-6">{word}</h1>
-				{#each definitions as def (def)}
-					<p class="text-base text-gray-700 mb-4">{def}</p>
-				{/each}
-			</div>
+	<div class="h-full flex">
+		<!-- Left: article panel, scrolls independently, hugs the divider -->
+		<div class="flex-1 h-full min-w-0 overflow-y-auto scroll-chill">
+			<div class="min-h-full flex flex-col [justify-content:safe_center] items-end pl-16 pr-8 py-16">
+				<div class="w-full max-w-lg">
+					<h1 class="text-5xl font-bold mb-6 text-black">{word}</h1>
+					{#each definitions as def (def)}
+						<p class="text-base text-black mb-4">{def}</p>
+					{/each}
 
-			<!-- Divider -->
-			<div class="w-px bg-blue-500 h-[24px] my-auto self-stretch"></div>
-
-			<!-- Right: multiple choice -->
-			<div class="flex-1">
-				{#each questions as question (question.number)}
-					<div class="mb-8 last:mb-0">
-						<p class="text-sm text-gray-500 mb-2">Question {question.number}</p>
-						<p class="text-lg font-semibold mb-6">
-							{question.prompt}
-						</p>
-						<div class="flex flex-col gap-3">
-							{#each question.options as opt (opt.label)}
-								<button
-									class="cursor-pointer flex items-start gap-3 px-4 py-3 border border-brand-btn-border rounded-lg text-left bg-brand-btn-bg hover:brightness-95 transition-all {selected[question.number] === opt.label ? 'border-gray-500' : ''}"
-									onclick={() => selected[question.number] = opt.label}
-								>
-									<span class="w-6 h-6 flex items-center justify-center bg-white rounded-full text-sm font-light shrink-0">{opt.label}</span>
-									<span class="text-sm">{opt.text}</span>
-								</button>
-							{/each}
-						</div>
+					<div class="mt-6 rounded-lg border border-brand-gold/40 bg-brand-gold/10 px-4 py-3">
+						<p class="text-xs font-semibold uppercase tracking-wide text-brand-orange mb-1">{tip.label}</p>
+						<p class="text-sm text-black">{tip.body}</p>
 					</div>
-				{/each}
+				</div>
+			</div>
+		</div>
+
+		<!-- Divider -->
+		<div class="w-px h-6 bg-brand-gray-light/60 self-center shrink-0"></div>
+
+		<!-- Right: questions panel, scrolls independently, hugs the divider -->
+		<div class="flex-1 h-full min-w-0 overflow-y-auto scroll-chill">
+			<div class="min-h-full flex flex-col [justify-content:safe_center] items-start pl-8 pr-16 py-16">
+				<div class="w-full max-w-sm">
+					{#each questions as question (question.number)}
+						<div class="mb-8 last:mb-0">
+							<p class="text-sm text-gray-500 mb-2">Question {question.number}</p>
+							<p class="text-lg font-semibold text-black mb-6">
+								{question.prompt}
+							</p>
+							<div class="flex flex-col gap-3">
+								{#each question.options as opt (opt.label)}
+									<button
+										class="cursor-pointer flex items-start gap-3 px-4 py-3 border border-brand-btn-border rounded-lg text-left bg-brand-btn-bg hover:brightness-95 transition-all {selected[question.number] === opt.label ? 'border-gray-500' : ''}"
+										onclick={() => selected[question.number] = opt.label}
+									>
+										<span class="w-6 h-6 flex items-center justify-center bg-white rounded-full text-sm font-light shrink-0">{opt.label}</span>
+										<span class="text-sm pt-[2px]">{opt.text}</span>
+									</button>
+								{/each}
+							</div>
+						</div>
+					{/each}
+				</div>
 			</div>
 		</div>
 	</div>
