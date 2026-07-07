@@ -3,6 +3,8 @@
 	import { onMount } from "svelte";
 	import Desktop from "$lib/layout-components/Desktop.svelte";
 	import { desktop, APPS } from "$lib/os/windowStore.svelte";
+	import MultipleChoiceQuestion from "$lib/question/MultipleChoiceQuestion.svelte";
+	import { responses } from "$lib/question/responsesState.svelte";
 
 	onMount(() => {
 		desktop.open(APPS.find((a) => a.id === 'book')!);
@@ -24,8 +26,10 @@
 
 	const questions = [
 		{
+			id: "sat-trig-sin-01",
 			number: 1,
 			prompt: "In a right triangle, the side opposite angle θ has length 5 and the hypotenuse has length 13. What is sin(θ)?",
+			correctAnswer: "A",
 			options: [
 				{ label: "A", text: "5/13" },
 				{ label: "B", text: "12/13" },
@@ -34,8 +38,10 @@
 			]
 		},
 		{
+			id: "sat-trig-sin-02",
 			number: 2,
 			prompt: "If sin(θ) = cos(40°) and θ is acute, what is the value of θ, in degrees?",
+			correctAnswer: "B",
 			options: [
 				{ label: "A", text: "40" },
 				{ label: "B", text: "50" },
@@ -44,8 +50,10 @@
 			]
 		},
 		{
+			id: "sat-trig-sin-03",
 			number: 3,
 			prompt: "A ladder leans against a wall, making a 60° angle with the ground. If the ladder is 10 feet long, how high up the wall does it reach?",
+			correctAnswer: "C",
 			options: [
 				{ label: "A", text: "5 feet" },
 				{ label: "B", text: "5√2 feet" },
@@ -54,8 +62,10 @@
 			]
 		},
 		{
+			id: "sat-trig-sin-04",
 			number: 4,
 			prompt: "For which angle is sin(θ) equal to 1?",
+			correctAnswer: "C",
 			options: [
 				{ label: "A", text: "0°" },
 				{ label: "B", text: "45°" },
@@ -64,8 +74,10 @@
 			]
 		},
 		{
+			id: "sat-trig-sin-05",
 			number: 5,
 			prompt: "If sin(θ) = 0.6, what is cos(90° - θ)?",
+			correctAnswer: "B",
 			options: [
 				{ label: "A", text: "0.4" },
 				{ label: "B", text: "0.6" },
@@ -75,9 +87,7 @@
 		}
 	];
 
-	let selected = $state<Record<number, string | null>>(
-		Object.fromEntries(questions.map((q) => [q.number, null]))
-	);
+	responses.totalQuestions = questions.length;
 </script>
 
 <Desktop>
@@ -106,25 +116,21 @@
 		<div class="flex-1 h-full min-w-0 overflow-y-auto scroll-chill">
 			<div class="min-h-full flex flex-col [justify-content:safe_center] items-start pl-8 pr-16 py-16">
 				<div class="w-full max-w-sm">
-					{#each questions as question (question.number)}
-						<div class="mb-8 last:mb-0">
-							<p class="text-sm text-gray-500 mb-2">Question {question.number}</p>
-							<p class="text-lg font-semibold text-black mb-6">
-								{question.prompt}
-							</p>
-							<div class="flex flex-col gap-3">
-								{#each question.options as opt (opt.label)}
-									<button
-										class="cursor-pointer flex items-start gap-3 px-4 py-3 border border-brand-btn-border rounded-lg text-left bg-brand-btn-bg hover:brightness-95 transition-all {selected[question.number] === opt.label ? 'border-gray-500' : ''}"
-										onclick={() => selected[question.number] = opt.label}
-									>
-										<span class="w-6 h-6 flex items-center justify-center bg-white rounded-full text-sm font-light shrink-0">{opt.label}</span>
-										<span class="text-sm pt-[2px]">{opt.text}</span>
-									</button>
-								{/each}
-							</div>
-						</div>
+					{#each questions as question (question.id)}
+						<MultipleChoiceQuestion
+							questionId={question.id}
+							number={question.number}
+							prompt={question.prompt}
+							options={question.options}
+							correctAnswer={question.correctAnswer}
+							{responses}
+						/>
 					{/each}
+
+					<p class="text-xs text-gray-500 mt-2">
+						{responses.answeredCount}/{questions.length} correct · {responses.incorrectCount} wrong
+						{responses.incorrectCount === 1 ? 'guess' : 'guesses'} · {Math.floor(responses.totalTimeMs / 1000)}s elapsed
+					</p>
 				</div>
 			</div>
 		</div>
