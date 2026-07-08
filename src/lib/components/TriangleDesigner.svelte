@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import MysteryMark from "./MysteryMark.svelte";
 
 	type Point = { x: number; y: number };
 
@@ -229,33 +230,7 @@
 </script>
 
 {#snippet mysteryMark(x: number, y: number, onReveal: () => void)}
-	<g
-		transform="translate({x}, {y})"
-		class="mystery-mark"
-		role="button"
-		tabindex="0"
-		aria-label="Reveal hidden value"
-		onclick={(e) => {
-			e.stopPropagation();
-			onReveal();
-		}}
-		onkeydown={(e) => {
-			if (e.key === "Enter" || e.key === " ") {
-				e.stopPropagation();
-				onReveal();
-			}
-		}}
-	>
-		<circle class="mystery-glow" r="18" />
-		<polygon points="0,-13 13,0 0,13 -13,0" class="mystery-shape" />
-		<text
-			text-anchor="middle"
-			dominant-baseline="central"
-			font-size="14"
-			font-weight="900"
-			class="mystery-text">?</text
-		>
-	</g>
+	<MysteryMark {x} {y} interactive onreveal={onReveal} />
 {/snippet}
 
 <div class="graph-wrapper">
@@ -270,18 +245,6 @@
 		aria-label="Click to place points and draw triangle sides"
 		onclick={placePoint}
 	>
-		<defs>
-			<linearGradient id="quest-metal" x1="0%" y1="0%" x2="0%" y2="100%">
-				<stop offset="0%" stop-color="#7fe3ff" />
-				<stop offset="18%" stop-color="#29b6f6" />
-				<stop offset="38%" stop-color="#0277bd" />
-				<stop offset="50%" stop-color="#4fc3f7" />
-				<stop offset="62%" stop-color="#01579b" />
-				<stop offset="82%" stop-color="#039be5" />
-				<stop offset="100%" stop-color="#002b4d" />
-			</linearGradient>
-		</defs>
-
 		{#each segments as { a, b, label }, i (i)}
 			<line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(255, 140, 0, 1)" stroke-width="2" />
 			{#if i === mysterySideIndex && !revealedSide}
@@ -415,27 +378,4 @@
 		background: rgba(255, 140, 0, 0.1);
 	}
 
-	.mystery-mark {
-		cursor: pointer;
-	}
-
-	.mystery-glow {
-		fill: #29b6f6;
-		opacity: 0.6;
-	}
-
-	.mystery-shape {
-		fill: url(#quest-metal);
-		stroke: #002b4d;
-		stroke-width: 1.5;
-		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
-	}
-
-	.mystery-text {
-		text-anchor: middle;
-		fill: white;
-		paint-order: stroke;
-		stroke: rgba(0, 43, 77, 0.7);
-		stroke-width: 1.2;
-	}
 </style>

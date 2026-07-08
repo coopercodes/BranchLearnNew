@@ -1,40 +1,14 @@
 
 <script lang="ts">
   import { responses } from '$lib/question/responsesState.svelte';
+  import MysteryMark from '$lib/components/MysteryMark.svelte';
 
-  type Particle = { id: number; tx: number; ty: number; delay: number; size: number };
-
-  let particles = $state<Particle[]>([]);
-  let uid = 0;
   let punchKey = $state(0);
+  let celebrateKey = $state(0);
 
   function pop() {
-    const count = 7;
-    const startDeg = 210;
-    const arcSpan = 120;
-    const step = arcSpan / (count - 1);
-
-    const fresh: Particle[] = Array.from({ length: count }, (_, i) => {
-      const jitter = Math.random() * 10 - 5;
-      const deg = startDeg + step * i + jitter;
-      const dist = 80 + Math.random() * 45;
-      const rad = (deg * Math.PI) / 180;
-      return {
-        id: uid++,
-        tx: Math.cos(rad) * dist,
-        ty: Math.sin(rad) * dist,
-        delay: i * 25,
-        size: 18 + Math.floor(Math.random() * 6),
-      };
-    });
-
-    particles = [...particles, ...fresh];
     punchKey++;
-
-    const ids = new Set(fresh.map(p => p.id));
-    setTimeout(() => {
-      particles = particles.filter(p => !ids.has(p.id));
-    }, 950);
+    celebrateKey++;
   }
 
   let totalQuestions = $derived(responses.totalQuestions);
@@ -51,35 +25,26 @@
 </script>
 
 <div class="relative flex justify-center items-center">
-  {#each particles as p (p.id)}
-    <div
-      class="bubble absolute top-1/2 left-1/2 pointer-events-none"
-      style:--tx="{p.tx}px"
-      style:--ty="{p.ty}px"
-      style:animation-delay="{p.delay}ms"
-    >
-      <div
-        class="rounded-full bg-brand-forest flex items-center justify-center shadow-lg"
-        style:width="{p.size}px"
-        style:height="{p.size}px"
-      >
-        <svg
-          viewBox="0 0 12 12"
-          style:width="{p.size * 0.55}px"
-          style:height="{p.size * 0.55}px"
-        >
-          <polyline
-            points="1.5,6.5 4.5,9.5 10.5,3"
-            fill="none"
-            stroke="white"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+  {#if celebrateKey > 0}
+    {#key celebrateKey}
+      <div class="checkmark-pop absolute left-1/2 top-1/2 pointer-events-none" aria-hidden="true">
+        <span class="checkmark-glow"></span>
+        <span class="checkmark-bg">
+          <svg class="checkmark-svg" viewBox="0 0 40 40">
+            <path
+              class="checkmark-tick"
+              d="M12 21 L17 26 L28 14"
+              fill="none"
+              stroke="white"
+              stroke-width="5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
       </div>
-    </div>
-  {/each}
+    {/key}
+  {/if}
 
   {#key punchKey}
     <div
@@ -88,19 +53,39 @@
              {punchKey > 0 && !isFinal ? 'punching sheen-flash' : ''}"
     >
       <span class="sheen-bar" aria-hidden="true"></span>
-      <p class="relative z-10 {isFinal ? 'text-white font-semibold' : 'text-white'}">
-        {isFinal ? 'Continue' : `${remaining} remaining`}
-      </p>
+      {#if isFinal}
+        <p class="relative z-10 text-white font-semibold">Continue</p>
+      {:else}
+        <MysteryMark size={22} class="relative z-10" label="Questions remaining" />
+        <p class="relative z-10 text-white">{remaining}</p>
+      {/if}
     </div>
   {/key}
 </div>
 
 <style>
-  @keyframes pop-fly {
-    0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    18%  { transform: translate(calc(-50% + var(--tx) * 0.2), calc(-50% + var(--ty) * 0.2)) scale(1.4); opacity: 1; }
-    70%  { transform: translate(calc(-50% + var(--tx) * 0.8), calc(-50% + var(--ty) * 0.8)) scale(1); opacity: 0.85; }
-    100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.3); opacity: 0; }
+  @keyframes check-rise {
+    0%   { transform: translate(-50%, -30%) scale(0.4); opacity: 0; }
+    25%  { transform: translate(-50%, -90%) scale(1.05); opacity: 1; }
+    40%  { transform: translate(-50%, -95%) scale(1); opacity: 1; }
+    80%  { transform: translate(-50%, -110%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -135%) scale(0.85); opacity: 0; }
+  }
+
+  @keyframes glow-fade {
+    0%   { opacity: 0; transform: scale(0.4); }
+    30%  { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.5); }
+  }
+
+  @keyframes circle-grow {
+    0%   { transform: scale(0); }
+    70%  { transform: scale(1.12); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes draw-tick {
+    to { stroke-dashoffset: 0; }
   }
 
   @keyframes punch {
@@ -119,8 +104,55 @@
     100% { transform: translateX(300%) skewX(-15deg); }
   }
 
-  .bubble {
-    animation: pop-fly 0.85s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  .checkmark-pop {
+    top: calc(50% - 40px);
+    z-index: 20;
+    animation: check-rise 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+
+  .checkmark-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle closest-side,
+      rgba(74, 222, 128, 0.85) 0%,
+      rgba(74, 222, 128, 0.3) 45%,
+      transparent 100%
+    );
+    animation: glow-fade 0.9s ease-out forwards;
+  }
+
+  .checkmark-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    display: block;
+    border-radius: 50%;
+    background: #386d4f;
+    border: 1.5px solid #4ade80;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    animation: circle-grow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .checkmark-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .checkmark-tick {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: draw-tick 0.3s ease-out forwards;
+    animation-delay: 0.28s;
   }
 
   .punching {
@@ -149,8 +181,8 @@
   }
 
   .continue-btn {
-    background-color: #386d4f;
-    box-shadow: 0 2px 14px rgba(56, 109, 79, 0.55), 0 1px 3px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(135deg, #34d97a 0%, #1fa863 55%, #16874d 100%);
+    box-shadow: 0 2px 16px rgba(52, 217, 122, 0.55), 0 1px 3px rgba(0, 0, 0, 0.25);
   }
 
   .continue-btn .sheen-bar {
