@@ -15,15 +15,23 @@ function emptyResponse(questionId: string): QuestionResponse {
 }
 
 /**
+ * What MultipleChoiceQuestion needs from its answer sink. Implemented by
+ * ResponsesState (os-layout) and by the UserProgress adapter in
+ * MultipleChoicePanel, so the same question component works against either.
+ */
+export interface QuestionResponses {
+	get(questionId: string): QuestionResponse;
+	answer(questionId: string, label: string, correctAnswer: string): void;
+}
+
+/**
  * Tracks every answer a learner gives across the questions in one panel:
  * which option they landed on, every wrong guess along the way, and how
  * long the whole panel has taken. One instance per panel — pass it down to
  * each MultipleChoiceQuestion.
  */
-export class ResponsesState {
+export class ResponsesState implements QuestionResponses {
 	responses = $state<Record<string, QuestionResponse>>({});
-	/** How many questions the current panel has — set by the panel so other UI (e.g. the OS bar) can show progress. */
-	totalQuestions = $state(0);
 	readonly startedAt = Date.now();
 	#now = $state(Date.now());
 	#timer = setInterval(() => (this.#now = Date.now()), 1000);

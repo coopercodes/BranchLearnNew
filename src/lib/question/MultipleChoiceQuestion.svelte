@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { scale } from 'svelte/transition';
-	import type { ResponsesState } from './responsesState.svelte';
+	import type { QuestionResponses } from './responsesState.svelte';
 
 	export interface QuestionOption {
 		label: string;
@@ -20,7 +20,7 @@
 		prompt: string;
 		options: QuestionOption[];
 		correctAnswer: string;
-		responses: ResponsesState;
+		responses: QuestionResponses;
 	} = $props();
 
 	let response = $derived(responses.get(questionId));
@@ -101,7 +101,8 @@
 					? 'border-brand-forest bg-brand-forest/10'
 					: state === 'incorrect'
 						? 'border-brand-crimson bg-brand-crimson/10'
-						: 'cursor-pointer border-brand-btn-border bg-brand-btn-bg hover:brightness-95'} {locked && state !== 'correct'
+						: 'cursor-pointer border-brand-btn-border bg-brand-btn-bg hover:brightness-95'} {locked &&
+				state !== 'correct'
 					? 'opacity-40'
 					: ''}"
 				onclick={() => choose(opt.label)}
