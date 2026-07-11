@@ -50,5 +50,9 @@
 		"typescript-eslint": "^8.60.1",
 		"vite": "^8.0.16",
 		"vitest": "^4.1.8"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.111.0",
+		"@humanspeak/svelte-markdown": "^1.7.10"
 	}
 }
