@@ -6,6 +6,7 @@
 	import PanelRenderer from '$lib/panels/PanelRenderer.svelte';
 	import { trigonometryCourse as course } from '$lib/content/trigonometry';
 	import { findLesson } from '$lib/content/types';
+	import { describePanelForLeaf, leafPanelContext } from '$lib/leaf/panelContext.svelte';
 	import { osBar } from '$lib/os/osBarProgress.svelte';
 	import { userProgress } from '$lib/progress/userProgress.svelte';
 
@@ -30,12 +31,26 @@
 
 	// The OS bar is the whole interface: it counts down the current panel's
 	// questions, and its Continue pill advances once the panel is complete.
+	// A leaf-question panel has no gradeable questions — its one "item" is
+	// asking Leaf something, so it counts as a single task.
 	$effect(() => {
-		osBar.total = panel.questions.length;
-		osBar.answered = userProgress.settledCount(panel);
+		if (panel.type === 'leaf-question') {
+			osBar.total = 1;
+			osBar.answered = userProgress.isComplete(panel) ? 1 : 0;
+		} else {
+			osBar.total = panel.questions.length;
+			osBar.answered = userProgress.settledCount(panel);
+		}
 		osBar.onContinue = userProgress.isComplete(panel) ? next : null;
 	});
 	onDestroy(() => osBar.reset());
+
+	// Publish the current slide's content so Leaf — docked, floating, or
+	// embedded in a Question panel — knows exactly what the student is seeing.
+	$effect(() => {
+		leafPanelContext.set(describePanelForLeaf(lesson, panel));
+	});
+	onDestroy(() => leafPanelContext.clear());
 
 	function next() {
 		if (panelIndex < lesson.panels.length - 1) {

@@ -50,7 +50,21 @@ export interface LightningRoundPanel extends BasePanel {
 	questions: Question[];
 }
 
-export type Panel = MultipleChoicePanel | LightningRoundPanel;
+/**
+ * "Question" panel: the student is prompted to talk the section through with
+ * Leaf. Completes once they send their first message.
+ */
+export interface LeafQuestionPanel extends BasePanel {
+	type: 'leaf-question';
+	/** The nudge shown beside the chat, e.g. "Ask Leaf to explain…". */
+	prompt: string;
+	/** Clickable starter questions the student can send to Leaf in one tap. */
+	suggestions: string[];
+	/** Always empty — present so progress aggregates treat every panel uniformly. */
+	questions: Question[];
+}
+
+export type Panel = MultipleChoicePanel | LightningRoundPanel | LeafQuestionPanel;
 
 export interface Lesson {
 	id: string;

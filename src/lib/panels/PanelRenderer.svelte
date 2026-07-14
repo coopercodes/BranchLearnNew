@@ -2,6 +2,7 @@
 	import type { Panel } from '$lib/content/types';
 	import MultipleChoicePanel from './MultipleChoicePanel.svelte';
 	import LightningRoundPanel from './LightningRoundPanel.svelte';
+	import LeafQuestionPanel from './LeafQuestionPanel.svelte';
 
 	let { panel }: { panel: Panel } = $props();
 </script>
@@ -10,4 +11,6 @@
 	<MultipleChoicePanel {panel} />
 {:else if panel.type === 'lightning-round'}
 	<LightningRoundPanel {panel} />
+{:else if panel.type === 'leaf-question'}
+	<LeafQuestionPanel {panel} />
 {/if}

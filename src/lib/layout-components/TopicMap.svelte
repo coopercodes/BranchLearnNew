@@ -164,7 +164,7 @@
 											/>
 										</svg>
 									{:else}
-										<span class="glyph">{row.panel.type === 'lightning-round' ? '⚡' : '📖'}</span>
+										<span class="glyph">{row.panel.type === 'lightning-round' ? '⚡' : row.panel.type === 'leaf-question' ? '🍃' : '📖'}</span>
 									{/if}
 								</button>
 								<span class="line bot" class:walked={complete} class:hidden={i === rows.length - 1}
@@ -197,9 +197,15 @@
 					class="mb-3 inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold {selected
 						.panel.type === 'lightning-round'
 						? 'bg-brand-gold/25 text-brand-orange'
-						: 'bg-brand-blue/10 text-brand-blue'}"
+						: selected.panel.type === 'leaf-question'
+							? 'bg-brand-forest/10 text-brand-forest'
+							: 'bg-brand-blue/10 text-brand-blue'}"
 				>
-					{selected.panel.type === 'lightning-round' ? '⚡ Lightning round' : '📖 Read & practice'}
+					{selected.panel.type === 'lightning-round'
+						? '⚡ Lightning round'
+						: selected.panel.type === 'leaf-question'
+							? '🍃 Ask Leaf'
+							: '📖 Read & practice'}
 				</span>
 
 				<p class="mb-4 text-sm leading-relaxed text-brand-charcoal/85">
@@ -210,10 +216,14 @@
 					class="mb-4 rounded-lg border border-brand-gray-light/50 bg-white px-3 py-2 text-xs text-brand-gray-mid"
 				>
 					<p class="font-semibold text-brand-charcoal">{statusLine(selected.panel)}</p>
-					<p>
-						{userProgress.correctCount(selected.panel)}/{selected.panel.questions.length} correct ·
-						{userProgress.incorrectCount(selected.panel)} wrong
-					</p>
+					{#if selected.panel.type === 'leaf-question'}
+						<p>Chat with Leaf to complete</p>
+					{:else}
+						<p>
+							{userProgress.correctCount(selected.panel)}/{selected.panel.questions.length} correct ·
+							{userProgress.incorrectCount(selected.panel)} wrong
+						</p>
+					{/if}
 				</div>
 
 				<button

@@ -3,7 +3,7 @@
 	import { markedKatex, KatexRenderer } from "@humanspeak/svelte-markdown/extensions/katex";
 	import "katex/dist/katex.min.css";
 	import Book from "$lib/Book.svelte";
-	import { textbookChapters } from "$lib/content/textbookChapters";
+	import { textbookSections, type TextbookSection, type TextbookArticle } from "$lib/content/textbookChapters";
 	import { leafSelection } from "$lib/leaf/selection.svelte";
 	import { desktop, type WindowState } from "$lib/os/windowStore.svelte";
 	import { startWindowDrag, startWindowResize, startDockResize, RESIZE_EDGES, RESIZE_CORNERS } from "$lib/os/windowDrag";
@@ -11,7 +11,12 @@
 	let { win, docked = false }: { win: WindowState; docked?: boolean } = $props();
 
 	let sidebarOpen = $state(true);
-	let currentChapter = $state(textbookChapters[0]);
+	// The open page: a main section's overview, or one of its articles.
+	let currentSection = $state(textbookSections[0]);
+	let currentArticle = $state<TextbookArticle | null>(null);
+
+	let currentMarkdown = $derived(currentArticle?.markdown ?? currentSection.markdown);
+	let currentPageId = $derived(currentArticle ? `${currentSection.id}/${currentArticle.id}` : currentSection.id);
 
 	let focused = $derived(win.z === desktop.topZ);
 
@@ -22,13 +27,25 @@
 		blockKatex: KatexRenderer
 	};
 
-	function openChapter(chapter: (typeof textbookChapters)[number]) {
-		currentChapter = chapter;
+	function openSection(section: TextbookSection) {
+		currentSection = section;
+		currentArticle = null;
 		sidebarOpen = false;
 		leafSelection.select({
-			kind: 'textbook-chapter',
-			label: chapter.title,
-			explanation: `The student opened the "${chapter.title}" chapter of the SAT Trigonometry textbook. Chapter content (markdown with LaTeX):\n\n${chapter.markdown}`
+			kind: 'textbook-section',
+			label: section.title,
+			explanation: `The student opened the "${section.title}" section of the SAT Trigonometry textbook. Section overview (markdown with LaTeX):\n\n${section.markdown}`
+		});
+	}
+
+	function openArticle(section: TextbookSection, article: TextbookArticle) {
+		currentSection = section;
+		currentArticle = article;
+		sidebarOpen = false;
+		leafSelection.select({
+			kind: 'textbook-article',
+			label: article.title,
+			explanation: `The student opened the article "${article.title}" (a subsection of "${section.title}") in the SAT Trigonometry textbook. Article content (markdown with LaTeX):\n\n${article.markdown}`
 		});
 	}
 </script>
@@ -92,8 +109,8 @@
 			<!-- Article always fills the window; the sidebar overlays on top of it -->
 			<div class="w-full h-full min-h-0 overflow-y-auto p-4 pt-12">
 				<div class="prose prose-sm max-w-none prose-headings:text-[#5a3a1e] prose-a:text-[#8B5A34]">
-					{#key currentChapter.id}
-						<SvelteMarkdown source={currentChapter.markdown} {extensions} {renderers} />
+					{#key currentPageId}
+						<SvelteMarkdown source={currentMarkdown} {extensions} {renderers} />
 					{/key}
 				</div>
 			</div>
@@ -110,22 +127,35 @@
 				></button>
 			{/if}
 
-			<div class="absolute inset-y-0 left-0 w-60 h-full bg-[#E4CBA6] rounded-bl p-2 pt-10 transition-transform duration-200 ease-out {sidebarOpen ? 'translate-x-0' : '-translate-x-full'}">
+			<div class="absolute inset-y-0 left-0 w-64 h-full bg-[#E4CBA6] rounded-bl p-2 pt-10 transition-transform duration-200 ease-out overflow-y-auto {sidebarOpen ? 'translate-x-0' : '-translate-x-full'}">
 				<div class="flex flex-col">
 					<p class="font-medium mt-2 px-2">
 						SAT Trigonometry
 					</p>
-					<nav class="mt-2 flex flex-col gap-1" aria-label="Chapters">
-						{#each textbookChapters as chapter, i (chapter.id)}
+					<nav class="mt-2 flex flex-col gap-0.5" aria-label="Sections">
+						{#each textbookSections as section, i (section.id)}
+							{@const sectionOpen = section.id === currentSection.id && currentArticle === null}
 							<button
 								type="button"
-								class="flex items-baseline gap-2 rounded-sm px-2 py-1.5 text-left text-sm cursor-pointer hover:bg-[#d8ba8e] {chapter.id === currentChapter.id ? 'bg-[#d8ba8e] font-semibold' : ''}"
-								aria-current={chapter.id === currentChapter.id ? 'page' : undefined}
-								onclick={() => openChapter(chapter)}
+								class="flex items-baseline gap-2 rounded-sm px-2 py-1.5 text-left text-sm cursor-pointer hover:bg-[#d8ba8e] {sectionOpen ? 'bg-[#d8ba8e] font-semibold' : 'font-medium'}"
+								aria-current={sectionOpen ? 'page' : undefined}
+								onclick={() => openSection(section)}
 							>
 								<span class="text-xs text-[#8B5A34]">{i + 1}.</span>
-								<span>{chapter.title}</span>
+								<span>{section.title}</span>
 							</button>
+							{#each section.articles as article, j (article.id)}
+								{@const articleOpen = section.id === currentSection.id && article.id === currentArticle?.id}
+								<button
+									type="button"
+									class="flex items-baseline gap-2 rounded-sm py-1 pl-7 pr-2 text-left text-[13px] cursor-pointer hover:bg-[#d8ba8e] {articleOpen ? 'bg-[#d8ba8e] font-semibold' : ''}"
+									aria-current={articleOpen ? 'page' : undefined}
+									onclick={() => openArticle(section, article)}
+								>
+									<span class="text-[10px] text-[#8B5A34]">{i + 1}.{j + 1}</span>
+									<span>{article.title}</span>
+								</button>
+							{/each}
 						{/each}
 					</nav>
 				</div>

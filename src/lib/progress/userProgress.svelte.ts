@@ -176,6 +176,18 @@ export class UserProgress {
 		this.#finish(panel);
 	}
 
+	/**
+	 * Mark a panel with no gradeable questions complete (e.g. a leaf-question
+	 * panel, done once the student sends their first message to Leaf).
+	 */
+	completePanel(panelId: string) {
+		const progress = this.#ownPanel(panelId);
+		if (progress.completedAt === null) {
+			progress.completedAt = Date.now();
+			this.#save();
+		}
+	}
+
 	setPosition(lessonId: string, panelIndex: number) {
 		const { position } = this.#data;
 		if (position?.lessonId === lessonId && position.panelIndex === panelIndex) return;

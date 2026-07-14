@@ -11,7 +11,8 @@
 		context,
 		selected = null,
 		onclose,
-		showHeader = true
+		showHeader = true,
+		onfirstmessage
 	}: {
 		/** What the student is looking at overall — the scene Leaf grounds its answers in. */
 		context: string;
@@ -20,6 +21,8 @@
 		onclose?: () => void;
 		/** Hide the titlebar when embedding inside a host that already has one (e.g. LeafWindow). */
 		showHeader?: boolean;
+		/** Fires once, when the student sends their first message of this chat. */
+		onfirstmessage?: () => void;
 	} = $props();
 
 	const extensions = [markedKatex()];
@@ -33,6 +36,12 @@
 	let input = $state('');
 	let busy = $state(false);
 
+	/** Send a message on the student's behalf, e.g. from a suggestion chip. */
+	export function ask(text: string) {
+		input = text;
+		sendMessage();
+	}
+
 	async function sendMessage() {
 		const text = input.trim();
 		if (!text || busy) return;
@@ -41,6 +50,7 @@
 		busy = true;
 
 		// 1. Add the user's message, plus an empty assistant message to stream into.
+		if (messages.length === 0) onfirstmessage?.();
 		messages.push({ role: 'user', text });
 		messages.push({ role: 'assistant', text: '' });
 		const reply = messages[messages.length - 1];

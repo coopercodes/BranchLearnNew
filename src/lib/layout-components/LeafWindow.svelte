@@ -2,6 +2,7 @@
 	import Leaf from "$lib/Leaf.svelte";
 	import LeafChat from "$lib/components/LeafChat.svelte";
 	import { leafSelection } from "$lib/leaf/selection.svelte";
+	import { leafPanelContext } from "$lib/leaf/panelContext.svelte";
 	import { desktop, type WindowState } from "$lib/os/windowStore.svelte";
 	import { startWindowDrag, startWindowResize, startDockResize, RESIZE_EDGES, RESIZE_CORNERS } from "$lib/os/windowDrag";
 
@@ -9,9 +10,13 @@
 
 	let focused = $derived(win.z === desktop.topZ);
 
-	const context =
+	// Base scene + whatever slide the course page has published — so Leaf
+	// always knows what panel the student is currently looking at.
+	let context = $derived(
 		'The student is working inside the BranchLearn OS desktop, studying SAT Trigonometry. ' +
-		'Other windows (like the Textbook) may publish what the student has selected — if a selection is described below, ground your answer in it.';
+			'Other windows (like the Textbook) may publish what the student has selected — if a selection is described below, ground your answer in it.' +
+			(leafPanelContext.current ? `\n\n${leafPanelContext.current}` : '')
+	);
 </script>
 
 <div

@@ -150,7 +150,7 @@
 						>
 							<div class="mb-3 flex items-center justify-between gap-3">
 								<div class="flex items-center gap-2">
-									<span class="text-sm">{panel.type === 'lightning-round' ? '⚡' : '📖'}</span>
+									<span class="text-sm">{panel.type === 'lightning-round' ? '⚡' : panel.type === 'leaf-question' ? '🍃' : '📖'}</span>
 									<p class="text-sm font-semibold text-brand-charcoal">{panel.title}</p>
 									{#if isHere}
 										<span
@@ -182,8 +182,12 @@
 									</span>
 								{/each}
 								<span class="ml-1 self-center text-xs text-brand-gray-mid">
-									{userProgress.correctCount(panel)}/{panel.questions.length} correct ·
-									{userProgress.incorrectCount(panel)} wrong
+									{#if panel.type === 'leaf-question'}
+										chat with Leaf {progress.completedAt ? '· question asked' : '· no question yet'}
+									{:else}
+										{userProgress.correctCount(panel)}/{panel.questions.length} correct ·
+										{userProgress.incorrectCount(panel)} wrong
+									{/if}
 								</span>
 							</div>
 						</div>
