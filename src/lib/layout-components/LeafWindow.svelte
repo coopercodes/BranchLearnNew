@@ -1,13 +1,17 @@
 <script lang="ts">
 	import Leaf from "$lib/Leaf.svelte";
+	import LeafChat from "$lib/components/LeafChat.svelte";
+	import { leafSelection } from "$lib/leaf/selection.svelte";
 	import { desktop, type WindowState } from "$lib/os/windowStore.svelte";
 	import { startWindowDrag, startWindowResize, startDockResize, RESIZE_EDGES, RESIZE_CORNERS } from "$lib/os/windowDrag";
 
 	let { win, docked = false }: { win: WindowState; docked?: boolean } = $props();
 
-	let screen = $state("chat");
-
 	let focused = $derived(win.z === desktop.topZ);
+
+	const context =
+		'The student is working inside the BranchLearn OS desktop, studying SAT Trigonometry. ' +
+		'Other windows (like the Textbook) may publish what the student has selected — if a selection is described below, ground your answer in it.';
 </script>
 
 <div
@@ -51,37 +55,9 @@
 			</div>
 		</div>
 
-		{#if screen == "intro"}
-			<div class="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-auto">
-				<div class="flex items-center space-x-2">
-					<Leaf color="#386d4f" width={44} height={44}/>
-					<p class="text-4xl font-semibold">Leaf</p>
-				</div>
-				<p class="text-center font-thin text-lg my-2">Nice to meet you, I'm Leaf. <br/> Let's learn something new today.</p>
-
-				<textarea class="text w-[300px] mt-4 text rounded-sm p-4 bg-neutral-100">What's the sine of a 30° angle in a right triangle?</textarea>
-				<p class="bg-brand-blue/20  text-brand-blue px-2 rounded-sm text-xs mt-2 font-thin">1 selected</p>
-			</div>
-		{:else if screen == "chat"}
-			<div class="w-full h-full min-h-0 flex flex-col items-start justify-start p-4 overflow-auto">
-				<div class="bg-brand-forest p-4 w-full text-base rounded-sm">
-					<p class="text-sm text-white">Can you explain how sin(θ) and cos(θ) relate to each other in this triangle?</p>
-				</div>
-				<p class="bg-brand-blue/20  text-brand-blue px-2 rounded-sm text-xs mt-2 font-thin">1 selected</p>
-
-				<div class="mt-4">
-					<div class="flex items-center mb-2">
-						<Leaf color="#386d4f" width={22} height={22} />
-						<div class=" grow h-[1px] bg-brand-forest ml-1"></div>
-						<div class=" ml-2 mb-2">...</div>
-					</div>
-					<p class="text-sm">Sure! Let's start with what we already know about this triangle's two acute angles.</p>
-					<p class="text-sm mt-4">Since the acute angles in a right triangle always add up to 90°, they're complementary — which means we can relate them with the equation below.</p>
-					<p class="text-sm text-center font-mono mt-4">sin(θ) = cos(90° − θ)</p>
-					<p class="text-sm mt-4">Once you spot that relationship, you can swap between sin and cos without ever finding the actual angle — that's the shortcut most SAT trig questions are testing.</p>
-				</div>
-			</div>
-		{/if}
+		<div class="w-full h-full min-h-0">
+			<LeafChat {context} selected={leafSelection.current} showHeader={false} />
+		</div>
 	</div>
 
 	<!-- Resize handles -->

@@ -1,19 +1,33 @@
 <script lang="ts">
-	import SvelteMarkdown from '@humanspeak/svelte-markdown';
+	import SvelteMarkdown, { type Renderers, type RendererComponent } from '@humanspeak/svelte-markdown';
+	import { markedKatex, KatexRenderer } from '@humanspeak/svelte-markdown/extensions/katex';
+	import 'katex/dist/katex.min.css';
 	import Leaf from '$lib/Leaf.svelte';
-	import type { TriangleSelection } from './TriangleRenderer.svelte';
+	import { describeSelectedElement, type SelectedElement } from '$lib/leaf/selection.svelte';
 
 	type ChatMessage = { role: 'user' | 'assistant'; text: string };
 
 	let {
-		triangleDescription,
-		selection,
-		onclose
+		context,
+		selected = null,
+		onclose,
+		showHeader = true
 	}: {
-		triangleDescription: string;
-		selection: TriangleSelection | null;
-		onclose: () => void;
+		/** What the student is looking at overall — the scene Leaf grounds its answers in. */
+		context: string;
+		/** The specific element the student has focused, if any. */
+		selected?: SelectedElement | null;
+		onclose?: () => void;
+		/** Hide the titlebar when embedding inside a host that already has one (e.g. LeafWindow). */
+		showHeader?: boolean;
 	} = $props();
+
+	const extensions = [markedKatex()];
+	// Renderers doesn't know about extension tokens, so widen it for the katex keys.
+	const renderers: Partial<Renderers> & Record<string, RendererComponent> = {
+		inlineKatex: KatexRenderer,
+		blockKatex: KatexRenderer
+	};
 
 	let messages = $state<ChatMessage[]>([]);
 	let input = $state('');
@@ -58,33 +72,28 @@
 		}
 	}
 
-	/** What Leaf knows about the triangle when this message is sent. */
+	/** What Leaf knows about the scene + selection when this message is sent. */
 	function contextForLeaf() {
-		let context = `The student is looking at this triangle: ${triangleDescription}`;
-		if (selection) {
-			const label = `${selection.kind} ${selection.name}`;
-			context += selection.hidden
-				? ` The student has clicked the HIDDEN ${label} (its real value is ${selection.value}, but the student only sees a "?") — help them work it out, don't just reveal it.`
-				: ` The student has clicked ${label} (${selection.value}) — that is what they are asking about.`;
-		}
-		return context;
+		return selected ? `${context}\n\n${describeSelectedElement(selected)}` : context;
 	}
 </script>
 
-<div class="flex h-full w-full flex-col border bg-[#F5EDE7] shadow-2xl/35 rounded-sm" role="dialog" aria-label="Leaf chat">
-	<!-- Titlebar, styled after LeafWindow -->
-	<div class="flex items-center justify-between border-b bg-[#e9e1db] px-2 py-1 rounded-t-sm">
-		<div class="flex items-center space-x-2">
-			<Leaf color="#386d4f" width={24} height={24} />
-			<p class="text-xs font-semibold">Chat</p>
+<div class="flex h-full w-full flex-col {showHeader ? 'border bg-[#F5EDE7] shadow-2xl/35 rounded-sm' : ''}" role="dialog" aria-label="Leaf chat">
+	{#if showHeader}
+		<!-- Titlebar, styled after LeafWindow -->
+		<div class="flex items-center justify-between border-b bg-[#e9e1db] px-2 py-1 rounded-t-sm">
+			<div class="flex items-center space-x-2">
+				<Leaf color="#386d4f" width={24} height={24} />
+				<p class="text-xs font-semibold">Chat</p>
+			</div>
+			<button
+				type="button"
+				class="h-4 w-4 cursor-pointer rounded-full bg-red-800/70 hover:bg-red-800"
+				aria-label="Close Leaf"
+				onclick={onclose}
+			></button>
 		</div>
-		<button
-			type="button"
-			class="h-4 w-4 cursor-pointer rounded-full bg-red-800/70 hover:bg-red-800"
-			aria-label="Close Leaf"
-			onclick={onclose}
-		></button>
-	</div>
+	{/if}
 
 	<!-- Messages -->
 	<div class="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
@@ -95,7 +104,7 @@
 					<p class="text-2xl font-semibold">Leaf</p>
 				</div>
 				<p class="my-2 text-center text-sm font-thin">
-					Click a side of the triangle,<br />then ask me anything about it.
+					Nice to meet you, I'm Leaf.<br />Let's learn something new today.
 				</p>
 			</div>
 		{/if}
@@ -112,7 +121,7 @@
 						<div class="ml-1 h-[1px] grow bg-brand-forest"></div>
 					</div>
 					<div class="prose prose-sm max-w-none text-sm">
-						<SvelteMarkdown source={message.text} streaming={true} streamId={`message-${i}`} />
+						<SvelteMarkdown source={message.text} streaming={true} streamId={`message-${i}`} {extensions} {renderers} />
 					</div>
 				</div>
 			{/if}
@@ -121,10 +130,9 @@
 
 	<!-- Input -->
 	<div class="border-t p-3">
-		{#if selection}
+		{#if selected}
 			<p class="mb-2 inline-block rounded-sm bg-brand-blue/20 px-2 text-xs font-thin text-brand-blue">
-				{selection.kind === 'side' ? 'Side' : 'Angle'} {selection.name}
-				{selection.hidden ? '(hidden)' : ''} selected
+				{selected.label} {selected.hidden ? '(hidden)' : ''} selected
 			</p>
 		{/if}
 		<form
@@ -137,9 +145,7 @@
 			<input
 				type="text"
 				bind:value={input}
-				placeholder={selection
-					? `Ask about ${selection.kind} ${selection.name}...`
-					: 'Ask Leaf about the triangle...'}
+				placeholder={selected ? `Ask about ${selected.label}...` : 'Ask Leaf anything...'}
 				class="min-w-0 flex-1 rounded-sm border-neutral-300 bg-neutral-100 p-2 text-sm"
 			/>
 			<button

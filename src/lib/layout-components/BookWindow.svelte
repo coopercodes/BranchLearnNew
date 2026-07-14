@@ -1,14 +1,36 @@
 <script lang="ts">
+	import SvelteMarkdown, { type Renderers, type RendererComponent } from "@humanspeak/svelte-markdown";
+	import { markedKatex, KatexRenderer } from "@humanspeak/svelte-markdown/extensions/katex";
+	import "katex/dist/katex.min.css";
 	import Book from "$lib/Book.svelte";
+	import { textbookChapters } from "$lib/content/textbookChapters";
+	import { leafSelection } from "$lib/leaf/selection.svelte";
 	import { desktop, type WindowState } from "$lib/os/windowStore.svelte";
 	import { startWindowDrag, startWindowResize, startDockResize, RESIZE_EDGES, RESIZE_CORNERS } from "$lib/os/windowDrag";
 
 	let { win, docked = false }: { win: WindowState; docked?: boolean } = $props();
 
-	let screen = $state("intro");
 	let sidebarOpen = $state(true);
+	let currentChapter = $state(textbookChapters[0]);
 
 	let focused = $derived(win.z === desktop.topZ);
+
+	const extensions = [markedKatex()];
+	// Renderers doesn't know about extension tokens, so widen it for the katex keys.
+	const renderers: Partial<Renderers> & Record<string, RendererComponent> = {
+		inlineKatex: KatexRenderer,
+		blockKatex: KatexRenderer
+	};
+
+	function openChapter(chapter: (typeof textbookChapters)[number]) {
+		currentChapter = chapter;
+		sidebarOpen = false;
+		leafSelection.select({
+			kind: 'textbook-chapter',
+			label: chapter.title,
+			explanation: `The student opened the "${chapter.title}" chapter of the SAT Trigonometry textbook. Chapter content (markdown with LaTeX):\n\n${chapter.markdown}`
+		});
+	}
 </script>
 
 <div
@@ -53,7 +75,7 @@
 
 		<div class="relative flex h-full min-h-0 overflow-hidden">
 
-			<!-- Floating toggle: book icon to open, panel icon to close. Lives over the content, not the title bar. -->
+			<!-- Floating toggle: article-lines icon to open, panel icon to close. Lives over the content, not the title bar. -->
 			<button
 				type="button"
 				class="absolute top-2 left-2 z-40 flex items-center justify-center rounded-full bg-[#F5EDE7] shadow p-1.5 hover:brightness-95 cursor-pointer"
@@ -63,22 +85,17 @@
 				{#if sidebarOpen}
 					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5A34" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-left-close-icon lucide-panel-left-close"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></svg>
 				{:else}
-					<Book color="#8B5A34" width={18} height={18}/>
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5A34" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-text-icon lucide-text"><path d="M15 18H3"/><path d="M17 6H3"/><path d="M21 12H3"/></svg>
 				{/if}
 			</button>
 
 			<!-- Article always fills the window; the sidebar overlays on top of it -->
-			<div class="w-full h-full flex flex-col items-center justify-center p-4">
-				<p class="text-left font-semibold w-full">The Sine Ratio</p>
-				<p class=" my-2">
-					Every right triangle has two acute angles, and each one defines three basic ratios between its sides: sine, cosine, and tangent. The sine of an angle θ, written sin(θ), is the length of the side opposite θ divided by the length of the hypotenuse.
-				</p>
-				<p class=" my-2">
-					Because every right triangle with the same angle θ is similar, this ratio never changes — only the triangle's size does. That's what makes sin(θ) useful on the SAT: memorize a handful of values, like sin(30°) = 1/2, and you can solve any right triangle that shares that angle.
-				</p>
-				<p class=" my-2">
-					Sine and cosine are also linked by the co-function identity sin(θ) = cos(90° − θ) for any acute angle θ. That lets you rewrite a sine expression as a cosine one (or vice versa) without ever knowing the actual angle — a shortcut that shows up often on SAT trigonometry questions.
-				</p>
+			<div class="w-full h-full min-h-0 overflow-y-auto p-4 pt-12">
+				<div class="prose prose-sm max-w-none prose-headings:text-[#5a3a1e] prose-a:text-[#8B5A34]">
+					{#key currentChapter.id}
+						<SvelteMarkdown source={currentChapter.markdown} {extensions} {renderers} />
+					{/key}
+				</div>
 			</div>
 
 			{#if sidebarOpen}
@@ -95,9 +112,22 @@
 
 			<div class="absolute inset-y-0 left-0 w-60 h-full bg-[#E4CBA6] rounded-bl p-2 pt-10 transition-transform duration-200 ease-out {sidebarOpen ? 'translate-x-0' : '-translate-x-full'}">
 				<div class="flex flex-col">
-					<p class="font-medium mt-2">
+					<p class="font-medium mt-2 px-2">
 						SAT Trigonometry
 					</p>
+					<nav class="mt-2 flex flex-col gap-1" aria-label="Chapters">
+						{#each textbookChapters as chapter, i (chapter.id)}
+							<button
+								type="button"
+								class="flex items-baseline gap-2 rounded-sm px-2 py-1.5 text-left text-sm cursor-pointer hover:bg-[#d8ba8e] {chapter.id === currentChapter.id ? 'bg-[#d8ba8e] font-semibold' : ''}"
+								aria-current={chapter.id === currentChapter.id ? 'page' : undefined}
+								onclick={() => openChapter(chapter)}
+							>
+								<span class="text-xs text-[#8B5A34]">{i + 1}.</span>
+								<span>{chapter.title}</span>
+							</button>
+						{/each}
+					</nav>
 				</div>
 			</div>
 		</div>

@@ -7,7 +7,8 @@ const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 const SYSTEM_PROMPT = `You are Leaf, the friendly AI tutor on the Branch learning platform.
 You help students understand triangles, trigonometry, and geometry.
 Keep answers short and encouraging, and use markdown formatting (bold, lists, inline math like sin(θ) = opposite / hypotenuse) where it helps.
-Always ground your explanation in the specific triangle the student is looking at.`;
+Always ground your explanation in what the student is currently looking at, described below.
+If the context describes a selected element, that element is what the student is asking about — treat its "about this selection" note as instructions for how to handle it.`;
 
 export const POST: RequestHandler = async ({ request }) => {
 	if (!env.ANTHROPIC_API_KEY) {
