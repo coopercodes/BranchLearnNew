@@ -17,12 +17,15 @@
 		<div class="flex flex-col items-center">
 		
 			<div class="flex items-center space-x-4">
-				<img src={BranchLogo} class="h-14 w-14 black-filter"/>
-				<p class="font-bold text-5xl ">Branch</p>
+				<img src={BranchLogo} class="h-14 w-14 black-filter subpixel-antialiased"/>
+									<p class="font-bold text-5xl ">Branch</p>
+
 			</div>
+
 			<p class="text-sm mt-2">learning can be beautiful</p>
 
-			<button class="text-sm px-4 py-1 bg-blue-600 text-white font-bold mt-4 rounded-sm border border-blue-500 shadow-7xl shadow-blue-900/50">Get Started </button>
+			<button class="text-sm px-4 py-1 bg-blue-700 cursor-pointer text-white font-bold mt-4 rounded-sm border border-blue-300 shadow-7xl shadow-blue-900/50">Get Started In 30 Seconds</button>
+			<p class="text-xs mt-2 text-neutral-500">No account necessary</p>
 		</div>
 	</div>
 </div>
