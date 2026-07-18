@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
+	import { fly } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import Desktop from '$lib/layout-components/Desktop.svelte';
@@ -68,5 +70,16 @@
 </script>
 
 <Desktop>
-	<PanelRenderer {panel} />
+	<!-- Keyed on the panel so Continue swaps content with a fade+drift: the old
+	     panel sinks out, the new one rises in. Both are absolutely positioned so
+	     the crossfade never reflows the Desktop chrome (OS bar, dock, windows). -->
+	{#key panel}
+		<div
+			class="absolute inset-0"
+			in:fly={{ y: 20, duration: 350, delay: 525, easing: cubicOut }}
+			out:fly={{ y: 20, duration: 350, easing: cubicOut }}
+		>
+			<PanelRenderer {panel} />
+		</div>
+	{/key}
 </Desktop>
