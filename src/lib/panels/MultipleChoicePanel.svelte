@@ -66,10 +66,10 @@
 					/>
 				{/each}
 
-				<p class="mt-2 text-xs text-gray-500">
+				<!-- <p class="mt-2 text-xs text-gray-500">
 					{correct}/{panel.questions.length} correct · {incorrect} wrong
 					{incorrect === 1 ? 'guess' : 'guesses'}
-				</p>
+				</p> -->
 			</div>
 		</div>
 	</div>
