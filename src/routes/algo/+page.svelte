@@ -1,5 +1,6 @@
 <script lang="ts">
 	import AlgoNodeMap from '$lib/algo/AlgoNodeMap.svelte';
+	import AlgoDevTools from '$lib/algo/AlgoDevTools.svelte';
 	import { algoSections, algoUser, findAlgoPanel } from '$lib/algo/content';
 	import { algoGame } from '$lib/algo/gameState.svelte';
 	import { recommendNext } from '$lib/algo/recommender';
@@ -275,3 +276,5 @@
 		</div>
 	</div>
 </div>
+
+<AlgoDevTools />
