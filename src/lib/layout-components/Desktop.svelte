@@ -4,7 +4,8 @@
 	import WindowLayer from './WindowLayer.svelte';
 	import DockPanel from './DockPanel.svelte';
 
-	let { children }: { children: Snippet } = $props();
+	// `barLeft` optionally replaces the OS bar's left progress widget.
+	let { children, barLeft }: { children: Snippet; barLeft?: Snippet } = $props();
 </script>
 
 <div class="h-screen flex flex-col">
@@ -19,5 +20,5 @@
 		<!-- Free-floating, draggable/resizable windows -->
 		<WindowLayer />
 	</div>
-	<OSBar />
+	<OSBar left={barLeft} />
 </div>

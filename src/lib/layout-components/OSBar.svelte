@@ -1,10 +1,15 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import RemainingCount from './RemainingCount.svelte';
 	import TopicMap from './TopicMap.svelte';
 	import LayoutMenu from './LayoutMenu.svelte';
 	import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
 	import Leaf from '$lib/Leaf.svelte';
 	import Book from '$lib/Book.svelte';
+
+	// A route can swap the left progress widget (e.g. /trigonometry shows the
+	// content-graph ELO map); the classic TopicMap stays the default.
+	let { left }: { left?: Snippet } = $props();
 
 	// Toggle open/closed — but restore (don't close) a minimized window.
 	function dockClick(app: AppDef) {
@@ -18,15 +23,19 @@
 </script>
 
 <div
-  class="relative flex h-13 items-center justify-between border-t border-t-brand-near-black bg-brand-near-black/85 px-3 backdrop-blur"
+	class="relative flex h-13 items-center justify-between border-t border-t-brand-near-black bg-brand-near-black/85 px-3 backdrop-blur"
 >
-  <!-- Left -->
-  <TopicMap />
+	<!-- Left -->
+	{#if left}
+		{@render left()}
+	{:else}
+		<TopicMap />
+	{/if}
 
-  <!-- Middle: pinned to true center -->
-  <div class="absolute left-1/2 -translate-x-1/2">
-    <RemainingCount />
-  </div>
+	<!-- Middle: pinned to true center -->
+	<div class="absolute left-1/2 -translate-x-1/2">
+		<RemainingCount />
+	</div>
 
 	<!-- Right: window launcher dock -->
 	<div class="flex items-center gap-1.5 pr-1">
