@@ -263,6 +263,21 @@ export class ContentGameState {
 		else this.#move();
 	}
 
+	/**
+	 * Resolve the pending panel with a REAL answer from the learner, instead of
+	 * the simulator's random roll. The learner-facing routes (/trigonometry) use
+	 * this; /content-graph keeps using advance().
+	 */
+	submitAnswer(correct: boolean) {
+		if (!this.pendingPanel) return;
+		this.#resolvePending(correct ? 'correct' : 'incorrect');
+	}
+
+	/** Step the walker one node WITHOUT rolling an answer — no-op while a panel is pending. */
+	moveNext() {
+		if (!this.pendingPanel) this.#move();
+	}
+
 	advanceMany(count: number) {
 		for (let i = 0; i < count; i++) {
 			if (!this.canAdvance) break;
@@ -338,14 +353,18 @@ export class ContentGameState {
 		);
 	}
 
-	/** Roll at the subtopic's current hit rate; a correct answer banks a tick. */
-	#resolvePending() {
+	/**
+	 * Bank the pending panel's outcome. With no `forced` result it rolls at the
+	 * subtopic's current hit rate (the simulator); with one it records the
+	 * learner's actual answer.
+	 */
+	#resolvePending(forced?: PanelResult) {
 		const panel = this.pendingPanel;
 		if (!panel) return;
 
 		const previous = this.eloFor(panel.subtopicID);
 		const hitRate = hitRateFor(previous);
-		const result: PanelResult = Math.random() < hitRate ? 'correct' : 'incorrect';
+		const result: PanelResult = forced ?? (Math.random() < hitRate ? 'correct' : 'incorrect');
 		const wasSatisfied = this.isSatisfied(panel);
 
 		if (result === 'correct') this.#data.correct[panel.id] = this.correctFor(panel.id) + 1;
@@ -356,10 +375,12 @@ export class ContentGameState {
 		// ELO is derived from the ticks, so read it back after banking one.
 		const elo = this.eloFor(panel.subtopicID);
 		const tally = `${Math.min(this.correctFor(panel.id), panel.requiredCorrect)}/${panel.requiredCorrect}`;
+		// The hit-rate percentage only means something for simulated rolls.
+		const how = forced ? '' : ` at ${Math.round(hitRate * 100)}%`;
 		this.#log(
 			result === 'correct' ? 'answer_correct' : 'answer_incorrect',
 			panel.id,
-			`${result === 'correct' ? 'Correct' : 'Missed'} "${panel.title}" at ${Math.round(hitRate * 100)}% · ${tally}`,
+			`${result === 'correct' ? 'Correct' : 'Missed'} "${panel.title}"${how} · ${tally}`,
 			{ elo, delta: elo - previous }
 		);
 
