@@ -33,6 +33,11 @@ export default defineConfig({
 			extensions: ['.svelte', '.svx', '.md']
 		})
 	],
+	ssr: {
+		// @xyflow/svelte ships directory imports that Node's ESM resolver rejects,
+		// so let Vite bundle it for SSR instead of externalising it.
+		noExternal: ['@xyflow/svelte']
+	},
 	test: {
 		projects: [
 			{
