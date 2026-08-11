@@ -18,11 +18,8 @@
 	import { osBar } from '$lib/os/osBarProgress.svelte';
 	import { leafPanelContext } from '$lib/leaf/panelContext.svelte';
 	import { toasts, type ToastComponent } from '$lib/toast/toast.svelte';
-	import BeginnerToast from '$lib/content-graph/rank-toasts/BeginnerToast.svelte';
-	import IntermediateToast from '$lib/content-graph/rank-toasts/IntermediateToast.svelte';
-	import ExpertToast from '$lib/content-graph/rank-toasts/ExpertToast.svelte';
-	import MasteryToast from '$lib/content-graph/rank-toasts/MasteryToast.svelte';
-	import RankDownToast from '$lib/content-graph/rank-toasts/RankDownToast.svelte';
+
+	import TimerIsland from '$lib/components/TimerIsland.svelte';
 
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
@@ -54,34 +51,6 @@
 
 	let courseDone = $derived(active === null && !game.canAdvance);
 
-	// ── Toasts ──────────────────────────────────────────────────────────────
-	/** Highest event sequence number already turned into a toast. */
-	let toastedThrough = game.events.at(-1)?.seq ?? 0;
-
-	/** One component per rank, so each card can be styled on its own. */
-	const RANK_TOAST: Record<Rank, ToastComponent> = {
-		Beginner: BeginnerToast,
-		Intermediate: IntermediateToast,
-		Expert: ExpertToast,
-		Mastery: MasteryToast
-	};
-
-	function raiseToasts() {
-		for (const event of game.events) {
-			if (event.seq <= toastedThrough) continue;
-			toastedThrough = event.seq;
-			const subtopic = event.subtopicID ? (byId.get(event.subtopicID)?.title ?? '') : '';
-
-			if (event.type === 'rank_up' && event.rank) {
-				toasts.custom(RANK_TOAST[event.rank], { subtopic, elo: event.elo ?? 0 });
-			} else if (event.type === 'rank_down' && event.rank) {
-				toasts.custom(RankDownToast, { subtopic, elo: event.elo ?? 0, rank: event.rank }, 'danger');
-			} else if (event.type === 'course_complete') {
-				toasts.success('Course complete', 'Every subtopic mastered');
-			}
-		}
-	}
-
 	// ── Walking ─────────────────────────────────────────────────────────────
 
 	/** Freeze the pending panel into this visit's render state. */
@@ -90,12 +59,6 @@
 		seq += 1;
 	}
 
-	/**
-	 * Walk the graph until it serves the next unfinished panel. One moveNext()
-	 * already skips satisfied panels; the loop here just carries the walker
-	 * across subtopic hand-offs. The graph decides the route — mastered
-	 * subtopics advance the spine, everything else circles the training loop.
-	 */
 	function advanceToNextPanel() {
 		resolved = null;
 		for (let hops = 0; hops < 16 && !game.pendingPanel && game.canAdvance; hops++) {
@@ -107,7 +70,6 @@
 			active = null;
 			seq += 1;
 		}
-		raiseToasts();
 	}
 
 	// Resume a saved game mid-panel, otherwise start walking. SSR is off
@@ -122,7 +84,6 @@
 		if (!active || resolved !== null) return;
 		game.submitAnswer(correct);
 		resolved = correct ? 'correct' : 'incorrect';
-		raiseToasts();
 	}
 
 	function handleContinue() {
@@ -132,7 +93,6 @@
 	function restart() {
 		game.reset();
 		toasts.clear();
-		toastedThrough = 0;
 		advanceToNextPanel();
 	}
 
@@ -168,10 +128,7 @@
 </script>
 
 <Desktop>
-	{#snippet barLeft()}
-		<EloTopicMap />
-	{/snippet}
-
+	<TimerIsland />
 	<!-- Keyed on the visit so advancing crossfades with a fade+drift: the old
 	     panel sinks out, the new one rises in. Both absolutely positioned so the
 	     swap never reflows the Desktop chrome. -->
