@@ -362,13 +362,13 @@
 </div>
 
 <!-- ======================= demo controls ======================= -->
-<div class="demo">
+<!-- <div class="demo">
   <button class="btn primary" onclick={toggleMode}>
     {mode === 'timer' ? 'Encounter' : 'Timer'}
   </button>
   <button class="btn" onclick={playerAttack} disabled={mode !== 'enemy'}>−12</button>
   <button class="btn" onclick={() => changeHp(8)} disabled={mode !== 'enemy'}>+8</button>
-</div>
+</div> -->
 
 <style>
   /* ---------- brand tokens ---------- */

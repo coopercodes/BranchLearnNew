@@ -30,9 +30,7 @@
 	<EloTopicMap />
 
 	<!-- Middle: pinned to true center -->
-	<div class="absolute left-1/2 -translate-x-1/2">
-		<RemainingCount />
-	</div>
+	<RemainingCount />
 
 	<!-- Right: window launcher dock -->
 	<div class="flex items-center gap-1.5 pr-1">
