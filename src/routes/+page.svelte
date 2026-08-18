@@ -1,10 +1,17 @@
 <script lang="ts">
 	import { fly } from "svelte/transition";
+	import { onMount } from "svelte";
+	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
 	import BranchLogo from "$lib/assets/branch.svg"
 	import Book from "$lib/Book.svelte";
 	import Leaf from "$lib/Leaf.svelte";
+	import { getBranchContext } from "$lib/context/BranchContext.svelte";
+	import { completelyClearAllStates } from "$lib/context/resetAll";
 
-	let currentWindow = $state(3);
+	const ctx = getBranchContext();
+
+	let currentWindow = $state(0);
 	let name = $state("");
 
 	const DURATION = 350;
@@ -18,13 +25,44 @@
 	const outFly = { y: 30, duration: DURATION };
 	const inFly = { y: 30, duration: DURATION, delay: DURATION };
 
+	// localStorage state is only known on the client, so wait until mount to
+	// decide between the tutorial and the welcome-back screen (avoids a
+	// hydration mismatch when a returning user was saved).
+	let ready = $state(false);
+	onMount(() => (ready = true));
+
+	// Whole route fades out before we forward to /trigonometry.
+	let leaving = $state(false);
+
+	let returning = $derived(ctx.user.isLoggedIn);
+
+	// "Not NAME?" reset flow
+	const CONFIRM_PHRASE = "I am permanently deleting all of my user progress";
+	let showResetPanel = $state(false);
+	let confirmText = $state("");
+
 	function next() {
 		currentWindow += 1;
 	}
 
+	function fadeToTrigonometry() {
+		if (leaving) return;
+		leaving = true;
+		setTimeout(() => goto(resolve("/trigonometry")), DURATION + 50);
+	}
+
 	function enterTrigonometry() {
-		// TODO: navigate to the trigonometry learning path
-		console.log(`Entering Trigonometry as ${name || "anonymous"}`);
+		ctx.user.login(crypto.randomUUID(), name.trim());
+		fadeToTrigonometry();
+	}
+
+	function deleteAllProgress() {
+		if (confirmText.trim() !== CONFIRM_PHRASE) return;
+		completelyClearAllStates(ctx);
+		confirmText = "";
+		showResetPanel = false;
+		name = "";
+		currentWindow = 0;
 	}
 
 	// MMO-style learning paths shown on the path-select step
@@ -140,11 +178,63 @@
 
 <div class="h-screen w-screen relative overflow-hidden">
 
-	{#if false}
+	{#if ready && !leaving}
 
-	{:else}
+		<!-- Welcome back (returning user) -->
+		{#if returning}
+			<div class="absolute inset-0 flex items-center justify-center" in:fly={inFly} out:fly={outFly}>
+				<div class="flex flex-col items-center max-w-md text-center px-4">
+					<div class="flex items-center space-x-4">
+						<img src={BranchLogo} alt="Branch logo" class="h-14 w-14 black-filter subpixel-antialiased"/>
+						<p class="font-bold text-5xl">Branch</p>
+					</div>
+
+					<p class="font-bold text-4xl mt-8">Welcome back {ctx.user.displayName}!</p>
+					<p class="text-sm mt-2 text-neutral-600">Your quest through the Realm of the Angular Peaks awaits.</p>
+
+					<button
+						class="text-sm px-4 py-2 bg-blue-700 cursor-pointer text-white font-bold mt-6 rounded-sm border border-blue-300 shadow-blue-900/50"
+						onclick={fadeToTrigonometry}
+					>
+						Continue Learning Trigonometry
+					</button>
+
+					<button
+						class="text-xs mt-6 text-neutral-400 hover:text-neutral-600 cursor-pointer"
+						onclick={() => (showResetPanel = !showResetPanel)}
+					>
+						Not {ctx.user.displayName}?
+					</button>
+
+					{#if showResetPanel}
+						<div class="mt-4 w-full border border-red-300 bg-red-50 rounded-md p-4 text-left" transition:fly={{ y: 10, duration: 200 }}>
+							<p class="text-xs text-red-700">
+								Currently Branch only allows one account per computer. You can delete all
+								progress for <span class="font-semibold">{ctx.user.displayName}</span> by typing
+								"<span class="font-semibold">{CONFIRM_PHRASE}</span>" in the box below.
+							</p>
+
+							<input
+								type="text"
+								bind:value={confirmText}
+								placeholder={CONFIRM_PHRASE}
+								class="mt-3 w-full text-xs px-3 py-2 border border-red-300 rounded-sm bg-white focus:outline-none focus:border-red-500"
+							/>
+
+							<button
+								class="mt-3 w-full text-sm px-4 py-2 bg-red-600 cursor-pointer text-white font-bold rounded-sm border border-red-300 disabled:opacity-40 disabled:cursor-not-allowed"
+								onclick={deleteAllProgress}
+								disabled={confirmText.trim() !== CONFIRM_PHRASE}
+							>
+								Permanently Delete All Progress
+							</button>
+						</div>
+					{/if}
+				</div>
+			</div>
+
 		<!-- Window 0: Get Started -->
-		{#if currentWindow === 0}
+		{:else if currentWindow === 0}
 			<div class="absolute inset-0 text-3xl flex items-center justify-center" in:fly={inFly} out:fly={outFly}>
 				<div class="flex flex-col items-center">
 
@@ -377,17 +467,19 @@
 	{/if}
 </div>
 
-<div class="tutorial-hud">
-	<div class="hud-label">
-		<span>Tutorial Progress</span>
-		<span class="hud-count">{Math.min(currentWindow, TOTAL_WINDOWS)} / {TOTAL_WINDOWS}</span>
-	</div>
-	<div class="hud-bar">
-		<div class="hud-fill" style:width="{progress * 100}%"></div>
-		<div class="hud-ticks">
-			{#each Array(TOTAL_WINDOWS - 1) as _, i (i)}
-				<div class="hud-tick"></div>
-			{/each}
+{#if ready && !returning}
+	<div class="tutorial-hud">
+		<div class="hud-label">
+			<span>Tutorial Progress</span>
+			<span class="hud-count">{Math.min(currentWindow, TOTAL_WINDOWS)} / {TOTAL_WINDOWS}</span>
+		</div>
+		<div class="hud-bar">
+			<div class="hud-fill" style:width="{progress * 100}%"></div>
+			<div class="hud-ticks">
+				{#each Array(TOTAL_WINDOWS - 1) as _, i (i)}
+					<div class="hud-tick"></div>
+				{/each}
+			</div>
 		</div>
 	</div>
-</div>
+{/if}

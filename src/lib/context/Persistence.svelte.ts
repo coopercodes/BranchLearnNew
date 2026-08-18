@@ -1,6 +1,7 @@
 // persistence.svelte.ts — localStorage backup for BranchContext
 // (.svelte.ts extension required: this file uses $effect)
 
+import { browser } from '$app/environment';
 import type { BranchContext } from './BranchContext.svelte';
 
 const DEFAULT_KEY = 'branch-context';
@@ -26,8 +27,10 @@ type Snapshot = {
  * as the app).
  */
 export function persistBranchContext(ctx: BranchContext, key = DEFAULT_KEY): () => void {
-	// SSR guard: on the server there is no localStorage; do nothing.
-	if (typeof localStorage === 'undefined') return () => {};
+	// SSR guard: on the server there is no (usable) localStorage; do nothing.
+	// (Recent Node versions expose a non-functional localStorage global, so
+	// checking `typeof localStorage` is not enough.)
+	if (!browser) return () => {};
 
 	/* ---------- 1. Load existing backup ---------- */
 	const raw = localStorage.getItem(key);
@@ -74,5 +77,5 @@ export function persistBranchContext(ctx: BranchContext, key = DEFAULT_KEY): () 
 
 /** Wipe the backup (e.g. from a dev tool or a "reset progress" button). */
 export function clearBranchBackup(key = DEFAULT_KEY) {
-	if (typeof localStorage !== 'undefined') localStorage.removeItem(key);
+	if (browser) localStorage.removeItem(key);
 }
