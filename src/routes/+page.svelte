@@ -4,7 +4,7 @@
 	import Book from "$lib/Book.svelte";
 	import Leaf from "$lib/Leaf.svelte";
 
-	let currentWindow = $state(0);
+	let currentWindow = $state(3);
 	let name = $state("");
 
 	const DURATION = 350;
@@ -26,6 +26,40 @@
 		// TODO: navigate to the trigonometry learning path
 		console.log(`Entering Trigonometry as ${name || "anonymous"}`);
 	}
+
+	// MMO-style learning paths shown on the path-select step
+	const learningPaths = [
+		{
+			id: "trig",
+			title: "Trigonometry",
+			realm: "Realm of the Angular Peaks",
+			tagline: "Scale triangle summits, ride sine waves, and conquer the unit circle.",
+			questLines: 32,
+			quests: "300+",
+			regions: 4,
+			locked: false
+		},
+		{
+			id: "algebra",
+			title: "Algebra",
+			realm: "The Valley of Unknowns",
+			tagline: "Hunt the elusive x across equations, inequalities, and systems.",
+			questLines: 41,
+			quests: "380+",
+			regions: 5,
+			locked: true
+		},
+		{
+			id: "data",
+			title: "Data Analysis",
+			realm: "The Statistical Depths",
+			tagline: "Brave ratios, percents, and the wild beasts of probability.",
+			questLines: 27,
+			quests: "250+",
+			regions: 3,
+			locked: true
+		}
+	];
 
 	let carouselIndex = $state(0);
 	const slides = [1, 2, 3]; // placeholder slides
@@ -119,7 +153,7 @@
 						<p class="font-bold text-5xl">Branch</p>
 					</div>
 
-					<p class="text-sm mt-2">learning can be beautiful</p>
+					<p class="text-sm mt-2">the future of learning</p>
 
 					<button
 						class="text-sm px-4 py-1 bg-blue-700 cursor-pointer text-white font-bold mt-4 rounded-sm border border-blue-300 shadow-7xl shadow-blue-900/50"
@@ -160,6 +194,7 @@
 
 				<p class="text-sm mt-4 text-neutral-600">
 					We've found that Branch is easier to learn when you experience it first hand, so dive in and try it out!
+				</p>
 			</div>
 
 			<div class="bg-brand-orange p-4 w-[325px] border-white border rounded-md text-white">
@@ -233,26 +268,108 @@
 		<!-- Window 3: Select learning path -->
 		{:else if currentWindow === 3}
 			<div class="absolute inset-0 flex items-center justify-center" in:fly={inFly} out:fly={outFly}>
-				<div class="flex flex-col items-center max-w-md text-center px-4">
-					<p class="font-bold text-4xl">Select a learning path</p>
-					<p class="text-sm mt-2 text-neutral-600">
-						{name ? `Alright ${name.trim()}, where` : "Where"} do you want to start?
-					</p>
+				<div class="flex flex-col  max-w-4xl px-4">
+					<div class="flex justify-between max-w-3xl space-x-24">
+						<div class="flex flex-col grow w-max">
+							<p class="font-bold text-4xl text-nowrap">Select a learning path</p>
+							<p class="text-sm mt-2 text-neutral-600">
+								You can change paths whenever you want, but currently Branch just has one path available. More coming soon!
+							</p>
+						</div>
 
-					<div class="flex flex-col items-center mt-6 space-y-3 w-64">
-						<button
-							class="w-full text-sm px-4 py-2 bg-blue-700 cursor-pointer text-white font-bold rounded-sm border border-blue-300 shadow-blue-900/50"
-							onclick={enterTrigonometry}
-						>
-							Enter Trigonometry
-						</button>
+						<div class=" bg-brand-green-700 p-4 border-white border rounded-md text-white ">
+							<p class="font-bold text-xs text-white mb-0.5">Branch is in Early Access</p>
+							<p class="text-xs">Branch is currently 100% free, even with all of your conversations with Leaf (the AI tutor, you'll meet him).</p>
+						</div>	
 
-						<button
-							class="w-full text-sm px-4 py-2 bg-neutral-200 text-neutral-400 font-bold rounded-sm border border-neutral-300 cursor-not-allowed"
-							disabled
-						>
-							Algebra — coming soon
-						</button>
+					</div>
+
+					<div class="flex items-stretch justify-center gap-5 mt-8">
+						{#each learningPaths as path (path.id)}
+							<div
+								class={"relative w-60 flex flex-col text-left rounded-md border p-4 " +
+									(path.locked
+										? "border-neutral-300 bg-neutral-100"
+										: "border-blue-300 bg-white shadow-lg shadow-blue-900/20")}
+							>
+								{#if path.locked}
+									<!-- padlock -->
+									<svg xmlns="http://www.w3.org/2000/svg" class="absolute top-3 right-3 w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+									</svg>
+								{/if}
+
+								<!-- path emblem -->
+								<div
+									class={"h-12 w-12 rounded-md border flex items-center justify-center " +
+										(path.locked
+											? "bg-neutral-200 border-neutral-300 text-neutral-400"
+											: "bg-blue-700 border-blue-300 text-white")}
+								>
+									{#if path.id === "trig"}
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5L21 19.5H3z" />
+											<path stroke-linecap="round" d="M8.6 19.5a5 5 0 00-1.5-3.55" />
+										</svg>
+									{:else if path.id === "algebra"}
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24">
+											<text x="12" y="17" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">x²</text>
+										</svg>
+									{:else}
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+										</svg>
+									{/if}
+								</div>
+
+								<p class={"mt-3 font-bold text-lg " + (path.locked ? "text-neutral-500" : "text-black")}>{path.title}</p>
+								<p class={"text-[10px] uppercase tracking-widest " + (path.locked ? "text-neutral-400" : "text-blue-700")}>{path.realm}</p>
+								<p class="text-xs mt-2 text-neutral-500">{path.tagline}</p>
+
+								<!-- quest stats -->
+								<div class={"flex flex-col gap-1.5 mt-4 mb-4 text-xs " + (path.locked ? "text-neutral-400" : "text-neutral-700")}>
+									<div class="flex items-center gap-2">
+										<!-- flag icon: quest lines -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2z" />
+										</svg>
+										<span><span class="font-semibold">{path.questLines}</span> quest lines</span>
+									</div>
+
+									<div class="flex items-center gap-2">
+										<!-- scroll icon: quests -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+										</svg>
+										<span><span class="font-semibold">{path.quests}</span> quests</span>
+									</div>
+
+									<div class="flex items-center gap-2">
+										<!-- map icon: regions -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+										</svg>
+										<span><span class="font-semibold">{path.regions}</span> regions to explore</span>
+									</div>
+								</div>
+
+								{#if path.locked}
+									<button
+										class="mt-auto w-full text-sm px-4 py-2 bg-neutral-200 text-neutral-400 font-bold rounded-sm border border-neutral-300 cursor-not-allowed"
+										disabled
+									>
+										Coming Soon
+									</button>
+								{:else}
+									<button
+										class="mt-auto w-full text-sm px-4 py-2 bg-blue-700 cursor-pointer text-white font-bold rounded-sm border border-blue-300 shadow-blue-900/50"
+										onclick={enterTrigonometry}
+									>
+										Enter {path.title}
+									</button>
+								{/if}
+							</div>
+						{/each}
 					</div>
 				</div>
 			</div>
@@ -268,7 +385,7 @@
 	<div class="hud-bar">
 		<div class="hud-fill" style:width="{progress * 100}%"></div>
 		<div class="hud-ticks">
-			{#each Array(TOTAL_WINDOWS - 1) as _}
+			{#each Array(TOTAL_WINDOWS - 1) as _, i (i)}
 				<div class="hud-tick"></div>
 			{/each}
 		</div>
