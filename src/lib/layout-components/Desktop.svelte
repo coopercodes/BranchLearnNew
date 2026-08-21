@@ -3,7 +3,7 @@
 	import OSBar from './OSBar.svelte';
 	import WindowLayer from './WindowLayer.svelte';
 	import DockPanel from './DockPanel.svelte';
-	import MOBABar from '$lib/components/MOBABar.svelte';
+	import MOBABar from './moba/MOBABar.svelte';
 
 	// `barLeft` optionally replaces the OS bar's left progress widget.
 	let { children, barLeft }: { children: Snippet; barLeft?: Snippet } = $props();

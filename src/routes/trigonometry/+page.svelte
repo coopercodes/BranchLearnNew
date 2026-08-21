@@ -20,7 +20,7 @@
 	import { toasts, type ToastComponent } from '$lib/toast/toast.svelte';
 
 	import TimerIsland from '$lib/components/TimerIsland.svelte';
-
+	import MOBABar from '$lib/layout-components/moba/MOBABar.svelte';
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
 	// ║                                                                        ║

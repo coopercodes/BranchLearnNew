@@ -52,7 +52,9 @@
 			<stop offset="100%" stop-color="#002b4d" />
 		</linearGradient>
 	</defs>
-	<circle class="mystery-glow" r="18" />
+	{#if false}
+		<circle class="mystery-glow" r="18" />
+	{/if}
 	<polygon points="0,-13 13,0 0,13 -13,0" class="mystery-shape" fill="url(#{gradientId})" />
 	<text
 		text-anchor="middle"
