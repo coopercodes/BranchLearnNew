@@ -3,7 +3,7 @@
 	import { game, MAX_ELO } from './gameState.svelte';
 	import { ContentGraph } from './graph-content';
 	import type { PanelNode } from './types';
-
+	import { env } from '$env/dynamic/public';
 	// Dev tools for the graph-driven flow: walker position, per-subtopic ELO,
 	// the current round's answer (cheat), and force-resolve buttons that feed
 	// the same submitAnswer path the real panels use.
@@ -49,6 +49,7 @@
 	}
 </script>
 
+{#if env.PUBLIC_DEV_MODE_ON == "true"}
 <!-- Fixed overlay, orange/white functional-grid style — same seat TrigDevTools had. -->
 <div class="fixed right-4 bottom-16 z-50 flex flex-col items-end gap-3 font-sans">
 	{#if open}
@@ -191,3 +192,5 @@
 		{open ? '×' : 'DEV'}
 	</button>
 </div>
+
+{/if}

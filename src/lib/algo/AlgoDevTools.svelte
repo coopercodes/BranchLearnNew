@@ -2,6 +2,7 @@
 	import { algoGame, type AlgoEvent } from './gameState.svelte';
 	import { algoSections } from './content';
 	import { PANEL_TYPE_LABELS, PANEL_TYPE_ORDER, REQUIRED_CORRECT } from './types';
+	import { env } from '$env/dynamic/public';
 
 	let open = $state(false);
 
@@ -32,6 +33,7 @@
 </script>
 
 <!-- Global dev tools: fixed overlay, orange/white, functional-grid Rams style. -->
+{#if env.PUBLIC_DEV_MODE_ON}
 <div class="fixed right-4 bottom-4 z-50 flex flex-col items-end gap-3 font-sans">
 	{#if open}
 		<div
@@ -188,3 +190,4 @@
 		{open ? '×' : 'DEV'}
 	</button>
 </div>
+{/if}

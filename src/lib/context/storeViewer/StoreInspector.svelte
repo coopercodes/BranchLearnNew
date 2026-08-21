@@ -8,6 +8,9 @@
 	import { getBranchContext } from '../BranchContext.svelte';
 	import TreeNode from './TreeNode.svelte';
 
+	import { env } from '$env/dynamic/public';
+
+
 	const ctx = getBranchContext();
 
 	type Section = { name: string; store: unknown; reset: () => void };
@@ -28,6 +31,7 @@
 	}
 </script>
 
+{#if env.PUBLIC_DEV_MODE_ON == "true"}
 <aside class="inspector" class:collapsed={!panelOpen}>
 	<div class="header">
 		<button class="header-main" onclick={() => (panelOpen = !panelOpen)} aria-expanded={panelOpen}>
@@ -69,6 +73,7 @@
 		</div>
 	{/if}
 </aside>
+{/if}
 
 <style>
 	.inspector {
