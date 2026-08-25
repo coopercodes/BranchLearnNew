@@ -19,6 +19,8 @@
 	import { osBar } from '$lib/os/osBarProgress.svelte';
 	import MysteryMark from '$lib/components/MysteryMark.svelte';
 	import Avatar from './Avatar.svelte';
+	import HealthBar from './HealthBar.svelte';
+	import RightIcons from './RightIcons.svelte';
 
 	export interface Skill {
 		id: string;
@@ -150,13 +152,26 @@
 
 <svelte:window on:keydown={onKey} />
 
-<div class="flex hud-dock h-[82px] bg-[#282828] rounded-tl-md rounded-tr-md">
-	<div class="w-[150px]  rounded-tl-md">
-		<div class=" w-full h-full flex items-center justify-center">
+<div class="flex gap-2 hud-dock h-[82px] bg-brand-surface-blue-900 rounded-tl-md rounded-tr-md">
+	<div class="w-[150px] flex rounded-tl-md">
+		<!-- <div class=" w-full h-full flex items-center justify-center">
 			<div class="flex items-center justify-center bg-neutral-700 rounded-full p-0.5">
 				<Avatar bgColor="" size={62}/>
 			</div>
+		</div> -->
+
+		<div class="bg-brand-surface-blue-800 flex items-center w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
+			
+			<div class="h-[24px] bg-amber-300 w-[1px] "></div>
+			<div class="flex flex-col">
+				<p class="text-neutral-100 text-sm text-[10px] ml-2">Stacking Sats</p>
+				<p class="text-neutral-300 text-sm text-[10px] ml-2">0 / 3 completed</p>
+			</div>
 		</div>
+	</div>
+
+	<div class="w-[1px] h-[50%] my-auto bg-brand-surface-blue-600">
+		
 	</div>
 
 	<div class="w-[250px] ">
@@ -164,44 +179,88 @@
 			<div class="flex space-x-1 justify-center mt-1.5">
 				{#each [0, 1, 2, 3, 4] as slot (slot)}
 					<div
-						class="w-[44px] h-[44px] aspect-square rounded-[3px]
-							border border-white/15
-							bg-neutral-900/60
-							shadow-[inset_0_2px_5px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(255,255,255,0.04)]
-							transition-colors duration-150
-							hover:border-white/35 hover:bg-neutral-800/70"
+						class="group relative w-[44px] h-[44px] aspect-square rounded-sm
+							border transition-colors duration-150
+							{slot === 0
+								? 'border-blue-400/45 bg-neutral-900/60 shadow-[inset_0_2px_5px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(96,165,250,0.15),0_0_6px_-1px_rgba(59,130,246,0.5)] hover:border-blue-300/70'
+								: 'border-white/15 bg-neutral-900/60 shadow-[inset_0_2px_5px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(255,255,255,0.04)] hover:border-white/35 hover:bg-neutral-800/70'}"
 					>
+						{#if slot === 0}
+							<div
+								class="absolute inset-0 rounded-sm bg-gradient-to-b from-blue-400/25 via-blue-600/10 to-transparent"
+							></div>
+
+							<svg
+								viewBox="0 0 24 24"
+								class="absolute left-1/2 top-1/2 h-[30px] w-[30px] -translate-x-1/2 -translate-y-1/2
+									[filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.8))]"
+								aria-hidden="true"
+							>
+								<defs>
+									<linearGradient id="potion-liquid-1" x1="0" y1="0" x2="0" y2="1">
+										<stop offset="0%" stop-color="#f87171" />
+										<stop offset="55%" stop-color="#dc2626" />
+										<stop offset="100%" stop-color="#7f1d1d" />
+									</linearGradient>
+									<clipPath id="potion-clip-1">
+										<path
+											d="M10 3.5h4v4.6c2.9 1.3 4.8 4 4.8 7.1A6.8 6.8 0 0 1 5.2 15.2c0-3.1 1.9-5.8 4.8-7.1V3.5z"
+										/>
+									</clipPath>
+								</defs>
+
+								<path
+									d="M10 3.5h4v4.6c2.9 1.3 4.8 4 4.8 7.1A6.8 6.8 0 0 1 5.2 15.2c0-3.1 1.9-5.8 4.8-7.1V3.5z"
+									fill="#93c5fd"
+									fill-opacity="0.14"
+									stroke="#1e3a5f"
+									stroke-width="1"
+								/>
+
+								<g clip-path="url(#potion-clip-1)">
+									<rect x="0" y="10" width="24" height="14" fill="url(#potion-liquid-1)" />
+									<ellipse cx="12" cy="10" rx="7" ry="1.1" fill="#fca5a5" fill-opacity="0.55" />
+								</g>
+
+								<path
+									d="M8.6 13.5c-.6 1.4-.7 2.8-.3 4"
+									stroke="#fff"
+									stroke-opacity="0.35"
+									stroke-width="1.6"
+									stroke-linecap="round"
+									fill="none"
+								/>
+
+								<rect x="9.2" y="1.4" width="5.6" height="2.6" rx="0.8" fill="#78350f" />
+								<rect x="9.2" y="1.4" width="5.6" height="1" rx="0.5" fill="#a16207" />
+							</svg>
+
+							<span
+								class="absolute bottom-[1px] right-[2px] text-[9px] font-semibold leading-none
+									text-white [text-shadow:0_1px_1px_#000,0_0_2px_#000]"
+							>
+								3
+							</span>
+						{/if}
+
+						<span
+							class="absolute left-[2px] top-[1px] text-[8px] font-semibold leading-none
+								text-white/45 [text-shadow:0_1px_1px_#000]"
+						>
+							{slot + 1}
+						</span>
 					</div>
 				{/each}
 			</div>
-			<div class="flex items-center justify-between mt-1 mx-1">
-				<div class="flex items-center ml-1">
-					
-					<div class="h-[18px] bg-amber-300 w-[1px] mr-1"></div>
-					<div class="flex flex-col">
-						<p class="text-neutral-100 text-xs text-[10px] ml-1">Stacking Sats</p>
-						<p class="text-neutral-300 text-xs text-[8px] ml-1">0 / 3 completed</p>
-					</div>
-				</div>
-				<div class="relative flex justify-center items-center">
-
-					{#key punchKey}
-						<span
-							class="pill select-none overflow-hidden
-								{punchKey > 0 && !isFinal ? 'punching sheen-flash' : ''}"
-						>
-							<MysteryMark size={20} class="relative z-10" label="Questions remaining" />
-							<p class="relative z-10 text-white pill-count">{remaining}</p>
-						</span>
-					{/key}
-				</div>
-			</div>
+			<HealthBar />
 		</div>
 	</div>
 
-	<div class="w-[150px]   rounded-tr-md">
+	<div class="w-[1px] h-[50%] my-auto bg-brand-surface-blue-600">
 
 	</div>
+
+		<RightIcons />
 	{#if isFinal}
 		<button
 			type="button"
@@ -215,6 +274,30 @@
 	{/if}
 </div>
 
+
+<!--
+	<div class="flex items-center ml-1">
+					
+		<div class="h-[18px] bg-amber-300 w-[1px] mr-1"></div>
+		<div class="flex flex-col">
+			<p class="text-neutral-100 text-xs text-[10px] ml-1">Stacking Sats</p>
+			<p class="text-neutral-300 text-xs text-[8px] ml-1">0 / 3 completed</p>
+		</div>
+	</div>
+
+	<div class="relative flex justify-center items-center">
+
+		{#key punchKey}
+			<span
+				class="pill select-none overflow-hidden
+					{punchKey > 0 && !isFinal ? 'punching sheen-flash' : ''}"
+			>
+				<MysteryMark size={20} class="relative z-10" label="Questions remaining" />
+				<p class="relative z-10 text-white pill-count">{remaining}</p>
+			</span>
+		{/key}
+	</div>
+-->
 
 
 

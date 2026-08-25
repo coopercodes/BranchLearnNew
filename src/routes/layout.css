@@ -47,6 +47,18 @@
   --color-brand-green-100: #d1edda;
   --color-brand-green-200: #a3d9b5;
   --color-brand-green-700: #1d5c38;
+
+    /* Dark surfaces — subtly blue (toolbars, chrome, panels) */
+  --color-brand-surface-blue-900: #171b22; /* deepest — page/behind */
+  --color-brand-surface-blue-800: #1e242e; /* toolbar base */
+  --color-brand-surface-blue-700: #262d38; /* = brand-navy — raised/hover */
+  --color-brand-surface-blue-600: #323b49; /* borders, dividers */
+
+  /* Dark surfaces — subtly red */
+  --color-brand-surface-red-900: #201818; /* deepest — page/behind */
+  --color-brand-surface-red-800: #2b2122; /* toolbar base */
+  --color-brand-surface-red-700: #352929; /* raised/hover */
+  --color-brand-surface-red-600: #443434; /* borders, dividers */
 }
 
 /* Light, low-contrast scrollbars for independently-scrolling panels */
