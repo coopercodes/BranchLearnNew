@@ -21,16 +21,18 @@
   import { Tween } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import { fade, fly } from 'svelte/transition';
+  import Sprite from './sprites/Sprite.svelte';
+	import HealthBar from '$lib/layout-components/moba/HealthBar.svelte';
 
   // ---- hardcoded for now -------------------------------------------------
   const userLevel = 12;
   const enemy = { name: 'Triangulus The Third', level: 14, maxHp: 100 };
-  const ATTACK_MS = 8000; // time for the ring to fill before the enemy strikes
+  const ATTACK_MS = 30000; // time for the ring to fill before the enemy strikes
   const CRIT_CHANCE = 0.5;
 
   // ---- state -------------------------------------------------------------
-  let mode = $state('timer'); // 'timer' | 'enemy'
-  let hp = $state(75);
+  let mode = $state('enemy'); // 'timer' | 'enemy'
+  let hp = $state(60);
   let seconds = $state(0);
   let shaking = $state(false);
   let healing = $state(false);
@@ -281,43 +283,46 @@
   <div class="grow">
     <div class="clip">
       {#if mode === 'enemy'}
-        <div class="frame" in:fade={{ duration: 220, delay: 140 }} out:fade={{ duration: 100 }}>
+        <div class="relative flex items-center gap-2.5 w-[232px] text-white pt-2 px-4 pb-2 bg-brand-surface-red-800 border border-brand-surface-red-600 rounded-[14px]" in:fade={{ duration: 220, delay: 140 }} out:fade={{ duration: 100 }}>
           <!-- portrait: flat geometric mark + attack ring + level badge -->
-          <div class="portrait" class:attacking>
-            <!-- red attack ring filling clockwise from the top -->
-            <svg class="ring" viewBox="0 0 36 36" aria-hidden="true">
-              <circle
-                class="ring-fill"
-                cx="18"
-                cy="18"
-                r="16.5"
-                style:stroke-dasharray={RING_C}
-                style:stroke-dashoffset={RING_C * (1 - attackProgress)}
-              />
-            </svg>
+          <div
+  class="portrait relative grid size-9 place-items-center rounded-full
+         [--sprite-fill:#e0393e] [--sprite-stroke:#ff7a7f]
+         bg-[radial-gradient(circle_at_50%_30%,#3a3a42_0%,#1a1a1f_90%)]
+         shadow-[inset_0_1px_0_rgba(255,255,255,0.32),inset_0_-2px_6px_rgba(0,0,0,0.9),0_2px_8px_rgba(0,0,0,0.55)]
+         ring-2 ring-inset ring-white/50"
+  class:attacking
+>
+  <!-- red attack ring filling clockwise from the top -->
+  <!-- <svg class="sprite-ring absolute inset-0 size-full" viewBox="0 0 36 36" aria-hidden="true">
+    <circle
+      class="ring-fill"
+      cx="18"
+      cy="18"
+      r="16.5"
+      style:stroke-dasharray={RING_C}
+      style:stroke-dashoffset={RING_C * (1 - attackProgress)}
+    />
+  </svg> -->
 
-            <svg class="face" viewBox="0 0 32 32" aria-hidden="true">
-              <circle cx="16" cy="16" r="16" fill="#EDE6DC" />
-              <path d="M16 7 26 24H6z" fill="#262D38" />
-              <circle cx="13" cy="20" r="1.2" fill="#F8FAEC" />
-              <circle cx="19" cy="20" r="1.2" fill="#F8FAEC" />
-            </svg>
+  <Sprite
+    type="training-dummy"
+    size={28}
+    class="relative z-10 [filter:drop-shadow(0_0_5px_rgba(224,57,62,0.99))_drop-shadow(0_1px_2px_rgba(0,0,0,0.9))]"
+  />
 
-            <!-- level marker, bottom-right of the profile -->
-            <span class="badge" style:background={levelColor}>{enemy.level}</span>
-          </div>
+  <!-- level marker, bottom-right of the profile -->
+  <!-- <span class="badge" style:background={levelColor}>{enemy.level}</span> -->
+</div>
 
           <!-- name + health -->
           <div class="unit">
             <div class="name-row" in:fly={{ y: -4, duration: 240, delay: 200 }}>
-              <span class="name">{enemy.name}</span>
+              <span class="name">Training Dummy</span>
               <!-- <span class="hp-num">{hp}</span> -->
             </div>
 
-            <div class="hp-track" class:healing in:fly={{ y: 3, duration: 240, delay: 240 }}>
-              <div class="hp-ghost" style:width="{hpGhost.current}%"></div>
-              <div class="hp-fill" style:width="{hpBar.current}%"></div>
-            </div>
+            <HealthBar />
           </div>
 
           <!-- floating combat numbers -->
@@ -353,8 +358,8 @@
   </div>
 
   <!-- timer tab: the whole chip in timer mode; notches over the frame's bottom edge in enemy mode -->
-  <div class="tab" class:struck={attacking}>
-    <span class="digits">{mm}:{ss}</span>
+  <div class={"tab " + (mode == "enemy" ? " !hidden !bg-brand-surface-red-800 text-white" : " tab")} class:struck={attacking}>
+    <span class="digits ">{mm}:{ss}</span>
     {#if attacking}
       <span class="tab-slash" aria-hidden="true"></span>
     {/if}
@@ -575,8 +580,9 @@
   .portrait {
     position: relative;
     flex: 0 0 auto;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
+    
   }
   .portrait .face {
     position: absolute;
@@ -596,7 +602,7 @@
     100% { transform: translate(0, 0) scale(1); }
   }
 
-  .ring {
+  .sprite-ring {
     position: absolute;
     inset: 0;
     width: 100%;

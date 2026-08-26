@@ -98,14 +98,14 @@
 	</div>
 
 	<button
-		class="group relative rounded-[3px] h-full bg-brand-surface-blue-600 p-[2px]
+		class="group cursor-pointer relative rounded-[3px] h-[34px] bg-brand-surface-blue-600 p-[2px]
 		       shadow-[0_1px_2px_rgba(0,0,0,0.)] ring-1 ring-black"
 		onclick={() => toggle('profile')}
 		aria-pressed={open.profile}
 		title="Profile"
 	>
 		<span
-			class="relative flex h-[20px] items-center gap-[5px] overflow-hidden rounded-[2px] px-[6px]
+			class="relative flex h-full items-center gap-[5px] overflow-hidden rounded-[2px] px-[6px]
 			       bg-[#050b16] shadow-[inset_0_2px_4px_rgba(0,0,0,0.9)]
 			       transition-colors duration-150 group-hover:bg-[#0b1526]"
 			class:text-blue-200={open.profile}
