@@ -45,7 +45,7 @@
   <div class="min-h-0 overflow-hidden">
     <div class="flex bg-white overflow-hidden to-white w-[262px] h-[52px] rounded-sm border border-neutral-500">
         <div class="flex relative rounded-l-sm w-[52px]">
-          <div class="absolute left-0 bottom-0 w-16 h-full bg-linear-to-r from-blue-300 to-tranparent">
+          <div class="absolute left-0 bottom-0 w-16 h-full bg-linear-to-r from-neutral-300 to-tranparent">
 
           </div>
           <Sprite
