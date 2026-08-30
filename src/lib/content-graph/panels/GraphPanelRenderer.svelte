@@ -24,7 +24,6 @@
 </script>
 
 {#if content === null}
-	<!-- Graph node with no dictionary entry yet — keep the loop walkable. -->
 	<div class="flex h-full items-center justify-center px-8 py-12">
 		<div class="w-full max-w-md text-center">
 			<p class="mb-2 text-xs font-semibold tracking-widest text-brand-orange uppercase">
@@ -72,3 +71,5 @@
 {:else if content.type === 'triangle'}
 	<TriangleRendererPanel {content} {visit} {onResult} />
 {/if}
+
+

@@ -43,17 +43,22 @@
 <!-- card grows above the timer tab (0fr -> 1fr height morph) -->
 
   <div class="min-h-0 overflow-hidden">
-    <div class="flex bg-white overflow-hidden to-white w-[262px] h-[52px] rounded-sm border border-neutral-500">
+    <div class="flex bg-red-50 overflow-hidden to-white w-[262px] h-[56px] rounded-sm border border-neutral-500">
         <div class="flex relative rounded-l-sm w-[52px]">
-          <div class="absolute left-0 bottom-0 w-16 h-full bg-linear-to-r from-neutral-300 to-tranparent">
+          <!-- <div class="absolute left-0 bottom-0 w-22 h-full bg-linear-to-r from-slate-400 to-tranparent">
 
-          </div>
+          </div> -->
+
+          
+  
           <Sprite
             type="training-dummy"
-            class="z-40 relative items-center justify-center -left-1 rotate-1"
+            class="z-40 relative items-center justify-center -left-0.5 top-0.5 rotate-1"
           />
+
         </div>
-        <div class="flex flex-col p-2 gap-1 grow justify-between">
+                
+        <div class="flex flex-col p-2 gap-1.5 grow justify-between">
           <div class="flex w-full grow justify-between">
             <p class="text-xs font-semibold">Training Dummy</p>
             <div class="flex">
@@ -63,8 +68,8 @@
             </div>
           </div>
           <div class="flex">
-            <div class="bg-neutral-300 w-full h-[16px] rounded-sm">
-              <MobHealthBar  />
+            <div class=" w-full h-[16px] rounded-sm mb-0.5">
+              <MobHealthBar maxHp={5} hp={2} />
               <!-- hp={mob.hp} maxHp={mob.maxHp} label={mob.name} -->
             </div>
           </div>

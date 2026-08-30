@@ -5,7 +5,7 @@
 </script>
 
 <!-- Sits over the desktop; only the windows themselves catch pointer events. -->
-<div class="pointer-events-none absolute inset-0 overflow-hidden">
+<div class="pointer-events-none absolute inset-0 overflow-hidden z-100">
 	{#each desktop.windows as win (win.app.id)}
 		{#if !win.minimized && win.app.id !== desktop.dockedId}
 			{#if win.app.id === 'book'}

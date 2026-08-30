@@ -160,14 +160,25 @@
 			</div>
 		</div> -->
 
-		<div class="bg-brand-surface-blue-800 flex items-center w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
+		
+			<div class="bg-brand-surface-blue-800 cursor-pointer flex gap-1 flex-col w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
+				<div class="flex items-center gap-2">
+					<div class="w-1.5 h-1.5 bg-amber-400 rotate-45"></div>
+					<p class="text-[9px] text-sm font-bold text-amber-400">Active Quest</p>
+										<!-- <div class="w-1.5 h-1.5 bg-amber-400 rotate-45"></div> -->
+
+				</div>
+				<div class="text-neutral-100 text-sm italic text-[8px]">Training For Triangulon </div>
+				<p class="text-neutral-300 leading-4 text-[10px]"><span class="bg-blue-950/60 px-1.5 border border-blue-300 rounded-sm mr-[4px] py-0 text-[9px] font-extrabold">0 / 1</span> Defeat the Training Dummy</p>
+			</div>
+		<!-- <div class="bg-brand-surface-blue-800 flex items-center w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
 			
 			<div class="h-[24px] bg-amber-300 w-[1px] "></div>
 			<div class="flex flex-col">
-				<p class="text-neutral-100 text-sm text-[10px] ml-2">Stacking Sats</p>
+				<p class="text-neutral-100 text-sm text-[10px] ml-2">breh Sats</p>
 				<p class="text-neutral-300 text-sm text-[10px] ml-2">0 / 3 completed</p>
 			</div>
-		</div>
+		</div> -->
 	</div>
 
 	<div class="w-[1px] h-[50%] my-auto bg-brand-surface-blue-600">
@@ -304,7 +315,7 @@
 <style>
 	/* Fixed to the viewport: out of document flow, so no scroll is created. */
 	.hud-dock {
-		position: absolute !important;
+		position: fixed !important;
 		bottom: 0px;
 		left: 50%;
 		transform: translateX(-50%);

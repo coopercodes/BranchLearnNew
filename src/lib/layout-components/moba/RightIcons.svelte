@@ -2,8 +2,11 @@
 	// import Leaf from '$lib/icons/Leaf.svelte';
 	// import Textbook from '$lib/icons/Textbook.svelte';
 	// import Backpack from '$lib/icons/Backpack.svelte';
-    
+    import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
+
 	// import Avatar from '$lib/icons/Avatar.svelte';
+    import Leaf from '$lib/Leaf.svelte';
+    import Book from '$lib/Book.svelte';
 
 	let open = $state({
 		leaf: false,
@@ -13,29 +16,29 @@
 	});
 
 	const slots = [
-		{ id: 'leaf', label: 'AI Tutor' },
-		{ id: 'textbook', label: 'Textbook' },
-		{ id: 'backpack', label: 'Backpack' }
+		{ id: 'leaf', label: 'AI Tutor', title: "AI TUTOR LEAF"},
+		{ id: 'textbook', label: 'Textbook', title: "TEXTBOOK LEAF"},
+		{ id: 'backpack', label: 'Backpack', title: "BACKPACK LEAF" }
 	] as const;
 
 	const toggle = (id: string) => (open[id] = !open[id]);
+
+    function dockClick(app: AppDef) {
+		const w = desktop.find(app.id);
+		if (w && w.minimized) {
+			desktop.open(app);
+		} else {
+			desktop.toggle(app);
+		}
+	}
 </script>
 
 {#snippet leafIcon()}
-	<svg viewBox="0 0 24 24" class="relative h-[18px] w-[18px] [filter:drop-shadow(0_1px_1px_#000)]"
-	     fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-		<path d="M20 4c0 9-5.5 14-13 14a7 7 0 0 1 0-14c4 0 6-1 8-2 2 0 4 1 5 2Z" />
-		<path d="M5 20c2-5 6-8 10-9.5" />
-	</svg>
+    <Leaf width="26" height="26" />
 {/snippet}
 
 {#snippet textbookIcon()}
-	<svg viewBox="0 0 24 24" class="relative h-[18px] w-[18px] [filter:drop-shadow(0_1px_1px_#000)]"
-	     fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-		<path d="M5 3.5h11a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H5Z" />
-		<path d="M5 3.5a1.5 1.5 0 0 0-1.5 1.5v14A1.5 1.5 0 0 0 5 20.5h13" />
-		<path d="M8.5 8h6M8.5 11h4" />
-	</svg>
+    <Book width="26" height="26" />
 {/snippet}
 
 {#snippet backpackIcon()}
@@ -61,13 +64,19 @@
 		{#each slots as slot (slot.id)}
 			{@const Icon =
 				slot.id === 'leaf' ? leafIcon : slot.id === 'textbook' ? textbookIcon : backpackIcon}
-			<button
+			{@const w = desktop.find(slot.id)}
+            {@const isOpen = !!w}
+            {@const active = !!w && !w.minimized && w.z === desktop.topZ}
+
+            <button
 				class="group cursor-pointer relative flex-1 rounded-[3px] bg-brand-surface-blue-600 p-[2px]
 				       shadow-[0_1px_2px_rgba(0,0,0,0.7)] ring-1 ring-black"
-				onclick={() => toggle(slot.id)}
-				aria-pressed={open[slot.id]}
-				aria-label={slot.label}
-				title={slot.label}
+				onclick={() => dockClick(slot)}
+				class:is-open={isOpen}
+				style:--accent={"#1A1A1A"}
+				aria-pressed={isOpen}
+				aria-label="{slot.title}{isOpen ? ' (open)' : ''}"
+				title={slot.title}
 			>
 				<span
 					class="relative flex h-[32px] items-center justify-center overflow-hidden rounded-[2px]
@@ -95,6 +104,7 @@
 				></span>
 			</button>
 		{/each}
+        
 	</div>
 
 	<button
