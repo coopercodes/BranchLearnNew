@@ -169,7 +169,7 @@
 
 				</div>
 				<div class="text-neutral-100 text-sm italic text-[8px]">Training For Triangulon </div>
-				<p class="text-neutral-300 leading-4 text-[10px]"><span class="bg-blue-950/60 px-1.5 border border-blue-300 rounded-sm mr-[4px] py-0 text-[9px] font-extrabold">0 / 1</span> Defeat the Training Dummy</p>
+				<p class="text-neutral-300 leading-4 text-[10px]"><span class="rounded-sm mr-[2px] py-0 text-[10px] font-extrabold">0 / 1</span> Defeat the Training Dummy</p>
 			</div>
 		<!-- <div class="bg-brand-surface-blue-800 flex items-center w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
 			
@@ -185,7 +185,7 @@
 		
 	</div>
 
-	<div class="w-[250px] ">
+	<div class="w-[250px] relative">
 		<div class="flex flex-col">
 			<div class="flex space-x-1 justify-center mt-1.5">
 				{#each [0, 1, 2, 3, 4] as slot (slot)}
@@ -265,6 +265,22 @@
 			</div>
 			<HealthBar />
 		</div>
+		<div class="absolute left-0 bottom-full mb-4 p-2 border-blue-400 bg-brand-surface-blue-800 shadow-[inset_0_2px_5px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(96,165,250,0.15),0_0_6px_-1px_rgba(59,130,246,0.5)] hover:border-blue-300/70 border w-full h-[125px] rounded-sm">
+			<!-- TODO: work on styling-->
+			<div class="flex flex-col gap-1">
+
+				<div class="flex items-center gap-2">
+					<div class="w-12 h-12 bg-brand-surface-blue-600 border border-blue-400 rounded-sm">
+					</div>
+					<div class="flex flex-col gap-1">
+						<p class=" text-sm text-white">Health Potion</p>
+						<div class="px-2 border-blue-600 bg-blue-950 border text-xs text-[10px] text-blue-200 text-center w-max rounded-sm font-semibold">Common</div>
+					</div>
+				</div>
+				<p class="text-neutral-300 text-xs font-light text-[10px] mt-1">On use:</p>
+				<div class="text-white text-sm">Heal 1 Heart Instantly</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="w-[1px] h-[50%] my-auto bg-brand-surface-blue-600">
@@ -314,13 +330,19 @@
 
 <style>
 	/* Fixed to the viewport: out of document flow, so no scroll is created. */
+	
+	/* 
+		TODO: 
+		Fix positioning of MOBA dock so it attempts to align with main screen.
+	*/
+	
 	.hud-dock {
 		position: fixed !important;
 		bottom: 0px;
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: 50;
-		overflow:hidden;
+		/* overflow:hidden; */
 	}
 
 	.pill-count {

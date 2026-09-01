@@ -4,6 +4,7 @@
 	// import Backpack from '$lib/icons/Backpack.svelte';
     import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
 
+    
 	// import Avatar from '$lib/icons/Avatar.svelte';
     import Leaf from '$lib/Leaf.svelte';
     import Book from '$lib/Book.svelte';
@@ -15,10 +16,11 @@
 		profile: false
 	});
 
+    // TODO: HOLY SHIT THIS IS BAD, FIX LATER. The APPS indexing
 	const slots = [
-		{ id: 'leaf', label: 'AI Tutor', title: "AI TUTOR LEAF"},
-		{ id: 'textbook', label: 'Textbook', title: "TEXTBOOK LEAF"},
-		{ id: 'backpack', label: 'Backpack', title: "BACKPACK LEAF" }
+		{ id: 'leaf', label: 'AI Tutor', title: "AI TUTOR LEAF", app: APPS[0]},
+		{ id: 'textbook', label: 'Textbook', title: "TEXTBOOK LEAF", app: APPS[1]},
+		{ id: 'backpack', label: 'Backpack', title: "BACKPACK LEAF", app: APPS[2] }
 	] as const;
 
 	const toggle = (id: string) => (open[id] = !open[id]);
@@ -71,7 +73,7 @@
             <button
 				class="group cursor-pointer relative flex-1 rounded-[3px] bg-brand-surface-blue-600 p-[2px]
 				       shadow-[0_1px_2px_rgba(0,0,0,0.7)] ring-1 ring-black"
-				onclick={() => dockClick(slot)}
+				onclick={() => dockClick(slot.app)}
 				class:is-open={isOpen}
 				style:--accent={"#1A1A1A"}
 				aria-pressed={isOpen}

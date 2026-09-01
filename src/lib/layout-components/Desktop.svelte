@@ -20,7 +20,11 @@
 
 		<!-- Free-floating, draggable/resizable windows -->
 		<WindowLayer />
+		<MOBABar />
+		<!-- <div class="bg-white w-[200px] h-screen">
+		</div> -->
 	</div>
-	<MOBABar />
+	
+
 </div>
 

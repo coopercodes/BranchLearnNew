@@ -24,6 +24,19 @@
 </script>
 
 {#if content === null}
+	<p>NULL content</p>
+{:else if content.type === 'multiple-choice'}
+	<GraphMultipleChoicePanel {content} {visit} {onResult} />
+{:else if content.type === 'lightning'}
+	<GraphLightningPanel {content} {visit} {onResult} />
+{:else if content.type === 'flashcard'}
+	<GraphFlashcardPanel {content} {visit} {onResult} />
+{:else if content.type === 'triangle'}
+	<TriangleRendererPanel {content} {visit} {onResult} />
+{/if}
+
+
+<!-- {#if content === null}
 	<div class="flex h-full items-center justify-center px-8 py-12">
 		<div class="w-full max-w-md text-center">
 			<p class="mb-2 text-xs font-semibold tracking-widest text-brand-orange uppercase">
@@ -70,6 +83,6 @@
 	<GraphFlashcardPanel {content} {visit} {onResult} />
 {:else if content.type === 'triangle'}
 	<TriangleRendererPanel {content} {visit} {onResult} />
-{/if}
+{/if} -->
 
 

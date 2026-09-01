@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { desktop } from '$lib/os/windowStore.svelte';
+	import BackpackWindow from './BackpackWindow.svelte';
 	import BookWindow from './BookWindow.svelte';
 	import LeafWindow from './LeafWindow.svelte';
 </script>
@@ -12,6 +13,8 @@
 				<BookWindow {win} />
 			{:else if win.app.id === 'leaf'}
 				<LeafWindow {win} />
+			{:else if win.app.id === 'backpack'}
+				<BackpackWindow {win} />
 			{/if}
 		{/if}
 	{/each}

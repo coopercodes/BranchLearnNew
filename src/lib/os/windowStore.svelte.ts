@@ -1,5 +1,5 @@
 /** An icon the dock + titlebar know how to draw. */
-export type IconType = 'leaf' | 'scroll' | 'orb' | 'map';
+export type IconType = 'leaf' | 'scroll' | 'orb' | 'map' | 'backpack';
 
 /** Static definition of an "app" that can live in a window. */
 export interface AppDef {
@@ -20,7 +20,9 @@ export interface AppDef {
 /** The dock — each entry gets a launcher button + can spawn a window. */
 export const APPS: AppDef[] = [
 	{ id: 'leaf', title: 'Leaf', icon: 'leaf', accent: '#386d4f', glow: 'rgba(56, 109, 79, 0.45)', w: 420, h: 500, theme: 'light' },
-	{ id: 'book', title: 'Textbook', icon: 'scroll', accent: '#8B5A34', glow: 'rgba(139, 90, 52, 0.45)', w: 500, h: 700, theme: 'light' }
+	{ id: 'book', title: 'Textbook', icon: 'scroll', accent: '#8B5A34', glow: 'rgba(139, 90, 52, 0.45)', w: 500, h: 700, theme: 'light' },
+	{ id: 'backpack', title: 'Backpack', icon: 'backpack', accent: '#8B5A34', glow: 'rgba(139, 90, 52, 0.45)', w: 400, h: 300, theme: 'light' },
+
 	// { id: 'atlas', title: 'Atlas', icon: 'map', accent: '#ffc52a', glow: 'rgba(255, 197, 42, 0.5)', w: 480, h: 360 }
 ];
 

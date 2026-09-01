@@ -112,16 +112,26 @@
 				       bg-[#1a0505] shadow-[inset_0_2px_4px_rgba(0,0,0,0.9)]"
 			>
 
-				<div class="flex w-full h-full gap-1">
+				<div class="flex relative w-full h-full gap-1">
 					<!-- TODO: Sync array to HP globally with rules for filled / not-->
 					{#each [0, 1, 2, 3, 4] as hpSlot}
 						{#if hpSlot >= hp}
 							<div class="h-full w-full bg-brand-surface-red-800"></div>
 						{:else}
-							<div class="h-full w-full bg-brand-crimson"></div>
+							<div class="h-full relative w-full  bg-gradient-to-t from-red-600 via-red-700 to-red-800">
+								<div
+									class="absolute inset-x-0 top-0 h-1/2
+										bg-gradient-to-b from-white/40 to-white/0"
+								></div>
+							</div>
 						{/if}
 					{/each}
+
+					<!-- TODO: Figure out how to ignore the overflow hidden aspect -->
+					<!-- <div class="flex-none absolute animate-pulse left-[32px] bg-linear-to-br from-blue-100 to-blue-700 w-[6px] h-[192px]"></div> -->
+
 				</div>
+				
 				<div class="pointer-events-none absolute skew-x-12 inset-0 flex items-center justify-center">
 					<span
 						class="flex items-center gap-[3px] rounded-[2px] bg-black/60 px-[5px] py-[1px]
@@ -129,7 +139,7 @@
 							[text-shadow:0_1px_1px_#000]"
 					>
 						{hp}
-						<!-- <svg viewBox="0 0 24 24" class="h-[11px] w-[11px] shrink-0" aria-hidden="true">
+						<svg viewBox="0 0 24 24" class="h-[11px] w-[11px] shrink-0" aria-hidden="true">
 							<defs>
 								<linearGradient id="hp-fill" x1="0" y1="0" x2="0" y2="1">
 									<stop offset="0%" stop-color="#f87171" />
@@ -143,7 +153,7 @@
 								stroke="#450a0a"
 								stroke-width="1"
 							/>
-						</svg> -->
+						</svg>
 					</span>
 				</div>
 				
@@ -156,6 +166,7 @@
 					style="background-image: repeating-linear-gradient(90deg, rgba(0,0,0,0.55) 0 1px, transparent 1px 32px)"
 				></div> -->
 			</div>
+
 
 			<div
 				class="pointer-events-none absolute inset-0 rounded-[2px]

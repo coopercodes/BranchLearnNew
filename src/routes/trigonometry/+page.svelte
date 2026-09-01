@@ -134,7 +134,7 @@
 	     swap never reflows the Desktop chrome. -->
 	{#key seq}
 		<div
-			class="absolute inset-0"
+			class="absolute inset-0 pb-[56px]"
 			in:fly={{ y: 20, duration: 350, delay: 525, easing: cubicOut }}
 			out:fly={{ y: 20, duration: 350, easing: cubicOut }}
 		>
@@ -149,7 +149,9 @@
 				/>
 			{/if}
 		</div>
+		
 	{/key}
+	
 </Desktop>
 
 <GraphDevTools
@@ -158,3 +160,5 @@
 	onForce={handleResult}
 	onReset={restart}
 />
+
+<div class="flex h-[50px] "></div>
