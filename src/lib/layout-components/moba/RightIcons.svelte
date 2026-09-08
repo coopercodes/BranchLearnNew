@@ -18,9 +18,9 @@
 
     // TODO: HOLY SHIT THIS IS BAD, FIX LATER. The APPS indexing
 	const slots = [
-		{ id: 'leaf', label: 'AI Tutor', title: "AI TUTOR LEAF", app: APPS[0]},
-		{ id: 'textbook', label: 'Textbook', title: "TEXTBOOK LEAF", app: APPS[1]},
-		{ id: 'backpack', label: 'Backpack', title: "BACKPACK LEAF", app: APPS[2] }
+		{ id: 'leaf', label: 'AI Tutor', title: "AI TUTOR", app: APPS[0]},
+		{ id: 'textbook', label: 'Textbook', title: "TEXTBOOK", app: APPS[1]},
+		{ id: 'backpack', label: 'Backpack', title: "BACKPACK", app: APPS[2] }
 	] as const;
 
 	const toggle = (id: string) => (open[id] = !open[id]);

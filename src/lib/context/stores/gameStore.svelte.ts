@@ -8,6 +8,10 @@ export class GameStore {
 	bestStreak = $state(0);
 	completedQuestions = $state<string[]>([]);
 
+	// "camp" | "encounter" | "quest" FOR MVP
+	// on encounter complete -> game state is switched from encounter to camp
+	panelState = $state("camp")
+
 	// Derived state — always in sync, never manually updated
 	level = $derived(Math.floor(this.score / 100) + 1);
 	questionsAnswered = $derived(this.completedQuestions.length);
@@ -69,7 +73,8 @@ export class GameStore {
 			score: this.score,
 			streak: this.streak,
 			bestStreak: this.bestStreak,
-			completedQuestions: [...this.completedQuestions]
+			completedQuestions: [...this.completedQuestions],
+			panelState: this.panelState
 		};
 	}
 

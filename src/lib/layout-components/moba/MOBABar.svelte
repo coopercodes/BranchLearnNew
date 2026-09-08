@@ -21,6 +21,7 @@
 	import Avatar from './Avatar.svelte';
 	import HealthBar from './HealthBar.svelte';
 	import RightIcons from './RightIcons.svelte';
+	import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
 
 	export interface Skill {
 		id: string;
@@ -60,6 +61,9 @@
 		hotkeysEnabled = true,
 		hp = 0.75
 	}: Props = $props();
+
+	let questLog = { id: 'quest-log', label: 'Quest Log', title: "BACKPACK LEAF", app: APPS[3] }
+
 
 	/* ---------- original osBar wiring (questions-remaining pill + Continue) ---------- */
 	let remaining = $derived(osBar.remaining);
@@ -148,6 +152,15 @@
 	$effect(() => () => {
 		if (raf) cancelAnimationFrame(raf);
 	});
+
+	function dockClick(app: AppDef) {
+		const w = desktop.find(app.id);
+		if (w && w.minimized) {
+			desktop.open(app);
+		} else {
+			desktop.toggle(app);
+		}
+	}
 </script>
 
 <svelte:window on:keydown={onKey} />
@@ -161,7 +174,7 @@
 		</div> -->
 
 		
-			<div class="bg-brand-surface-blue-800 cursor-pointer flex gap-1 flex-col w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
+			<div onclick={() => dockClick(questLog.app)} class="bg-brand-surface-blue-800 hover:bg-brand-surface-blue-700 bg-linear-to-br cursor-pointer flex gap-1 flex-col w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
 				<div class="flex items-center gap-2">
 					<div class="w-1.5 h-1.5 bg-amber-400 rotate-45"></div>
 					<p class="text-[9px] text-sm font-bold text-amber-400">Active Quest</p>
@@ -265,8 +278,12 @@
 			</div>
 			<HealthBar />
 		</div>
-		<div class="absolute left-0 bottom-full mb-4 p-2 border-blue-400 bg-brand-surface-blue-800 shadow-[inset_0_2px_5px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(96,165,250,0.15),0_0_6px_-1px_rgba(59,130,246,0.5)] hover:border-blue-300/70 border w-full h-[125px] rounded-sm">
-			<!-- TODO: work on styling-->
+		<!-- 
+			TODO: work on styling
+			TODO: Work on hover logic for items in the moba slots
+		-->
+
+		<!-- <div class="absolute left-0 bottom-full mb-4 p-2 border-blue-400 bg-brand-surface-blue-800 shadow-[inset_0_2px_5px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(96,165,250,0.15),0_0_6px_-1px_rgba(59,130,246,0.5)] hover:border-blue-300/70 border w-full h-[125px] rounded-sm">
 			<div class="flex flex-col gap-1">
 
 				<div class="flex items-center gap-2">
@@ -280,7 +297,7 @@
 				<p class="text-neutral-300 text-xs font-light text-[10px] mt-1">On use:</p>
 				<div class="text-white text-sm">Heal 1 Heart Instantly</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 
 	<div class="w-[1px] h-[50%] my-auto bg-brand-surface-blue-600">

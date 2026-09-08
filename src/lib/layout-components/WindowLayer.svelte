@@ -3,6 +3,7 @@
 	import BackpackWindow from './BackpackWindow.svelte';
 	import BookWindow from './BookWindow.svelte';
 	import LeafWindow from './LeafWindow.svelte';
+	import QuestLogWindow from './QuestLogWindow.svelte';
 </script>
 
 <!-- Sits over the desktop; only the windows themselves catch pointer events. -->
@@ -15,6 +16,8 @@
 				<LeafWindow {win} />
 			{:else if win.app.id === 'backpack'}
 				<BackpackWindow {win} />
+			{:else if win.app.id === 'quest-log'}
+				<QuestLogWindow {win} />
 			{/if}
 		{/if}
 	{/each}
