@@ -22,6 +22,11 @@
 	import TimerIsland from '$lib/components/TimerIsland.svelte';
 	import MOBABar from '$lib/layout-components/moba/MOBABar.svelte';
 	import { BranchContext } from '$lib/context/BranchContext.svelte';
+	import Sprite from '$lib/components/sprites/Sprite.svelte';
+	import Avatar from '$lib/layout-components/moba/Avatar.svelte';
+	import BranchMark from '$lib/toast/BranchMark.svelte';
+	import SidebarQuestLog from '$lib/camp/SidebarQuestLog.svelte';
+	import SelectedQuest from '$lib/camp/SelectedQuest.svelte';
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
 	// ║                                                                        ║
@@ -143,8 +148,7 @@
 		width: 500px;
 		height: 300px;
 		transform-style: preserve-3d;
-		transform: rotateX(65deg);
-
+		transform: rotateX(60deg);
 	}
 
 	.camp-shadow {
@@ -154,28 +158,87 @@
 		transform: translateZ(-10px);
 	}
 
+	/* this whole block is a sibling of .camp-base, so it never inherits the rotateX */
+	.campfire {
+		width: 120px;
+		height: 120px;
+	}
+
+	.fire-glow {
+		width: 90px;
+		height: 90px;
+		background: radial-gradient(circle, rgba(251, 146, 60, 0.35) 0%, rgba(251, 146, 60, 0) 70%);
+	}
+
+	.fire-pit {
+		width: 46px;
+		height: 46px;
+		bottom: 2px;
+		background: radial-gradient(circle at 35% 30%, #9ca3af, #4b5563 65%, #33393f 100%);
+		box-shadow:
+			inset 0 2px 4px rgba(0, 0, 0, 0.5),
+			0 3px 6px rgba(0, 0, 0, 0.35);
+	}
+
+	.campfire-icon {
+		width: 160px;
+		height: 160px;
+	}
+
+	.ember {
+		transform-origin: center;
+		opacity: 0;
+		animation: ember-rise 2.2s ease-in infinite;
+		animation-delay: var(--delay, 0s);
+		margin-bottom: 120px;
+	}
+
+	@keyframes ember-rise {
+		0% {
+			opacity: 0;
+			transform: translate(0, 0) scale(0.6);
+		}
+		15% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+			transform: translate(var(--drift, 0), -22px) scale(0.2);
+		}
+	}
+
 
 </style>
 
 <Desktop>
 	{#if gameState.renderer == "camp" }
-		<div class="w-screen h-screen flex items-center justify-center  mt-12">
+		<div class="w-screen h-screen flex items-center justify-center pb-24">
 			<div class="flex flex-col justify-center items-center my-auto mx-auto w-full h-full">
-				<div class="relative bottom-6 flex flex-col text-center gap-1">
-					<p class="text-xs font-bold text-neutral-500">Map</p>
+				<div class="relative bottom-6 flex flex-col bg-taupe-200 px-4 py-2 border-green-800 rounded-md border flex-col text-center gap-1">
+					<div class="flex justify-between">
+						<p class="text-xs font-bold text-taupe-800">Map</p>
+						<p class="text-[10px] font-thin italic">expand</p>
+					</div>
 					<p class="italic text-neutral-800">Pythagorean Marshes</p>
 				</div>
 				<!--  TODO: ADD CONDITIONAL DEV BORDERS FOR SPACING border border-8 border-red-300/20  -->
 				<div class="flex gap-12 h-[350px] items-center ">
-					<div class="h-full  w-64 rounded-sm">
+					<div class="h-full w-72   rounded-sm">
 						<!-- TODO DISPLAY USER STATS-->
 						<div class="flex flex-col gap-1 h-ful p-2">
 							<p class="text-xs text-neutral-500">Afternoon adventurer.</p>
 							<div class="flex justify-between">
 								<!-- TODO: EXPAND upon this idea -->
 								<div class="flex items-center gap-2">
-									<div class="w-4 h-4 bg-neutral-500 border border-neutral-700 rounded-full"></div>
-									<p class="font-bold text-xl">@bruh123</p>
+									<div class="w-10 h-10 bg-neutral-500 border border-neutral-300 rounded-full">
+										<!-- <Sprite type="training-dummy"/> -->
+										 
+									</div>
+									
+									<div class="flex flex-col text-left ">
+										<p class="font-bold text-lg"><span class="font-thin">@</span>bruh123</p>
+										<p class="text-blue-600 text-xs font-bold">lvl 32</p>
+									</div>
 								</div>
 								<div class="flex flex-col text-right text-xs text-[10px]">
 									<p class="font-semibold">lvl 32</p>
@@ -186,45 +249,60 @@
 						</div>
 					</div>
 					<div class="camp-stage relative">
-						<!-- <div class="relative left-1/2 items-center">
-							<div class="h-4 w-4 absolute top-2 bg-linear-to-b to-orange-950 from-orange-600 border border-amber-600 border rounded-full"></div>
-							<div class="h-3 w-3 absolute top-12 left-3 bg-orange-800 rounded-full"></div>
-						</div> -->
-						<div class="camp-base flex items-center relative z-30 rounded-[80px] bg-linear-to-b from-green-950 to-green-950">
-							<!-- <div class="relative h-4 w-4 bg-red-300 top-12 left-12"></div> -->
-							<div class="camp-shadow absolute z-10 rounded-[40px] bg-green-900/30 mx-auto blur-xl"></div>
-						</div>
-						<div class="flex items-center justify-center">
+						<div class="camp-base flex items-center justify-center relative z-30 rounded-[80px] bg-linear-to-t from-green-900 via-green-900 to-neutral-900 to-[250%]">
+	<div class="camp-shadow absolute z-10 rounded-[40px] bg-green-900/30 mx-auto blur-xl"></div>
 
+	<div class="relative z-20 w-24 h-24 rounded-full bg-linear-to-br from-taupe-500 via-taupe-600 to-taupe-500 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),0_2px_4px_rgba(0,0,0,0.4)]"></div>
+</div>
+
+						<div class="campfire-wrap absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
+							<div class="campfire relative flex items-center justify-center">
+								<svg class="campfire-icon relative" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<defs>
+										<linearGradient id="flameBase" x1="32" y1="27" x2="32" y2="49" gradientUnits="userSpaceOnUse">
+											<stop offset="0%" stop-color="#f97316" />
+											<stop offset="55%" stop-color="#c2410c" />
+											<stop offset="100%" stop-color="#7c2d12" />
+										</linearGradient>
+										<linearGradient id="flameOuter" x1="32" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+											<stop offset="0%" stop-color="#fde047" />
+											<stop offset="45%" stop-color="#fb923c" />
+											<stop offset="100%" stop-color="#dc2626" />
+										</linearGradient>
+										<linearGradient id="flameInner" x1="32" y1="18" x2="32" y2="37" gradientUnits="userSpaceOnUse">
+											<stop offset="0%" stop-color="#fef9c3" />
+											<stop offset="100%" stop-color="#fbbf24" />
+										</linearGradient>
+									</defs>
+
+									<!-- crossed logs -->
+									<rect x="12" y="43" width="40" height="6" rx="3" fill="#57331e" transform="rotate(-16 32 46)" />
+									<rect x="12" y="43" width="40" height="6" rx="3" fill="#6b4226" transform="rotate(16 32 46)" />
+
+							
+									<!-- flame -->
+									<g transform="translate(0, 6)">
+										<path d="M 32 10 C 20 22 20 30 24 38 C 27 41 37 41 40 38 C 44 30 44 22 32 10 Z" fill="url(#flameOuter)" />			
+										<path transform="translate(0,1)" d="M 32 18 C 27 25 20 31 29 39 C 28 33 30 29 32 27 C 34 30 36 33 35 39 C 43 31 37 25 32 18 Z" fill="url(#flameInner)" />
+									</g>
+									<!-- embers -->
+									<circle class="ember" cx="28" cy="14" r="2.4" fill="#fb923c" style="--delay:0s; --drift:-6px" />
+									<circle class="ember" cx="34" cy="10" r="2.7" fill="#fde047" style="--delay:.5s; --drift:8px" />
+									<circle class="ember" cx="31" cy="6" r="2.1" fill="#fca5a5" style="--delay:1s; --drift:2px" />
+									<circle class="ember" cx="37" cy="16" r="2.4" fill="#fdba74" style="--delay:1.5s; --drift:-4px" />
+								</svg>
+							</div>
 						</div>
+					</div>
+					<!-- <div class="h-full bg-brand-surface-blue-800 rounded-md border  border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72">
 						
-					</div>
-					<div class="h-full bg-blue-300/30 w-64">
-						<!-- 
-							DISPLAY UTILITY
-							
-							AUCTION
-							PVP AVAILABILITY
-							BLOG
-							
-						-->
-					</div>
+					</div> -->
+					<SidebarQuestLog />
 				</div>
-				<div  class="bg-brand-surface-blue-700 w-[240px] relative -top-6 hover:bg-brand-surface-blue-700 bg-linear-to-br cursor-pointer flex gap-1 flex-col rounded-sm p-2 border  border-brand-gold/70 m-2">
-					<div class="flex items-center gap-2 justify-between">
-						<div class="w-1.5 h-1.5 bg-amber-400/80 border border-amber-400 rotate-45"></div>
-						<p class="text-[9px] text-xs text-amber-400">Recommended Quest</p>
-						<div class="w-1.5 h-1.5 bg-amber-400/80 border border-amber-400 rotate-45"></div> 
-
-					</div>
-					<div class="text-neutral-100 text-sm italic text-center">Training For Triangulon </div>
-					<!-- <p class="text-neutral-300 leading-4 text-[10px]"><span class="rounded-sm mr-[2px] py-0 text-[10px] font-extrabold">0 / 1</span> Defeat the Training Dummy</p> -->
 
 
-					<!-- TODO: FIND THE QUEST YELLOW COLOR, AMBER IS TEMP -->
-					<div class="bg-amber-900/40 px-4 py-1 w-max mx-auto mt-4 rounded-sm border-amber-300 border text-white font-semibold text-sm">Start Quest</div>
-
-				</div>
+				<!-- <div class="w-1.5 h-1.5 bg-amber-400/80 border border-amber-400 rotate-45"></div> -->
+				<SelectedQuest />
 			</div>
 		</div>
 	{:else if gameState.renderer == "encounter"}
@@ -266,4 +344,3 @@
 	onReset={restart}
 />
 
-<div class="flex h-[50px] "></div>
