@@ -1,4 +1,6 @@
 <script>
+	import { questDB } from '$lib/game/database/questsDB.svelte';
+	import { game } from '$lib/game/index.svelte';
 	import { tick } from 'svelte';
 
 	/* ------------------------------------------------------------------ *
@@ -103,7 +105,14 @@
 	 * State
 	 * ------------------------------------------------------------------ */
 
-	let activeQuest = $state(null); // null === empty state
+	let activeQuest = $derived.by(() => {
+        console.log("PING");
+        console.log(questDB);
+        console.log(game.quests.selectedQuestID);
+        return game.quests.selectedQuestID ? questDB[game.quests.selectedQuestID] : null;
+
+    }
+    ); // null === empty state
 	let contentHeight = $state(0); // measured height of the rendered content
 	let shellHeight = $state(0); // animated height of the surface
 	let contentVisible = $state(false); // drives the text fade

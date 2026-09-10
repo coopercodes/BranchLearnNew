@@ -29,6 +29,7 @@ export class GameState {
 
 	// derived across substates
 	isAlive = $derived(this.combat.player.hp > 0);
+    
 
 	// operations that touch multiple substates
 	restAtInn() {

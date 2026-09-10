@@ -7,7 +7,7 @@
 	let raw = $derived(JSON.stringify(snapshot, null, 2));
 
 	let mode = $state<'tree' | 'raw'>('tree');
-	let collapsed = $state(false);
+	let collapsed = $state(true);
 	let dialog = $state<HTMLDialogElement>();
 	let copied = $state(false);
 

@@ -1,30 +1,15 @@
 <script>
   import { slide } from 'svelte/transition';
   import { SvelteSet } from 'svelte/reactivity';
+  import { game } from '$lib/game/index.svelte';
 
   // Swap this for real data / a store as needed.
   const categories = [
     {
-      name: 'Daily Quests',
-      daily: true,
-      quests: [
-        { name: 'Triangulon Training', time: '25m est', type: 'encounter' },
-        { name: 'Morning Patrol', time: '10m est', type: 'friendly' }
-      ]
-    },
-    {
-      name: 'Pythagorean Marshes',
-      daily: false,
-      quests: [
-        { name: 'Reeds and Ruin', time: '40m est', type: 'encounter' },
-        { name: "The Cartographer's Request", time: '15m est', type: 'friendly' }
-      ]
-    },
-    {
       name: 'Tutorial',
       daily: false,
       quests: [
-        { name: 'Training For Triangulon', time: '20m est', type: 'friendly' }
+        { id:"training-grounds", name: 'Training Grounds', time: '20m est', type: 'friendly' }
       ]
     }
   ];
@@ -47,9 +32,15 @@
     return `${category.name}::${quest.name}`;
   }
 
-  function selectQuest(key) {
+  function selectQuest(key,quest) {
     selectedQuest = selectedQuest === key ? null : key;
-  }
+
+    if(selectedQuest == null) {
+        game.quests.selectedQuestID = "";
+    } else {
+        game.quests.selectedQuestID = quest.id;
+    }
+}
 </script>
 
 <div class="h-full bg-brand-surface-blue-800 rounded-md border border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72 flex flex-col">
@@ -97,7 +88,7 @@
                 type="button"
                 class="flex flex-col gap-1 w-full text-left rounded-sm px-1.5 py-1 -mx-1.5 transition-colors
                   {isSelected ? 'bg-brand-surface-blue-700/60' : 'hover:bg-brand-surface-blue-700/30'}"
-                onclick={() => selectQuest(key)}
+                onclick={() => selectQuest(key, quest)}
                 aria-pressed={isSelected}
               >
                 <div class="flex items-center gap-2">
