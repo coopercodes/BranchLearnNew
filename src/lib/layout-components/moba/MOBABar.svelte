@@ -165,7 +165,7 @@
 
 <svelte:window on:keydown={onKey} />
 
-<div class="flex gap-2 hud-dock h-[96px] bg-brand-surface-blue-900 rounded-tl-md rounded-tr-md">
+<div class="flex gap-2 hud-dock h-[96px] bg-brand-surface-blue-900 rounded-tl-md rounded-tr-md z-100">
 	<div class="w-[150px] flex rounded-tl-md">
 		<!-- <div class=" w-full h-full flex items-center justify-center">
 			<div class="flex items-center justify-center bg-neutral-700 rounded-full p-0.5">

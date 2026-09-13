@@ -27,6 +27,7 @@
 	import BranchMark from '$lib/toast/BranchMark.svelte';
 	import SidebarQuestLog from '$lib/camp/SidebarQuestLog.svelte';
 	import SelectedQuest from '$lib/camp/SelectedQuest.svelte';
+	import MapOverlay from '$lib/map/MapOverlay.svelte';
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
 	// ║                                                                        ║
@@ -54,6 +55,8 @@
 	let resolved = $state<'correct' | 'incorrect' | null>(null);
 	/** Bumped per advance — remounts the panel so per-visit state resets. */
 	let seq = $state(0);
+	let mapOpen = $state(false);
+
 
 	let courseDone = $derived(active === null && !game.canAdvance);
 
@@ -208,19 +211,23 @@
 	}
 
 
+
 </style>
 
 <Desktop>
 	{#if gameState.renderer == "camp" }
 		<div class="w-screen h-screen flex items-center justify-center pb-24">
 			<div class="flex flex-col justify-center items-center my-auto mx-auto w-full h-full">
-				<div class="relative bottom-6 flex flex-col bg-taupe-200 px-4 py-2 border-green-800 rounded-md border flex-col text-center gap-1">
+				<button onclick={() => mapOpen = !mapOpen} class="relative z-30 bottom-6 cursor-pointer hover:bg-taupe-300 flex flex-col bg-taupe-200 px-4 py-2 border-green-800 rounded-md border flex-col text-center gap-1">
 					<div class="flex justify-between">
 						<p class="text-xs font-bold text-taupe-800">Map</p>
 						<p class="text-[10px] font-thin italic">expand</p>
 					</div>
 					<p class="italic text-neutral-800">Pythagorean Marshes</p>
-				</div>
+					{#if mapOpen}
+						<MapOverlay />
+					{/if}
+				</button>
 				<!--  TODO: ADD CONDITIONAL DEV BORDERS FOR SPACING border border-8 border-red-300/20  -->
 				<div class="flex gap-12 h-[350px] items-center ">
 					<div class="h-full w-72   rounded-sm">
