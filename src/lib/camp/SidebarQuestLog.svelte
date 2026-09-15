@@ -17,7 +17,7 @@
   // SvelteSet is already reactive on its own — no $state() wrapper needed,
   // and .add()/.delete() now correctly trigger updates (this is the fix
   // for the dropdowns not opening/closing).
-  let openSections = new SvelteSet(['Daily Quests']);
+  let openSections = new SvelteSet(['Daily Quests', 'Tutorial']);
   let selectedQuest = $state(null);
 
   function toggleSection(name) {
@@ -58,11 +58,11 @@
           aria-expanded={openSections.has(category.name)}
         >
           <div class="flex items-center gap-2">
-            <div
+            <!-- <div
               class="w-2 h-2 rotate-45 border shrink-0 transition-colors
                 {category.daily ? 'border-brand-gold' : 'border-neutral-500'}
                 {openSections.has(category.name) ? (category.daily ? 'bg-brand-gold' : 'bg-neutral-500') : ''}"
-            ></div>
+            ></div> -->
             <span
               class="text-xs uppercase tracking-wide font-semibold
                 {category.daily ? 'text-brand-gold' : 'text-neutral-300'}"
@@ -108,7 +108,7 @@
                   {:else}
                     <div class="w-3 h-3 rotate-45 bg-emerald-500 shrink-0"></div>
                   {/if}
-                  <span class="text-sm {isSelected ? 'text-brand-gold' : 'text-neutral-100'}">{quest.name}</span>
+                  <span class="text-sm {isSelected ? 'text-white' : 'text-neutral-100'}">{quest.name}</span>
                 </div>
 
                 <div class="flex items-center gap-1.5 text-neutral-400 pl-3.5">

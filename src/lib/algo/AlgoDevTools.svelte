@@ -30,6 +30,8 @@
 	function resetState() {
 		if (confirm('Wipe the entire algo game state from localStorage?')) algoGame.reset();
 	}
+
+	
 </script>
 
 <!-- Global dev tools: fixed overlay, orange/white, functional-grid Rams style. -->

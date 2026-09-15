@@ -8,7 +8,8 @@
 	import GraphPanelRenderer from '$lib/content-graph/panels/GraphPanelRenderer.svelte';
 	import GraphDonePanel from '$lib/content-graph/panels/GraphDonePanel.svelte';
 	import GraphDevTools from '$lib/content-graph/GraphDevTools.svelte';
-	import { ContentGameState, game, type Rank } from '$lib/content-graph/gameState.svelte';
+	import { ContentGameState, type Rank } from '$lib/content-graph/gameState.svelte';
+	import { game } from '$lib/game/index.svelte';
 	import { ContentGraph } from '$lib/content-graph/graph-content';
 	import {
 		contentFor,
@@ -28,6 +29,7 @@
 	import SidebarQuestLog from '$lib/camp/SidebarQuestLog.svelte';
 	import SelectedQuest from '$lib/camp/SelectedQuest.svelte';
 	import MapOverlay from '$lib/map/MapOverlay.svelte';
+	import SidebarUser from '$lib/camp/SidebarUser.svelte';
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
 	// ║                                                                        ║
@@ -148,7 +150,7 @@
 	}
 
 	.camp-base {
-		width: 500px;
+		width: 450px;
 		height: 300px;
 		transform-style: preserve-3d;
 		transform: rotateX(60deg);
@@ -215,52 +217,34 @@
 </style>
 
 <Desktop>
-	{#if gameState.renderer == "camp" }
+	{#if game.renderer.state == "camp" }
 		<div class="w-screen h-screen flex items-center justify-center pb-24">
 			<div class="flex flex-col justify-center items-center my-auto mx-auto w-full h-full">
-				<button onclick={() => mapOpen = !mapOpen} class="relative z-30 bottom-6 cursor-pointer hover:bg-taupe-300 flex flex-col bg-taupe-200 px-4 py-2 border-green-800 rounded-md border flex-col text-center gap-1">
-					<div class="flex justify-between">
-						<p class="text-xs font-bold text-taupe-800">Map</p>
-						<p class="text-[10px] font-thin italic">expand</p>
-					</div>
-					<p class="italic text-neutral-800">Pythagorean Marshes</p>
-					{#if mapOpen}
-						<MapOverlay />
-					{/if}
-				</button>
+				
 				<!--  TODO: ADD CONDITIONAL DEV BORDERS FOR SPACING border border-8 border-red-300/20  -->
-				<div class="flex gap-12 h-[350px] items-center ">
-					<div class="h-full w-72   rounded-sm">
-						<!-- TODO DISPLAY USER STATS-->
-						<div class="flex flex-col gap-1 h-ful p-2">
-							<p class="text-xs text-neutral-500">Afternoon adventurer.</p>
-							<div class="flex justify-between">
-								<!-- TODO: EXPAND upon this idea -->
-								<div class="flex items-center gap-2">
-									<div class="w-10 h-10 bg-neutral-500 border border-neutral-300 rounded-full">
-										<!-- <Sprite type="training-dummy"/> -->
-										 
-									</div>
-									
-									<div class="flex flex-col text-left ">
-										<p class="font-bold text-lg"><span class="font-thin">@</span>bruh123</p>
-										<p class="text-blue-600 text-xs font-bold">lvl 32</p>
-									</div>
-								</div>
-								<div class="flex flex-col text-right text-xs text-[10px]">
-									<p class="font-semibold">lvl 32</p>
-									<p>312 encounters</p>
-								</div>
+				<div class="flex gap-12 h-[450px] items-center ">
+					<SidebarUser />
+					<div class="flex flex-col h-full justify-between ">
+						<button onclick={() => mapOpen = !mapOpen} class="relative z-30 mx-auto cursor-pointer hover:bg-taupe-300 flex flex-col bg-taupe-200 px-4 py-2 border-neutral-800 rounded-md border flex-col text-left gap-1">
+							<div class="flex items-center mx-auto gap-2 justify-between">
+								<!-- <p class="text-xs text-[10px] font-thin">Map</p>
+								<div class="text-[10px] text-xs italic font-thin">/</div> -->
+								<p class="text-xs text-[10px] font-thin">The Greenwoods</p>
+								<div class=" text-xs italic font-thin">/</div>
+								<p class="text-xs text-[10px] font-thin">The Caves Of Triangulus</p>
 							</div>
-							<!-- ok this kinda shit lmao ill look into it -->
-						</div>
-					</div>
-					<div class="camp-stage relative">
-						<div class="camp-base flex items-center justify-center relative z-30 rounded-[80px] bg-linear-to-t from-green-900 via-green-900 to-neutral-900 to-[250%]">
-	<div class="camp-shadow absolute z-10 rounded-[40px] bg-green-900/30 mx-auto blur-xl"></div>
+							<p class=" text-sm mx-auto font-semibold text-neutral-800 text-nowrap">Pythagorean Marshes</p>
 
-	<div class="relative z-20 w-24 h-24 rounded-full bg-linear-to-br from-taupe-500 via-taupe-600 to-taupe-500 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),0_2px_4px_rgba(0,0,0,0.4)]"></div>
-</div>
+							{#if mapOpen}
+								<MapOverlay />
+							{/if}
+						</button>
+						<div class="camp-stage relative">
+							<div class="camp-base flex items-center justify-center relative z-30 rounded-[80px] bg-linear-to-t from-green-900 via-green-900 to-neutral-900 to-[250%]">
+							<div class="camp-shadow absolute z-10 rounded-[40px] bg-green-900/30 mx-auto blur-xl"></div>
+
+							<div class="relative z-20 w-24 h-24 rounded-full bg-linear-to-br from-taupe-500 via-taupe-600 to-taupe-500 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),0_2px_4px_rgba(0,0,0,0.4)]"></div>
+						</div>
 
 						<div class="campfire-wrap absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
 							<div class="campfire relative flex items-center justify-center">
@@ -301,6 +285,8 @@
 							</div>
 						</div>
 					</div>
+					</div>
+					
 					<!-- <div class="h-full bg-brand-surface-blue-800 rounded-md border  border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72">
 						
 					</div> -->
@@ -312,10 +298,14 @@
 				<SelectedQuest />
 			</div>
 		</div>
-	{:else if gameState.renderer == "encounter"}
-
+	{:else if game.renderer.state == "encounter"}
+		<div class="p-4 bg-blue-400">
+			<div class="text-3xl">SWITCHED TO ENCOUNTER</div>
+		</div>
 	{:else if gameState.renderer == "quest"}
-
+		<div class="p-4 bg-blue-400">
+			<div class="text-3xl">SWITCHED TO QUEST</div>
+		</div>
 	{:else if gameState.renderer == "dev-default"}
 		<TimerIsland />
 		<!-- Keyed on the visit so advancing crossfades with a fade+drift: the old
