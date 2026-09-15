@@ -30,6 +30,7 @@
 	import SelectedQuest from '$lib/camp/SelectedQuest.svelte';
 	import MapOverlay from '$lib/map/MapOverlay.svelte';
 	import SidebarUser from '$lib/camp/SidebarUser.svelte';
+	import Leaf from '$lib/Leaf.svelte';
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
 	// ║                                                                        ║
@@ -222,10 +223,10 @@
 			<div class="flex flex-col justify-center items-center my-auto mx-auto w-full h-full">
 				
 				<!--  TODO: ADD CONDITIONAL DEV BORDERS FOR SPACING border border-8 border-red-300/20  -->
-				<div class="flex gap-12 h-[450px] items-center ">
+				<div class="flex gap-12 h-[480px] items-center ">
 					<SidebarUser />
 					<div class="flex flex-col h-full justify-between ">
-						<button onclick={() => mapOpen = !mapOpen} class="relative z-30 mx-auto cursor-pointer hover:bg-taupe-300 flex flex-col bg-taupe-200 px-4 py-2 border-neutral-800 rounded-md border flex-col text-left gap-1">
+						<button onclick={() => mapOpen = !mapOpen} class="relative z-30 mx-auto cursor-pointer hover:bg-taupe-300 flex flex-col bg-amber-50 px-4 py-2 border-amber-800 rounded-md border flex-col text-left gap-1">
 							<div class="flex items-center mx-auto gap-2 justify-between">
 								<!-- <p class="text-xs text-[10px] font-thin">Map</p>
 								<div class="text-[10px] text-xs italic font-thin">/</div> -->
@@ -245,6 +246,13 @@
 
 							<div class="relative z-20 w-24 h-24 rounded-full bg-linear-to-br from-taupe-500 via-taupe-600 to-taupe-500 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),0_2px_4px_rgba(0,0,0,0.4)]"></div>
 						</div>
+
+						<!-- <div class="shadow-3xl bg-radial absolute inset-0 right-72 top-6">
+							<div class="bg-brand-surface-blue-900 border-brand-surface-blue-600 w-max h-max rounded-md border p-1">
+								<Leaf width={32} height={32} />
+							
+							</div>
+						</div> -->
 
 						<div class="campfire-wrap absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
 							<div class="campfire relative flex items-center justify-center">

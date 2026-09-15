@@ -34,16 +34,23 @@
         <div class="flex flex-col gap-1.5">
             <!-- TODO: Consolidate (?) design -->
             <div class="flex items-end justify-between">
-                <p class="font-extrabold text-xs text-white">Level 23</p>
+                <p class="font-extrabold text-xs text-white">Level 2</p>
                 <p class="text-neutral-300 text-xs text-[10px]">1,250 XP until next level</p>
             </div>
             <div class="relative h-3">
-                <div class=" absolute w-full h-3 bg-blue-300 bg-linear-to-t from-green-800 saturate-200 via-green-700 to-white to-300% rounded-sm border border-neutral-500"></div>
+                <div class="absolute z-10 w-full h-3 bg-blue-300 bg-linear-to-t from-neutral-800 saturate-200 via-neutral-700 to-white to-300% rounded-sm border border-neutral-500"></div>
+                <div class="absolute z-20 w-[28%]  h-3 bg-brand-sky bg-linear-to-b from-brand-green-800  via-blue-600 to-white to-400% rounded-sm rounded-r-none border border-neutral-500 border-r-white"></div>
 
+                <div class="absolute inset-0 z-30 flex justify-evenly pointer-events-none border-none saturate-200">
+                    <div class="w-px h-full bg-blue-600/90"></div>
+                    <div class="w-px h-full bg-blue-600/90"></div>
+                    <div class="w-px h-full bg-blue-600/90"></div>
+                    <div class="w-px h-full bg-blue-600/90"></div>
+                </div>
             </div>
         </div>
 
-        <button onclick={() => (game.renderer.state = "encounter")}>SWITCH TO ENCOUNTER</button>
+        <!-- <button onclick={() => (game.renderer.state = "encounter")}>SWITCH TO ENCOUNTER</button> -->
         <!-- ok this kinda shit lmao ill look into it -->
     </div>
 </div>
