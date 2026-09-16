@@ -5,7 +5,7 @@
 
 </script>
 <div class="h-full bg-brand-surface-blue-800 rounded-md border border-brand-blue/70 shadow-lg shadow-brand-blue-600/30 w-72 flex flex-col">
-    <div class="flex flex-col gap-2 h-ful p-4">
+    <div class="flex flex-col gap-2 h-full p-4">
         <!-- <p class="text-xs text-neutral-500">Afternoon adventurer.</p> -->
         <div class="flex items-center justify-between">
             <!-- TODO: EXPAND upon this idea -->
@@ -29,9 +29,9 @@
             </div> -->
         </div>
 
-        <div class="h-[1px] w-full bg-brand-surface-blue-600 mt-1"></div>
+        <div class="h-[1px] w-full bg-brand-surface-blue-600 my-2"></div>
 
-        <div class="flex flex-col gap-1.5">
+        <div class="flex flex-col gap-2">
             <!-- TODO: Consolidate (?) design -->
             <div class="flex items-end justify-between">
                 <p class="font-extrabold text-xs text-white">Level 2</p>
@@ -49,6 +49,90 @@
                 </div>
             </div>
         </div>
+
+        <div class="h-[1px] w-full bg-brand-surface-blue-600 my-2"></div>
+
+
+         <div class="flex mb-1">
+            <p class=" text-xs text-[10px]  text-neutral-300">Activity</p>
+        </div>
+        <div class="flex flex-col gap-3">
+           
+
+
+
+            <div class="flex w-full items-center gap-2">
+                <div class="flex items-center w-full gap-2">
+                    <div class="rounded-sm bg-brand-surface-blue-700 border border-brand-gold h-7 w-7">
+
+                    </div>
+                    
+                    <div class="flex flex-col justify-between">
+                        <p class="text-xs text-neutral-100">Quest Completed</p>
+                        <p class="text-xs italic text-neutral-300 text-[10px]">Training Grounds</p>
+                    </div>
+                </div>
+                <p class=" text-xs text-neutral-400 text-nowrap font-light text-[10px]">2m ago</p>
+            </div>
+
+            <div class="flex w-full items-center gap-2">
+                <div class="flex items-center w-full gap-2">
+                    <div class="rounded-sm bg-brand-surface-blue-700 border border-brand-blue h-7 w-7">
+
+                    </div>
+                    
+                    <div class="flex flex-col justify-between">
+                        <p class="text-xs text-neutral-100">Area Unlocked</p>
+                        <p class="text-xs italic text-neutral-300 text-[10px]">The Caves Of Triangulus</p>
+                    </div>
+                </div>
+                <p class=" text-xs text-neutral-400 text-nowrap font-light text-[10px]">1h ago</p>
+            </div>
+
+            <div class="flex w-full items-center gap-2">
+                <div class="flex items-center w-full gap-2">
+                    <div class="rounded-sm bg-brand-surface-blue-700 border border-brand-crimson h-7 w-7">
+
+                    </div>
+                    
+                    <div class="flex flex-col justify-between">
+                        <p class="text-xs text-neutral-100">Encounter Completed</p>
+                        <p class="text-xs italic text-neutral-300 text-[10px]">Overly Confident Triangle</p>
+                    </div>
+                </div>
+                <p class=" text-xs text-neutral-400 text-nowrap font-light text-[10px]">2m ago</p>
+            </div>
+        </div>
+
+        <div class="h-[1px] w-full bg-brand-surface-blue-600 my-2 mt-10"></div>
+
+
+         <div class="flex grow mb-1">
+            <p class=" text-xs text-[10px]  text-neutral-300">Masteries</p>
+        </div>
+
+        <div class="flex h-full gap-12">
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rotate-45 bg-blue-600 border border-blue-300"></div>
+                    <p class="text-xs text-white">0</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rotate-45 bg-brand-orange border border-white"></div>
+                    <p class="text-xs text-white">4</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rotate-45 bg-neutral-600 border border-neutral-400"></div>
+                    <p class="text-xs text-white">2</p>
+                </div>
+            </div>
+            <div class="w-full bg-brand-surface-blue-700 border border-brand-surface-blue-600 p-2">
+                <p class="text-blue-200 font-extrabold text-xs text-[10px]">Focus</p>
+            </div>
+        </div>
+        
 
         <!-- <button onclick={() => (game.renderer.state = "encounter")}>SWITCH TO ENCOUNTER</button> -->
         <!-- ok this kinda shit lmao ill look into it -->
