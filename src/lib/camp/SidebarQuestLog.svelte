@@ -43,7 +43,7 @@
 }
 </script>
 
-<div class="h-full bg-brand-surface-blue-800 rounded-md border border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72 flex flex-col">
+<div class="h-full bg-brand-surface-blue-900 rounded-md border border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72 flex flex-col">
   <div class="px-4 py-3 border-b border-brand-gold/20">
     <h2 class="text-sm uppercase tracking-wide text-brand-gold font-semibold">Quest Log</h2>
   </div>

@@ -249,10 +249,10 @@
 								<p class="text-xs text-[10px]">The Caves Of Triangulus</p>
 							</div>
 							<div class="flex justify-between gap-4">
-								<p class=" text-sm mx-auto font-semibold text-neutral-800 text-nowrap">The Entrance</p>
+								<p class=" text-sm font-semibold text-neutral-800 text-nowrap">The Entrance</p>
 								<!-- TODO: more minimalistic way of displaying region progres?-->
 								<!-- bg-brand-surface-blue-800 border rounded-sm border-blue-800/20 px-2 -->
-								<div class="flex items-center justify-center font-thin text-amber-900  text-xs">
+								<div class="flex items-center justify-center  text-neutral-700  text-xs">
 									2 / 7 Quests
 								</div>
 							</div>
@@ -273,11 +273,11 @@
 							<div class="relative z-20 w-24 h-24 rounded-full bg-linear-to-br from-taupe-500 via-taupe-600 to-taupe-500 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),0_2px_4px_rgba(0,0,0,0.4)]"></div>
 						</div>
 						
-							<div class="w-full absolute left-0 z-40">
+							<!-- <div class="w-full absolute left-0 z-40">
 								<div class="  h-[450px] w-full z-30 bg-blue-100">
 
 								</div>
-							</div>
+							</div> -->
 
 						<!-- <div class="shadow-3xl bg-radial absolute inset-0 right-72 top-6">
 							<div class="bg-brand-surface-blue-900 border-brand-surface-blue-600 w-max h-max rounded-md border p-1">
