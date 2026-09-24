@@ -31,6 +31,7 @@
 	import MapOverlay from '$lib/map/MapOverlay.svelte';
 	import SidebarUser from '$lib/camp/SidebarUser.svelte';
 	import Leaf from '$lib/Leaf.svelte';
+	import MapButton from '$lib/map/MapButton.svelte';
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
 	// ║                                                                        ║
@@ -219,7 +220,7 @@
 
 <Desktop>
 	{#if game.renderer.state == "camp" }
-		<div class="w-screen h-screen flex items-center justify-center pb-24">
+		<div class="w-full h-screen flex items-center justify-center pb-24">
 			<div class="flex flex-col justify-center items-center my-auto mx-auto w-full h-full">
 				
 				<!--  TODO: ADD CONDITIONAL DEV BORDERS FOR SPACING border border-8 border-red-300/20  -->
@@ -240,32 +241,12 @@
 								</div>
 							</div>
 						{/if}
-						<button onclick={() => mapOpen = !mapOpen} class="relative z-50 mx-auto cursor-pointer hover:bg-taupe-300 flex flex-col bg-taupe-50 px-4 py-2 border-amber-800 rounded-md border flex-col text-left gap-1">
-							<div class="flex items-center text-neutral-800 mx-auto gap-2 justify-between">
-								<!-- <p class="text-xs text-[10px] font-thin">Map</p>
-								<div class="text-[10px] text-xs italic font-thin">/</div> -->
-								<p class="text-xs text-[10px]">The Greenwoods</p>
-								<div class=" text-xs italic font-thin">/</div>
-								<p class="text-xs text-[10px]">The Caves Of Triangulus</p>
-							</div>
-							<div class="flex justify-between gap-4">
-								<p class=" text-sm font-semibold text-neutral-800 text-nowrap">The Entrance</p>
-								<!-- TODO: more minimalistic way of displaying region progres?-->
-								<!-- bg-brand-surface-blue-800 border rounded-sm border-blue-800/20 px-2 -->
-								<div class="flex items-center justify-center  text-neutral-700  text-xs">
-									2 / 7 Quests
-								</div>
-							</div>
-							
-							
-
-
-							<!-- 
-							OLD OVERLAY fullscreen. want to go for fixed grid approach instead
-							{#if mapOpen}
-								<MapOverlay />
-							{/if} -->
-						</button>
+						<MapButton
+							questsDone={2}
+							questsTotal={7}
+							exits={{ n: true, e: true, s: false, w: true }}
+							onmove={(dir) => console.log('move', dir)}
+						/>
 						<div class="camp-stage relative">
 							<div class="camp-base flex items-center justify-center relative z-30 rounded-[80px] bg-linear-to-t from-green-900 via-green-900 to-neutral-900 to-[250%]">
 							<div class="camp-shadow absolute z-10 rounded-[40px] bg-green-900/30 mx-auto blur-xl"></div>

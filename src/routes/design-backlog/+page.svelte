@@ -1,7 +1,12 @@
+<script>
+	import MasteryBadge from "$lib/masteries/MasteryBadge.svelte";
+	import MasteryCard from "$lib/masteries/MasteryCard.svelte";
+
+</script>
 
 
 
-<div class="flex flex-col gap-6 p-6">
+<div class="flex flex-col gap-6 p-6 h-[2500px]">
     <p class="text-xs font-semibold">Window</p>
 
         <div class="w-64 h-72 bg-brand-surface-blue-900 rounded-sm border border-neutral-500">
@@ -33,6 +38,14 @@
             </div>
             <p class="absolute text-xs z-20 text-white font-black">IV</p>
         </div>
+    </div>
+    <MasteryBadge size="tiny" level={4} mastery="expert" />
+
+    <MasteryBadge level={1} mastery="adept" />
+    <MasteryBadge level={5} mastery="apprentice" />
+
+    <div class="w-[400px] ">
+        <MasteryCard title="Right Triangles" subject="Trigonometry" mastery="apprentice" level={2} theme="mastery" />
     </div>
     
 </div>

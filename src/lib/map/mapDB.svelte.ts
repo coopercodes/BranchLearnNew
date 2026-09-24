@@ -140,7 +140,9 @@ type RegionNode = {
 // default fallback, and override
 // 
 
-const satMathematics = {
+
+export const satWorld = {
+    'sat-math': {
     id: "sat-math",
     title: "SAT Mathematics",
     description: "",
@@ -153,7 +155,6 @@ const satMathematics = {
                 // inside of the zone MAP is where the rendering logic is stored
                 // for an early iteration this can just be an actual 100x50 array
                 // but for future logic a basic compression algorithim can be built
-                
             },
             // nodes are the things within a given panel
             // such as 
@@ -228,6 +229,7 @@ const satMathematics = {
 
         }
     }
+    }
 }
 
 // Renderer should have maps saved for each unique REGION path
@@ -241,6 +243,10 @@ export const MapCordsDB = {
     "0,1": "pythagorean-marshes"
 };
 
+
+const worlds = {
+    'sat': satWorld
+}
 
 
 

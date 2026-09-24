@@ -1,6 +1,8 @@
 <script>
 	import { GameState, game } from "$lib/game/index.svelte";
 	import MOBABar from "$lib/layout-components/moba/MOBABar.svelte";
+	import MasteryBadge from "$lib/masteries/MasteryBadge.svelte";
+	import MasteryCard from "$lib/masteries/MasteryCard.svelte";
 	import BranchMark from "$lib/toast/BranchMark.svelte";
 
 </script>
@@ -90,12 +92,12 @@
 
             <div class="flex w-full items-center gap-2">
                 <div class="flex items-center w-full gap-2">
-                    <div class="rounded-sm bg-brand-surface-blue-700 border border-brand-gold h-7 w-7">
+                    <div class="rounded-sm bg-brand-surface-blue-800 border border-neutral-500 h-7 w-7">
 
                     </div>
                     
                     <div class="flex flex-col justify-between">
-                        <p class="text-xs text-neutral-100">Quest Completed</p>
+                        <p class="text-xs text-neutral-100">Quest</p> <!-- Completed -->
                         <p class="text-xs italic text-neutral-300 text-[10px]">Training Grounds</p>
                     </div>
                 </div>
@@ -104,12 +106,12 @@
 
             <div class="flex w-full items-center gap-2">
                 <div class="flex items-center w-full gap-2">
-                    <div class="rounded-sm bg-brand-surface-blue-700 border border-brand-blue h-7 w-7">
+                    <div class="rounded-sm bg-brand-surface-blue-800 border border-neutral-500  h-7 w-7">
 
                     </div>
                     
                     <div class="flex flex-col justify-between">
-                        <p class="text-xs text-neutral-100">Area Unlocked</p>
+                        <p class="text-xs text-neutral-100">Area</p> <!-- Unlocked -->
                         <p class="text-xs italic text-neutral-300 text-[10px]">The Caves Of Triangulus</p>
                     </div>
                 </div>
@@ -118,47 +120,101 @@
 
             <div class="flex w-full items-center gap-2">
                 <div class="flex items-center w-full gap-2">
-                    <div class="rounded-sm bg-brand-surface-blue-700 border border-brand-crimson h-7 w-7">
+                    <div class="rounded-sm bg-brand-surface-blue-800 border border-neutral-500  h-7 w-7">
 
                     </div>
                     
                     <div class="flex flex-col justify-between">
-                        <p class="text-xs text-neutral-100">Encounter Completed</p>
+                        <p class="text-xs text-neutral-100">Encounter</p> <!-- Completed -->
                         <p class="text-xs italic text-neutral-300 text-[10px]">Overly Confident Triangle</p>
                     </div>
                 </div>
-                <p class=" text-xs text-neutral-400 text-nowrap font-light text-[10px]">2m ago</p>
+                <p class=" text-xs text-neutral-400 text-nowrap font-light text-[10px]">2h 30m ago</p>
             </div>
         </div>
 
-        <div class="h-[1px] w-full bg-brand-surface-blue-600 my-2 mt-10"></div>
+        <!-- <div class="h-[1px] w-full bg-brand-surface-blue-600 my-2 mt-10"></div> -->
 
+        <div class="grow h-full"></div>
+        
+        <div class="flex items-center justify-between">
+            <p class=" text-sm font-semibold text-white">Skills</p>
+            <!-- <div class="px-2 text-xs text-white items-center justify-center flex rounded-sm bg-brand-surface-blue-600 border-brand-blue/50 border">View Book</div> -->
+            
+            <div class="h-[1px] w-full bg-brand-surface-blue-600 mx-4 "></div>
+            
+            <p class="text-xs text-[10px] hover:text-white text-neutral-200 text-nowrap cursor-pointer">Open skills</p>
 
-         <div class="flex grow mb-1">
-            <p class=" text-xs text-[10px]  text-neutral-300">Masteries</p>
         </div>
 
-        <div class="flex h-full gap-12">
-            <div class="flex flex-col gap-2">
+        <div class="flex h-full gap-4">
+
+            <div class="flex flex-col gap-1 w-full bg-sky-950/20 p-2 rounded-sm border-sky-700 border cursor-pointer hover:border-sky-400 hover:bg-sky-900/60">
+                <!--
+                    Plural focuses distracting / too much info at once.
+
+                    I like the idea of a recent focus, allowing users to see a recently trained skill / relevant quest.
+                -->
+                <div class="flex items-center">
+                    <p class="text-white text-xs font-thin text-[10px]">
+                        Recent
+                    </p>
+                </div>
+
+                
+                <div class="flex items-center gap-2">
+                    <p class="text-sm font-semibold text-white">Right Triangles</p>
+                    <MasteryBadge size="tiny" shadow={true} level={4} />
+
+                </div>
+
+                <!-- <div class="flex items-center gap-2">
+                    <div class="flex items-center justify-center flex-col">
+                        <p class="text-xs text-[10px] text-neutral-50">Apprentice II</p>
+                    </div>
+                </div> -->
+
+                <div class="text-xs text-[10px] text-neutral-50">The ability to find missing side lengths and angles within right triangles.</div>
+
+                <div class="h-full grow"></div>
+                <!-- <div class="flex grow mt-auto">
+                    <p class="text-xs text-[10px] hover:text-white text-neutral-200 cursor-pointer">View In Skills</p>
+                </div> -->
+            </div>
+        
+            <div class="flex flex-col  justify-evenly gap-2 bg-surface-blue-600 p-2 rounded-sm border-sky-900 border cursor-pointer hover:border-sky-400 hover:bg-sky-950">
+
+                
                 <div class="flex items-center gap-2">
                     <!-- TODO: make this shit the emerald one-->
-                    <div class="w-2 h-2 rotate-45 bg-blue-600 border border-blue-300"></div>
-                    <p class="text-xs text-white">0</p>
+                    <MasteryBadge size="tiny" mastery="expert" shadow={true} showLevel={false} />
+                    <!-- <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">0 <span class="text-xs text-[10px] font-light">/ 32</span></p> -->
+                
+                     <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">0</p>
+
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rotate-45 bg-brand-orange border border-white"></div>
-                    <p class="text-xs text-white">4</p>
+                    <MasteryBadge size="tiny" mastery="adept" shadow={true} showLevel={false} />
+                    <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">0</p>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rotate-45 bg-neutral-600 border border-neutral-400"></div>
-                    <p class="text-xs text-white">2</p>
+                <div class="flex items-center gap-2 w-full">
+                    <MasteryBadge size="tiny" mastery="apprentice" shadow={true} showLevel={false}/>
+                    <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">2</p>
                 </div>
+
+                <!-- <div class="flex">
+                    Open Masteries
+                </div> -->
             </div>
-            <div class="flex w-full bg-brand-surface-blue-700 border border-brand-surface-blue-600 p-2">
-                <p class="text-neutral-100 font-extrabold text-xs text-[10px]">Focus</p>
-            </div>
+            <!-- <div class="flex w-full bg-brand-surface-blue-700 border border-brand-surface-blue-600 p-2">
+                
+            </div> -->
+            <!-- <div class="w-px bg-brand-surface-blue-600 my-4"></div> -->
+            
+
+            
         </div>
         
 

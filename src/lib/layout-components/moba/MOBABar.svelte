@@ -354,14 +354,12 @@
 	*/
 	
 	.hud-dock {
-		position: fixed !important;
-		bottom: 0px;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 50;
-		/* overflow:hidden; */
-	}
-
+	position: absolute !important;
+	bottom: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 50;
+}
 	.pill-count {
 		font-size: 12px;
 		font-weight: 800;

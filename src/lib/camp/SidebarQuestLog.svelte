@@ -44,8 +44,21 @@
 </script>
 
 <div class="h-full bg-brand-surface-blue-900 rounded-md border border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72 flex flex-col">
-  <div class="px-4 py-3 border-b border-brand-gold/20">
-    <h2 class="text-sm uppercase tracking-wide text-brand-gold font-semibold">Quest Log</h2>
+  <div class="flex items-center gap-16 justify-between p-2 border-b"> <!--  border-brand-gold/20 -->
+      <button class="flex grow items-center justify-between gap-2 text-sm  cursor-pointer bg-brand-surface-blue-600/50 border border-brand-gold/60 rounded-md px-2 py-1 text-white">
+        Quests
+        <div class="px-2 flex items-center aspect-square justify-center scale-60 bg-brand-gold/15 ring ring-brand-gold rotate-45 font-extrabold text-black text-xs">
+          <p class="-rotate-45 scale-180 text-white font-extrabold text-[10px] text-xs">1</p>
+        </div>
+      </button>
+
+      <button class="flex items-center gap-2 text-sm cursor-pointer  rounded-md px-2 py-1 border border-brand-surface-blue-600 text-neutral-300">
+        Train
+        <div class="px-2 flex items-center justify-center h-4.5 bg-brand-blue/30 font-extrabold text-neutral-300 rounded-sm text-xs">
+          3
+        </div>
+
+      </button>
   </div>
 
   <div class="flex-1 overflow-y-auto px-3 py-2 flex flex-col gap-1">

@@ -9,6 +9,21 @@
   }
 }
 
+@utility text-halo {
+	--halo: rgb(0 0 0 / 0.65);
+	--halo-glow: 0 0 0 transparent;
+	text-shadow:
+		1px 0 0 var(--halo),
+		-1px 0 0 var(--halo),
+		0 1px 0 var(--halo),
+		0 -1px 0 var(--halo),
+		1px 1px 0 var(--halo),
+		-1px -1px 0 var(--halo),
+		1px -1px 0 var(--halo),
+		-1px 1px 0 var(--halo),
+		var(--halo-glow);
+}
+
 @theme {
   --font-sans: 'Krub', sans-serif;
   /* Neutrals */
