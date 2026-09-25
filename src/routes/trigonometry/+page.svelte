@@ -32,6 +32,12 @@
 	import SidebarUser from '$lib/camp/SidebarUser.svelte';
 	import Leaf from '$lib/Leaf.svelte';
 	import MapButton from '$lib/map/MapButton.svelte';
+	import { fade } from 'svelte/transition';
+	import BookshelfPanel from '$lib/bookshelf/BookshelfPanel.svelte';
+
+	let skillsWindowOpen = $state(false);
+
+
 	// ╔══════════════════════════════════════════════════════════════════════╗
 	// ║  THE GRAPH IS THE ALGORITHM                                            ║
 	// ║                                                                        ║
@@ -213,9 +219,6 @@
 			transform: translate(var(--drift, 0), -22px) scale(0.2);
 		}
 	}
-
-
-
 </style>
 
 <Desktop>
@@ -318,16 +321,100 @@
 				<!-- <div class="w-1.5 h-1.5 bg-amber-400/80 border border-amber-400 rotate-45"></div> -->
 				<SelectedQuest />
 			</div>
-		</div>
+			{#if skillsWindowOpen}
+				<div class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-8">
+					<!-- Backdrop -->
+					<button
+						type="button"
+						aria-label="Close map"
+						tabindex="-1"
+						onclick={() => (skillsWindowOpen = false)}
+						class="absolute inset-0 cursor-default bg-neutral-900/25"
+						transition:fade={{ duration: 150 }}
+					></button>
+
+					<!-- Panel: width is capped by viewport height so the 16:9 grid always fits -->
+					<div
+						role="dialog"
+						aria-modal="true"
+						aria-labelledby="map-title"
+						class="relative flex w-[min(100%,calc((70dvh-9rem)*16/9))] flex-col overflow-hidden rounded-lg border border-amber-800 bg-taupe-50 shadow-xl mb-12"
+						transition:scale={{ duration: 180, start: 0.96, easing: cubicOut }}
+					>
+						<!-- Header -->
+						<header class="flex items-center justify-between gap-4 border-b border-amber-800/30 px-5 py-3">
+							<div>
+								<h2 id="map-title" class="text-lg font-semibold text-neutral-800">Temp Region</h2>
+								<p class="flex items-center gap-1.5 text-xs text-neutral-600">
+									<span>Temp Zone</span>
+									<span class="font-thin italic">/</span>
+									<span>Temp Area</span>
+								</p>
+							</div>
+							<div class="flex items-center gap-4">
+								{#if questsTotal > 0}
+									<p class="text-xs text-nowrap text-neutral-600">{questsDone}/{questsTotal} quests</p>
+								{/if}
+								<button
+									type="button"
+									onclick={() => (open = false)}
+									class="cursor-pointer rounded-md border border-amber-800/40 px-2.5 py-1 text-xs text-neutral-700 hover:bg-taupe-200 focus-visible:outline-2 focus-visible:outline-amber-800"
+								>
+									Close
+								</button>
+							</div>
+						</header>
+
+						<!-- Map grid: fills everything under the header -->
+						<section class="relative aspect-video w-full">
+							<div
+								class="grid h-full w-full gap-px bg-amber-800/10 p-px"
+								style="grid-template-columns: repeat({COLS}, minmax(0, 1fr)); grid-template-rows: repeat({ROWS}, minmax(0, 1fr));"
+							>
+								{#each tiles as tile (`${tile.x},${tile.y}`)}
+									{@const isCurrent = tile.x === current.x && tile.y === current.y}
+									<div
+										class={isCurrent ? 'bg-amber-100 outline-2 -outline-offset-2 outline-amber-800' : 'bg-taupe-50'}
+										aria-current={isCurrent ? 'location' : undefined}
+									>
+										<!-- tile content goes here later -->
+									</div>
+								{/each}
+							</div>
+
+							<!-- Compass, floating over the bottom-right of the grid -->
+							<!-- <div
+								class="absolute right-3 bottom-3 grid w-20 grid-cols-3 grid-rows-3 gap-1 rounded-lg border border-amber-800/30 bg-taupe-50/90 p-1.5 shadow-md backdrop-blur-sm sm:w-20"
+							>
+								{#each directions as d (d.dir)}
+									<button
+										type="button"
+										onclick={() => move(d.dir)}
+										disabled={!exits[d.dir]}
+										aria-label="Travel {d.name}"
+										class="{d.pos} aspect-square cursor-pointer rounded-md border border-amber-800 bg-taupe-50 text-xs font-semibold text-neutral-800 hover:bg-taupe-300 focus-visible:outline-2 focus-visible:outline-amber-800 disabled:cursor-not-allowed disabled:border-amber-800/20 disabled:text-neutral-400 disabled:hover:bg-taupe-50"
+									>
+										{d.label}
+									</button>
+								{/each}
+								<div class="col-start-2 row-start-2 flex items-center justify-center" aria-hidden="true">
+									<span class="size-2 rounded-full bg-amber-800"></span>
+								</div>
+							</div> -->
+						</section>
+					</div>
+				</div>
+			{/if}
+					</div>
 	{:else if game.renderer.state == "encounter"}
 		<div class="p-4 bg-blue-400">
 			<div class="text-3xl">SWITCHED TO ENCOUNTER</div>
 		</div>
-	{:else if gameState.renderer == "quest"}
+	{:else if game.renderer.state == "quest"}
 		<div class="p-4 bg-blue-400">
 			<div class="text-3xl">SWITCHED TO QUEST</div>
 		</div>
-	{:else if gameState.renderer == "dev-default"}
+	{:else if game.renderer.state == "dev-default"}
 		<TimerIsland />
 		<!-- Keyed on the visit so advancing crossfades with a fade+drift: the old
 	     panel sinks out, the new one rises in. Both absolutely positioned so the
@@ -350,6 +437,10 @@
 				{/if}
 			</div>
 		{/key}
+	
+	
+	{:else if game.renderer.state == "bookshelf"}
+		<BookshelfPanel />
 	{/if}
 	
 	

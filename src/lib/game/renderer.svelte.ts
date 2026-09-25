@@ -7,7 +7,7 @@ import type { GameState } from './index.svelte';
 // NOTE 2: I don't like the name "type", renderer is one thing that cycles through different rendering states / logic
 
 
-type RendererStates = "camp" | "encounter" | "quest" | "dev-default";
+type RendererStates = "camp" | "encounter" | "quest" | "dev-default" | "bookshelf";
 
 type Renderer = { 
     state: RendererStates; 
