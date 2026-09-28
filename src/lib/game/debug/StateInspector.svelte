@@ -31,24 +31,26 @@
 {/snippet}
 
 {#snippet toolbar(expanded: boolean)}
-	<div class="flex items-center gap-1 border-b border-neutral-700 bg-neutral-800 px-2 py-1">
-		<span class="mr-auto font-mono text-xs text-neutral-400">game state</span>
-
-		<button
-			class="rounded px-1.5 py-0.5 text-xs text-neutral-300 hover:bg-neutral-700"
-			onclick={() => (mode = mode === 'tree' ? 'raw' : 'tree')}
-		>
-			{mode === 'tree' ? 'raw' : 'tree'}
-		</button>
-
-		<button
-			class="rounded px-1.5 py-0.5 text-xs text-neutral-300 hover:bg-neutral-700"
-			onclick={copy}
-		>
-			{copied ? '✓' : 'copy'}
-		</button>
+	<button onclick={() => (collapsed = !collapsed)} class="flex cursor-pointer items-center gap-1 px-2 py-1">
+		<span class="mr-auto font-mono text-xs text-neutral-300">dev</span>
 
 		{#if expanded}
+			<button
+				class="rounded px-1.5 py-0.5 text-xs text-neutral-300 hover:bg-neutral-700"
+				onclick={() => (mode = mode === 'tree' ? 'raw' : 'tree')}
+			>
+				{mode === 'tree' ? 'raw' : 'tree'}
+			</button>
+
+			<button
+				class="rounded px-1.5 py-0.5 text-xs text-neutral-300 hover:bg-neutral-700"
+				onclick={copy}
+			>
+				{copied ? '✓' : 'copy'}
+			</button>
+		{/if}
+
+		<!-- {#if expanded}
 			<button
 				class="rounded px-1.5 py-0.5 text-xs text-neutral-300 hover:bg-neutral-700"
 				onclick={() => dialog?.close()}>✕</button
@@ -60,15 +62,16 @@
 			>
 			<button
 				class="rounded px-1.5 py-0.5 text-xs text-neutral-300 hover:bg-neutral-700"
-				onclick={() => (collapsed = !collapsed)}>{collapsed ? '▴' : '▾'}</button
+				>{collapsed ? '▴' : '▾'}</button
 			>
-		{/if}
-	</div>
+		{/if} -->
+		</button>
 {/snippet}
 
 <div
-	class="fixed bottom-4 left-4 z-50 flex w-[320px] flex-col overflow-hidden rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl"
+	class="fixed bottom-4 left-4 z-50 flex w-[320px] flex-col overflow-hidden rounded-lg"
 	class:h-[400px]={!collapsed}
+	class:bg-neutral-800={!collapsed}
 >
 	{@render toolbar(false)}
 	{#if !collapsed}

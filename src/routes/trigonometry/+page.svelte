@@ -319,7 +319,10 @@
 
 
 				<!-- <div class="w-1.5 h-1.5 bg-amber-400/80 border border-amber-400 rotate-45"></div> -->
-				<SelectedQuest />
+				<!-- 
+				THIS IS WHERE QUESTS WERE ORIGINALLY SHOW
+				<SelectedQuest /> 
+				-->
 			</div>
 			{#if skillsWindowOpen}
 				<div class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-8">
@@ -446,10 +449,11 @@
 	
 </Desktop>
 
-<GraphDevTools
+
+<!-- <GraphDevTools
 	active={active ? { panel: active.panel, visit: active.visit } : null}
 	resolved={resolved !== null}
 	onForce={handleResult}
 	onReset={restart}
-/>
+/> -->
 

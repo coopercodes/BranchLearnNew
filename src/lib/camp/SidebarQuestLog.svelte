@@ -2,6 +2,7 @@
   import { slide } from 'svelte/transition';
   import { SvelteSet } from 'svelte/reactivity';
   import { game } from '$lib/game/index.svelte';
+	import CurrentQuestWindow from './CurrentQuestWindow.svelte';
 
   // Swap this for real data / a store as needed.
   const categories = [
@@ -43,7 +44,9 @@
 }
 </script>
 
-<div class="h-full bg-brand-surface-blue-900 rounded-md border border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72 flex flex-col">
+<div class="relative h-full bg-brand-surface-blue-900 rounded-md border border-brand-gold/70 shadow-lg shadow-brand-surface-blue-600/30 w-72 flex flex-col">
+    <CurrentQuestWindow />
+  
   <div class="flex items-center gap-16 justify-between p-2 border-b"> <!--  border-brand-gold/20 -->
       <button class="flex grow items-center justify-between gap-2 text-sm  cursor-pointer bg-brand-surface-blue-600/50 border border-brand-gold/60 rounded-md px-2 py-1 text-white">
         Quests
@@ -66,22 +69,23 @@
       <div class="flex flex-col">
         <button
           type="button"
-          class="flex items-center justify-between w-full py-2"
+          class="flex cursor-pointer items-center justify-between w-full py-2"
           onclick={() => toggleSection(category.name)}
           aria-expanded={openSections.has(category.name)}
         >
-          <div class="flex items-center gap-2">
-            <!-- <div
-              class="w-2 h-2 rotate-45 border shrink-0 transition-colors
-                {category.daily ? 'border-brand-gold' : 'border-neutral-500'}
-                {openSections.has(category.name) ? (category.daily ? 'bg-brand-gold' : 'bg-neutral-500') : ''}"
-            ></div> -->
+          <div class="flex grow items-center gap-2">
+            
             <span
               class="text-xs uppercase tracking-wide font-semibold
                 {category.daily ? 'text-brand-gold' : 'text-neutral-300'}"
             >
               {category.name}
             </span>
+            <div
+              class="flex grow mx-4 h-1px  border shrink-0 transition-colors
+                {category.daily ? 'border-brand-gold' : 'border-neutral-500'}
+                {openSections.has(category.name) ? (category.daily ? 'bg-brand-gold' : 'bg-neutral-500') : ''}"
+            ></div>
           </div>
           <svg
             class="w-3 h-3 text-neutral-500 transition-transform {openSections.has(category.name) ? 'rotate-180' : ''}"
@@ -99,7 +103,7 @@
               {@const isSelected = selectedQuest === key}
               <button
                 type="button"
-                class="flex flex-col gap-1 w-full text-left rounded-sm px-1.5 py-1 -mx-1.5 transition-colors
+                class="flex flex-col cursor-pointer gap-1 w-full text-left rounded-sm px-1.5 py-1 -mx-1.5 transition-colors
                   {isSelected ? 'bg-brand-surface-blue-700/60' : 'hover:bg-brand-surface-blue-700/30'}"
                 onclick={() => selectQuest(key, quest)}
                 aria-pressed={isSelected}
