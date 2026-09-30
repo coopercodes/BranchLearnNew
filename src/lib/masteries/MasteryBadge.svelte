@@ -1,7 +1,7 @@
 <script lang="ts">
 	type Mastery = 'apprentice' | 'adept' | 'expert';
 	type Level = 1 | 2 | 3 | 4 | 5;
-	type Size = 'tiny' | 'small' | 'normal';
+	type Size = 'supertiny' | 'tiny' | 'small' | 'normal';
 
 	let {
 		mastery = 'apprentice',
@@ -28,6 +28,13 @@
 	// Box ≈ gem × √2 so the rotated diamond's footprint fits without overflow.
 	// --g scales the outer glow and drop shadow so small gems don't get swamped.
 	const SIZES: Record<Size, SizeStyle> = {
+		supertiny: {
+			box: 'size-[14px] [--g:0.5]',
+			gem: 'size-2',
+			radius: 'rounded-[2px]',
+			streak: '-left-0.5 w-1',
+			text: 'text-[9px]'
+		},
 		tiny: {
 			box: 'size-[17px] [--g:0.5]',
 			gem: 'size-3',

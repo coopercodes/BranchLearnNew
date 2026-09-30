@@ -22,6 +22,7 @@
 	import HealthBar from './HealthBar.svelte';
 	import RightIcons from './RightIcons.svelte';
 	import { desktop, APPS, type AppDef } from '$lib/os/windowStore.svelte';
+	import ActiveIsland from './ActiveIsland.svelte';
 
 	export interface Skill {
 		id: string;
@@ -173,17 +174,8 @@
 			</div>
 		</div> -->
 
+		<ActiveIsland />
 		
-			<div onclick={() => dockClick(questLog.app)} class="bg-brand-surface-blue-800 hover:bg-brand-surface-blue-700 bg-linear-to-br cursor-pointer flex gap-1 flex-col w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
-				<div class="flex items-center gap-2">
-					<div class="w-1.5 h-1.5 bg-amber-400 rotate-45"></div>
-					<p class="text-[9px] text-sm font-bold text-amber-400">Active Quest</p>
-										<!-- <div class="w-1.5 h-1.5 bg-amber-400 rotate-45"></div> -->
-
-				</div>
-				<div class="text-neutral-100 text-sm italic text-[8px]">Training For Triangulon </div>
-				<p class="text-neutral-300 leading-4 text-[10px]"><span class="rounded-sm mr-[2px] py-0 text-[10px] font-extrabold">0 / 1</span> Defeat the Training Dummy</p>
-			</div>
 		<!-- <div class="bg-brand-surface-blue-800 flex items-center w-full rounded-sm p-2 border  border-brand-gold/70 m-2">
 			
 			<div class="h-[24px] bg-amber-300 w-[1px] "></div>

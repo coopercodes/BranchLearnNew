@@ -106,7 +106,7 @@
 
         <div class="grow h-full"></div> 
 
-        <div class="flex items-center justify-between">
+        <!-- <div class="flex items-center justify-between">
             <p class="text-xs font-semibold text-white">Skills</p>
             <div class="h-[1px] w-full bg-brand-surface-blue-600 mx-4"></div>
             <p class="text-xs text-[10px] hover:text-white text-neutral-200 text-nowrap cursor-pointer">Open skills</p>
@@ -130,7 +130,6 @@
 
             <div class="flex flex-col justify-evenly gap-2 bg-surface-blue-600 p-2 rounded-sm border-sky-900 border cursor-pointer hover:border-sky-400 hover:bg-sky-950">
                 <div class="flex items-center gap-2">
-                    <!-- TODO: make this the emerald one -->
                     <MasteryBadge size="tiny" mastery="expert" shadow={true} showLevel={false} />
                     <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">0</p>
                 </div>
@@ -145,14 +144,14 @@
                     <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">2</p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="h-[1px] w-full bg-brand-surface-blue-600 my-2"></div>
 
-        <button onclick={() => game.renderer.state = "bookshelf"} class="shelf-row group flex items-center justify-between gap-2 px-2 py-2 rounded-sm cursor-pointer bg-none transition-colors duration-200 hover:bg-brand-surface-blue-600">
+        <button onclick={() => game.renderer.state = "bookshelf"} class="shelf-row group flex items-center justify-between gap-2 px-2 py-2 rounded-sm cursor-pointer bg-none hover:bg-brand-surface-blue-600">
             <div class="flex flex-col items-start justify-center w-full text-white font-semibold">
-                <p class="text-xs">My Bookshelf</p>
-                <p class="text-[10px] font-thin">5 items on display</p>
+                <p class="text-xs">Bookshelf</p>
+                <p class="text-[10px] font-thin items-center"><span class="text-blue-400 font-extrabold"> The Skull of Triangulus</span> + 4</p>
             </div>
 
             <svg
@@ -199,6 +198,48 @@
                     <circle cx="26.4" cy="9.6" r="2.1" fill="currentColor" />
                     <path d="M24.9 14l.5-1.9h2l.5 1.9z" fill="currentColor" />
                 </g>
+
+                <!-- Arrowhead, with a clear gap after the shelf -->
+                <path
+                    class="head"
+                    d="M33.5 3l5 5-5 5"
+                    fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round"
+                />
+            </svg>
+        </button>
+
+        <button onclick={() => game.renderer.state = "bookshelf"} class="shelf-row group flex items-center justify-between gap-2 px-2 py-2 rounded-sm cursor-pointer bg-none hover:bg-brand-surface-blue-600">
+            <div class="flex flex-col items-start justify-center w-full text-white font-semibold">
+                <p class="text-xs">Skills</p>
+                <p class="text-[10px] font-thin text-neutral-200"><span class="font-bold text-amber-300"> Right Triangles</span> 2m ago</p>
+                <!-- <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 mt-2">
+                        <MasteryBadge size="tiny" mastery="apprentice" shadow={true} showLevel={false} />
+                        <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">0</p>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <MasteryBadge size="tiny" mastery="adept" shadow={true} showLevel={false} />
+                        <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">0</p>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <MasteryBadge size="tiny" mastery="expert" shadow={true} showLevel={false} />
+                        <p class="text-xs text-white w-max flex items-center gap-1 font-extrabold">0</p>
+                    </div>
+                </div> -->
+            </div>
+
+            <svg
+                class="h-4 w-[52px] shrink-0 overflow-visible text-zinc-400 transition-colors duration-200 group-hover:text-white"
+                viewBox="0 0 42 16"
+                aria-hidden="true"
+            >
+                <!-- Arrow shaft (resting state), retracts into the head on hover -->
+                <line
+                    class="shaft"
+                    x1="24" y1="8" x2="37.5" y2="8"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                />
 
                 <!-- Arrowhead, with a clear gap after the shelf -->
                 <path

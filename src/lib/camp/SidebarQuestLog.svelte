@@ -77,18 +77,20 @@
             
             <span
               class="text-xs uppercase tracking-wide font-semibold
-                {category.daily ? 'text-brand-gold' : 'text-neutral-300'}"
+                {category.daily ? 'text-brand-gold' : ''} 
+                {openSections.has(category.name) ?  ' text-neutral-200' : 'text-neutral-300'}"
             >
               {category.name}
             </span>
+            <p class=" text-xs {openSections.has(category.name) ?  ' text-neutral-300' : 'text-neutral-400'}">{category.quests.length}</p> <!--  quest {category.quests.length == 1 ? '' : 's'} -->
             <div
-              class="flex grow mx-4 h-1px  border shrink-0 transition-colors
-                {category.daily ? 'border-brand-gold' : 'border-neutral-500'}
-                {openSections.has(category.name) ? (category.daily ? 'bg-brand-gold' : 'bg-neutral-500') : ''}"
+              class="flex transition duration-300 grow mx-2 ml-16 h-px shrink-0 transition-colors
+                {category.daily ? 'border-brand-gold' : ''}
+                {openSections.has(category.name) ?  'bg-linear-to-r from-transparent to-neutral-400' : ' bg-linear-to-r from-transparent to-transparent '}"
             ></div>
           </div>
           <svg
-            class="w-3 h-3 text-neutral-500 transition-transform {openSections.has(category.name) ? 'rotate-180' : ''}"
+            class="w-3 h-3  transition-transform {openSections.has(category.name) ? 'rotate-180 text-white' : 'text-neutral-500'}"
             viewBox="0 0 12 12"
             fill="none"
           >
