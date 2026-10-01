@@ -168,8 +168,7 @@ export const satWorld = {
                     zones: {
                         "0,0": {
                             map: {
-
-
+                                
                             },
                             nodes: {
                                 "archery-range": {

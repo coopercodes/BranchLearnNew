@@ -1,5 +1,5 @@
 <script>
-    let { level = 3, xp = 2500, xpMax = 3200 } = $props();
+    let { level = 1, xp = 1200, xpMax = 1500 } = $props();
 
     const pct = $derived(Math.min(100, Math.max(0, (xp / xpMax) * 100)));
     const fmt = (n) => n.toLocaleString();

@@ -3,6 +3,7 @@
 	import { cubicOut } from 'svelte/easing';
     import { satWorld } from './mapDB.svelte';
     import { game } from '$lib/game/index.svelte';
+	import BranchMap from './BranchMap.svelte';
 
 	type Direction = 'n' | 'e' | 's' | 'w';
 
@@ -76,6 +77,9 @@
 		document.body.style.overflow = 'hidden';
 		return () => (document.body.style.overflow = prev);
 	});
+
+	let mapDebugActive = $state(true);
+
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
@@ -86,19 +90,25 @@
 	onclick={() => (open = true)}
 	aria-haspopup="dialog"
 	aria-expanded={open}
-	class="mx-auto flex cursor-pointer flex-col gap-0.5 rounded-md border border-amber-800 bg-taupe-50 px-4 py-2 text-left hover:bg-taupe-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800"
+	class="mx-auto flex cursor-pointer flex-col gap-0.5 rounded-md border border-amber-500 shadow-amber-800/40 shadow-2xl bg-brand-surface-blue-900 px-4 py-2 text-left w-76  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800"
 >
 	<div class="flex items-baseline justify-between gap-4">
-		<p class="text-sm font-semibold text-nowrap text-neutral-800">Temp Region Value</p>
+		<p class="text-sm font-semibold text-nowrap text-white">Temp Region Value</p>
 		{#if questsTotal > 0}
-			<p class="text-[10px] text-nowrap text-neutral-600">{questsDone}/{questsTotal} quests</p>
+			<p class="text-[10px] text-nowrap text-neutral-200">{questsDone}/{questsTotal} quests</p>
 		{/if}
+		
 	</div>
-	<p class="flex items-center gap-1.5 text-[10px] text-neutral-700">
+	<p class="flex items-center gap-1.5 text-[10px] text-neutral-300">
 		<span>Temp Zone</span>
 		<span class="font-thin italic">/</span>
 		<span>Temp Area</span>
 	</p>
+
+	{#if mapDebugActive}
+		<p class="flex text-[10px] text-nowrap text-orange-400">regionCords {game.world.regionCords}</p>
+		<p class="flex text-[10px] text-nowrap text-orange-400">region {game.world.region}</p>
+	{/if}
 </button>
 
 <!-- Overlay (sibling of the button, never nested inside it) -->
@@ -131,6 +141,10 @@
 						<span class="font-thin italic">/</span>
 						<span>Temp Area</span>
 					</p>
+					{#if mapDebugActive}
+						<p class="flex text-[10px] text-nowrap text-orange-400">regionCords {game.world.regionCords}</p>
+						<p class="flex text-[10px] text-nowrap text-orange-400">region {game.world.region}</p>
+					{/if}
 				</div>
 				<div class="flex items-center gap-4">
 					{#if questsTotal > 0}
@@ -146,43 +160,9 @@
 				</div>
 			</header>
 
+			<BranchMap />
 			<!-- Map grid: fills everything under the header -->
-			<section class="relative aspect-video w-full">
-				<div
-					class="grid h-full w-full gap-px bg-amber-800/10 p-px"
-					style="grid-template-columns: repeat({COLS}, minmax(0, 1fr)); grid-template-rows: repeat({ROWS}, minmax(0, 1fr));"
-				>
-					{#each tiles as tile (`${tile.x},${tile.y}`)}
-						{@const isCurrent = tile.x === current.x && tile.y === current.y}
-						<div
-							class={isCurrent ? 'bg-amber-100 outline-2 -outline-offset-2 outline-amber-800' : 'bg-taupe-50'}
-							aria-current={isCurrent ? 'location' : undefined}
-						>
-							<!-- tile content goes here later -->
-						</div>
-					{/each}
-				</div>
-
-				<!-- Compass, floating over the bottom-right of the grid -->
-				<!-- <div
-					class="absolute right-3 bottom-3 grid w-20 grid-cols-3 grid-rows-3 gap-1 rounded-lg border border-amber-800/30 bg-taupe-50/90 p-1.5 shadow-md backdrop-blur-sm sm:w-20"
-				>
-					{#each directions as d (d.dir)}
-						<button
-							type="button"
-							onclick={() => move(d.dir)}
-							disabled={!exits[d.dir]}
-							aria-label="Travel {d.name}"
-							class="{d.pos} aspect-square cursor-pointer rounded-md border border-amber-800 bg-taupe-50 text-xs font-semibold text-neutral-800 hover:bg-taupe-300 focus-visible:outline-2 focus-visible:outline-amber-800 disabled:cursor-not-allowed disabled:border-amber-800/20 disabled:text-neutral-400 disabled:hover:bg-taupe-50"
-						>
-							{d.label}
-						</button>
-					{/each}
-					<div class="col-start-2 row-start-2 flex items-center justify-center" aria-hidden="true">
-						<span class="size-2 rounded-full bg-amber-800"></span>
-					</div>
-				</div> -->
-			</section>
+			
 		</div>
 	</div>
 {/if}

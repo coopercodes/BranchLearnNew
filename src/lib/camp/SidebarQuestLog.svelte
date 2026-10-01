@@ -105,8 +105,8 @@
               {@const isSelected = selectedQuest === key}
               <button
                 type="button"
-                class="flex flex-col cursor-pointer gap-1 w-full text-left rounded-sm px-1.5 py-1 -mx-1.5 transition-colors
-                  {isSelected ? 'bg-brand-surface-blue-700/60' : 'hover:bg-brand-surface-blue-700/30'}"
+                class="flex flex-col cursor-pointer gap-1 w-full text-left rounded-sm px-1.5 py-1 -mx-1.5
+                  {isSelected ? 'bg-brand-surface-blue-600/50' : 'hover:bg-brand-surface-blue-600'}"
                 onclick={() => selectQuest(key, quest)}
                 aria-pressed={isSelected}
               >
@@ -125,7 +125,7 @@
                       </div>
                     </div>
                   {:else}
-                    <div class="w-3 h-3 rotate-45 bg-emerald-500 shrink-0"></div>
+                    <div class="w-2 h-2 rotate-45 ring ring-brand-gold/50 bg-brand-gold shrink-0"></div>
                   {/if}
                   <span class="text-sm {isSelected ? 'text-white' : 'text-neutral-100'}">{quest.name}</span>
                 </div>
